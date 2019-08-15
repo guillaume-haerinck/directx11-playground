@@ -2,6 +2,8 @@
 
 Small DirectX software created to learn real-time rendering with this API before delving deeper with Vulkan and DirectX 12.
 
+** DISCLAIMER ** : DirectX is a Microsoft API, so this project is Windows OS only.
+
 ## Status
 
 - [x] Project setup
