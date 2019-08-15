@@ -3,7 +3,7 @@
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
-	case WM_CLOSE:
+	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 
@@ -85,21 +85,20 @@ int CALLBACK WinMain(
 	pDevice->CreateRenderTargetView(pBackBuffer, nullptr, &pTarget);
 	pBackBuffer->Release();
 
-	MSG msg;
-	BOOL gResult;
-	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0) {
+	MSG msg = { 0 };
+	while (msg.message != WM_QUIT) {
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
 		// Clear buffer
 		const float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 		pContext->ClearRenderTargetView(pTarget, color);
-
-		DispatchMessage(&msg);
 
 		// Swap buffers
 		pSwap->Present(1u, 0u);
 	}
 
-	switch (gResult) {
-		case -1: return -1;
-		default: return msg.wParam;
-	}
+	return static_cast<int>(msg.wParam);
 }
