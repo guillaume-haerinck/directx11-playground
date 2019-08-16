@@ -1,6 +1,4 @@
-#include <exception>
-#include <stdio.h>
-#include <D3d11.h>
+#pragma once
 
 namespace DX {
 	// Helper class for COM exceptions

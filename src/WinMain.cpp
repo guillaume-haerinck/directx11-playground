@@ -1,7 +1,4 @@
-#include <Windows.h>
-#include <D3d11.h>
-#include <DirectXMath.h>
-
+#include "pch.h"
 #include "graphics/DXErrorHandler.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
