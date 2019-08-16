@@ -36,11 +36,14 @@ App::App(HINSTANCE& hInstance)
 	RegisterClassEx(&m_wc);
 
 	// Create window instance
+	RECT rc = { 0, 0, 800, 600 };
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	m_hwnd = CreateWindowEx(
 		0, m_className, "DirectX 11 Playground",
-		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-		200, 200, 640, 480, nullptr, nullptr,
-		hInstance, nullptr
+		WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		rc.right - rc.left, rc.bottom - rc.top,
+		nullptr, nullptr, hInstance, nullptr
 	);
 	if (m_hwnd == nullptr) {
 		throw DX_LAST_ERROR_EXCEPTION;
@@ -60,6 +63,8 @@ void App::Update(float dt) {
 	m_rc->Clear();
 
 	m_renderer->BeginScene();
+
+	m_rc->DrawTriangle();
 
 	m_renderer->EndScene();
 

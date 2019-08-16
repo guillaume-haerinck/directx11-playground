@@ -1,4 +1,4 @@
-// Variables set by ShaderEd
+// Resource binding
 cbuffer cbPerFrame : register(b0)
 {
 	float4x4 matVP;

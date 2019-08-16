@@ -62,4 +62,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="res\shaders\1-hello-shader\basicPS.hlsl" />
+    <FxCompile Include="res\shaders\1-hello-shader\basicVS.hlsl" />
+    <FxCompile Include="res\shaders\2-texture-mapping\textureVS.hlsl" />
+    <FxCompile Include="res\shaders\2-texture-mapping\texturePS.hlsl" />
+    <FxCompile Include="res\shaders\0-legacy\legacyVS.hlsl" />
+    <FxCompile Include="res\shaders\0-legacy\legacyPS.hlsl" />
+  </ItemGroup>
 </Project>

@@ -32,3 +32,4 @@
 #include <DirectXColors.h>
 #include <dxgidebug.h>
 #include <wrl.h>
+#include <d3dcompiler.h>
