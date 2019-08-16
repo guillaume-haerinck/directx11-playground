@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "Renderer.h"
 
-Renderer::Renderer()
+Renderer::Renderer(RenderCommand& rc) : m_rc(rc)
 {
+	
 }
 
 Renderer::~Renderer()

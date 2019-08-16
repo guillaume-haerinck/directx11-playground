@@ -20,4 +20,6 @@ private:
 	HWND m_hwnd;
 	WNDCLASSEX m_wc;
 	const char* m_className;
+	Renderer* m_renderer;
+	RenderCommand* m_rc;
 };

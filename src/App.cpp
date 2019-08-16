@@ -17,7 +17,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 App::App(HINSTANCE& hInstance)
-	: m_className("hwd3dPlayground"), m_wc({ 0 }), m_hwnd(nullptr)
+	: m_className("hwd3dPlayground"), m_wc({ 0 }), m_hwnd(nullptr),
+	  m_rc(nullptr), m_renderer(nullptr)
 {
 	// Register window class
 	m_wc.cbSize = sizeof(m_wc);
@@ -46,14 +47,22 @@ App::App(HINSTANCE& hInstance)
 	}
 
 	ShowWindow(m_hwnd, SW_SHOW);
+
+	m_rc = new RenderCommand(m_hwnd);
+	m_renderer = new Renderer(*m_rc);
 }
 
-App::~App()
-{
+App::~App() {
+	delete m_rc;
 }
 
-void App::Update(float dt)
-{
-	// TODO use renderrer here
+void App::Update(float dt) {
+	m_rc->Clear();
+
+	m_renderer->BeginScene();
+
+	m_renderer->EndScene();
+
+	m_rc->Swap();
 }
 

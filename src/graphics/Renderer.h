@@ -7,7 +7,7 @@
  */
 class Renderer {
 public:
-	Renderer();
+	Renderer(RenderCommand& rc);
 	~Renderer();
 
 	/**
@@ -34,5 +34,5 @@ public:
 	void EndScene();
 
 private:
-	// RenderCommand& rc;
+	RenderCommand& m_rc;
 };
