@@ -157,7 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
-    <ClCompile Include="src\graphics\DXErrorHandler.cpp" />
+    <ClCompile Include="src\graphics\DXException.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -173,15 +173,15 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\window\Clock.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
+    <ClCompile Include="src\core\StepTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h" />
-    <ClInclude Include="src\graphics\DXErrorHandler.h" />
+    <ClInclude Include="src\graphics\DXException.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\window\Clock.h" />
+    <ClInclude Include="src\core\StepTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
