@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project>
+	<pipeline>
+		<pass name="Basic">
+			<rendertexture name="Window" />
+			<shader type="vs">
+				<path>textureVS.hlsl</path>
+				<entry>main</entry>
+				<input>
+					<element id="0" format="R32G32B32A32_FLOAT" offset="0">POSITION</element>
+					<element id="0" format="R32G32B32A32_FLOAT" offset="12">NORMAL</element>
+					<element id="0" format="R32G32_FLOAT" offset="24">TEXCOORD</element>
+				</input>
+				<variables>
+					<variable type="float4x4" name="matVP" system="ViewProjection" slot="0" />
+					<variable type="float4x4" name="matGeo" system="GeometryTransform" slot="0" />
+				</variables>
+			</shader>
+			<shader type="ps">
+				<path>texturePS.hlsl</path>
+				<entry>main</entry>
+			</shader>
+			<items>
+				<item name="TexturedCube" type="geometry">
+					<type>Cube</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+		</pass>
+	</pipeline>
+	<objects>
+		<object type="texture" path="UV_Grid_Sm.jpg">
+			<bind slot="0" name="Basic" />
+		</object>
+	</objects>
+	<settings>
+		<entry type="property" name="Basic" />
+		<entry type="camera" fp="false">
+			<distance>4</distance>
+			<rotationX>283</rotationX>
+			<rotationY>35</rotationY>
+			<rotationZ>360</rotationZ>
+		</entry>
+		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
+	</settings>
+</project>
