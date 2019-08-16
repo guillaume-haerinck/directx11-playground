@@ -1,18 +1,7 @@
 #include "pch.h"
+
+#include "App.h"
 #include "graphics/DXException.h"
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	switch (msg) {
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-
-	default:
-		break;
-	}
-
-	return DefWindowProc(hWnd, msg, wParam, lParam);
-}
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -21,36 +10,7 @@ int CALLBACK WinMain(
 	int nCmdShow
 ) {
 	try {
-		const auto pClassName = "hwd3dPlayground";
-
-		// Register window class
-		WNDCLASSEX wc = { 0 };
-		wc.cbSize = sizeof(wc);
-		wc.style = CS_OWNDC;
-		wc.lpfnWndProc = WndProc;
-		wc.cbClsExtra = 0;
-		wc.cbWndExtra = 0;
-		wc.hInstance = hInstance;
-		wc.hIcon = nullptr;
-		wc.hCursor = nullptr;
-		wc.hbrBackground = nullptr;
-		wc.lpszMenuName = nullptr;
-		wc.lpszClassName = pClassName;
-		wc.hIconSm = nullptr;
-		RegisterClassEx(&wc);
-
-		// Create window instance
-		HWND hWnd = CreateWindowEx(
-			0, pClassName, "DirectX 11 Playground",
-			WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-			200, 200, 640, 480, nullptr, nullptr,
-			hInstance, nullptr
-		);
-		if (hWnd == nullptr) {
-			throw DX_LAST_ERROR_EXCEPTION;
-		}
-
-		ShowWindow(hWnd, SW_SHOW);
+		App app(hInstance);
 
 		// Swap chain description
 		DXGI_SWAP_CHAIN_DESC sd = {};
@@ -65,7 +25,7 @@ int CALLBACK WinMain(
 		sd.SampleDesc.Quality = 0;
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount = 1; // Double buffering
-		sd.OutputWindow = hWnd;
+		sd.OutputWindow = app.getHwnd();
 		sd.Windowed = TRUE;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		sd.Flags = 0;
@@ -98,6 +58,8 @@ int CALLBACK WinMain(
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
+
+			app.Update();
 
 			// Clear buffer
 			const float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };

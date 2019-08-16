@@ -31,3 +31,4 @@
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 #include <dxgidebug.h>
+#include <wrl.h>
