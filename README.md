@@ -29,6 +29,10 @@ Small DirectX software created to learn real-time rendering with this API before
 - [D3dCoder](http://www.d3dcoder.net/d3d11.htm)
 - [DirectXTutorials](http://www.directxtutorial.com/LessonList.aspx?listid=11)
 
+### Repos
+
+- [DirectX SDK samples](https://github.com/walbourn/directx-sdk-samples/tree/master/Direct3D11Tutorials)
+
 ### Books
 
 - [Beginning DirectX 11 Game Programming](https://www.oreilly.com/library/view/beginning-directx11-game/9781435458956/)

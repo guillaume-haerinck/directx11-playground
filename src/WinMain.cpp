@@ -1,5 +1,8 @@
 #include <Windows.h>
 #include <D3d11.h>
+#include <DirectXMath.h>
+
+#include "graphics/DXErrorHandler.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
@@ -73,11 +76,18 @@ int CALLBACK WinMain(
 	ID3D11RenderTargetView* pTarget = nullptr;
 
 	// Create DirectX device
-	D3D11CreateDeviceAndSwapChain(
-		nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0,
-		nullptr, 0, D3D11_SDK_VERSION, &sd, &pSwap,
-		&pDevice, nullptr, &pContext
-	);
+	try {
+		DX::ThrowIfFailed(
+			D3D11CreateDeviceAndSwapChain(
+				nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
+				D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,
+				D3D11_SDK_VERSION, &sd, &pSwap,
+				&pDevice, nullptr, &pContext
+			)
+		);
+	} catch (const std::exception&) {
+		return -1;
+	}
 
 	// Get back buffer
 	ID3D11Resource* pBackBuffer = nullptr;
