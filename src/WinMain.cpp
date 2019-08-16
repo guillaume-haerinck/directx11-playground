@@ -46,6 +46,9 @@ int CALLBACK WinMain(
 			200, 200, 640, 480, nullptr, nullptr,
 			hInstance, nullptr
 		);
+		if (hWnd == nullptr) {
+			throw DX_LAST_ERROR_EXCEPTION;
+		}
 
 		ShowWindow(hWnd, SW_SHOW);
 
@@ -74,7 +77,7 @@ int CALLBACK WinMain(
 		ID3D11RenderTargetView* pTarget = nullptr;
 
 		// Create DirectX device
-		DX::ThrowIfFailed(
+		DX::ThrowIfFailed(CALL_INFO,
 			D3D11CreateDeviceAndSwapChain(
 				nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
 				D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,

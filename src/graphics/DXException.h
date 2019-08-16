@@ -27,10 +27,13 @@ protected:
 };
 
 namespace DX {
-	inline void ThrowIfFailed(HRESULT hr) {
+	inline void ThrowIfFailed(int line, const char* file, HRESULT hr) {
 		if (FAILED(hr)) {
 			// Set a breakpoint on this line to catch DirectX API errors
-			throw DXException(__LINE__, __FILE__, hr);
+			throw DXException(line, file, hr);
 		}
 	}
 }
+
+#define DX_LAST_ERROR_EXCEPTION DXException(__LINE__, __FILE__, GetLastError())
+#define CALL_INFO __LINE__,__FILE__
