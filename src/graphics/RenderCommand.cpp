@@ -34,17 +34,19 @@ RenderCommand::RenderCommand(HWND& hWnd)
 	);
 
 	// Get back buffer
-	/*
-	ID3D11Resource* backBuffer = nullptr;
-	m_swap->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(backBuffer));
-	m_device->CreateRenderTargetView(backBuffer, nullptr, &m_target);
+	ID3D11Texture2D* backBuffer = nullptr;
+	DX::ThrowIfFailed(CALL_INFO,
+		m_swap->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer))
+	);
+	DX::ThrowIfFailed(CALL_INFO,
+		m_device->CreateRenderTargetView(backBuffer, nullptr, &m_target)
+	);
 	backBuffer->Release();
-	*/
 }
 
 void RenderCommand::Clear() {
-	//const float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	//m_context->ClearRenderTargetView(m_target.Get(), color);
+	const float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	m_context->ClearRenderTargetView(m_target.Get(), color);
 }
 
 void RenderCommand::Swap() {

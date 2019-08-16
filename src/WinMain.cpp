@@ -19,6 +19,7 @@ int CALLBACK WinMain(
 				DispatchMessage(&msg);
 			}
 
+			// TODO handle game loop with deltatime and framerate
 			app.Update(0.0f);
 		}
 
