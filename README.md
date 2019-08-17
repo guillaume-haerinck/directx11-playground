@@ -9,13 +9,13 @@ Small DirectX software created to learn real-time rendering with this API before
 - [x] Project setup
 - [x] Window creation
 - [x] Init DirectX device
-- [ ] App abstraction
+- [x] App abstraction
+- [x] Basic triangle
 - [ ] ImGui
 - [ ] Buffer classes
 - [ ] Shader
 - [ ] Renderer
 - [ ] Sandbox states
-- [ ] Basic triangle
 
 ## Based on
 
