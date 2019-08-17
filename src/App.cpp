@@ -26,16 +26,38 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_wc({ 0 }), m_
 }
 
 App::~App() {
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 }
 
 void App::Update(float dt) {
 	m_rcommand->Clear();
+
+	/*
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("Main debug window");
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+	*/
 
 	m_renderer->BeginScene();
 
 	m_rcommand->DrawTriangle();
 
 	m_renderer->EndScene();
+
+	/*
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	}
+	*/
 
 	m_rcommand->Swap();
 }
@@ -133,5 +155,9 @@ void App::initDirectX11() {
 }
 
 void App::initImGui() {
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplWin32_Init(m_hwnd);
+	ImGui_ImplDX11_Init(m_dxo.device.Get(), m_dxo.context.Get());
+	ImGui::StyleColorsDark();
 }
-

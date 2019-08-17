@@ -330,4 +330,4 @@ ASALocalRun/
 .mfractor/
 
 # Shaders build
-.cso
+*.cso
