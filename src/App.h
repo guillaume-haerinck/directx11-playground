@@ -1,8 +1,12 @@
 #pragma once
 
+#include "graphics/DXObjects.h"
 #include "graphics/Renderer.h"
 #include "graphics/RenderCommand.h"
 
+/*
+ * @brief Base singleton class to create the application and run it
+ */
 class App {
 public:
 	App(HINSTANCE& hInstance);
@@ -14,12 +18,18 @@ public:
 	 */
 	void Update(float dt);
 
-	HWND getHwnd() const { return m_hwnd; }
+private:
+	void initWindow(HINSTANCE& hInstance);
+	void initDirectX11();
+	void initImGui();
 
 private:
 	HWND m_hwnd;
 	WNDCLASSEX m_wc;
+	DXGI_SWAP_CHAIN_DESC m_sd;
 	const char* m_className;
-	Renderer* m_renderer;
-	RenderCommand* m_rc;
+
+	DXObjects m_dxo;
+	std::unique_ptr<Renderer> m_renderer;
+	std::unique_ptr<RenderCommand> m_rcommand;
 };

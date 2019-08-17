@@ -1,13 +1,15 @@
 #pragma once
 
 #include "RenderCommand.h"
+#include "DXObjects.h"
 
 /**
  * @brief Draw a 3d scene on the screen
+ * @note Never calls DirectX directly. It uses renderCommand to interact with the API
  */
 class Renderer {
 public:
-	Renderer(RenderCommand& rc);
+	Renderer(DXObjects dxObjects);
 	~Renderer();
 
 	/**
@@ -34,5 +36,5 @@ public:
 	void EndScene();
 
 private:
-	RenderCommand& m_rc;
+	RenderCommand m_rc;
 };

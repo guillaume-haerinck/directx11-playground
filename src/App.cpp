@@ -16,10 +16,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-App::App(HINSTANCE& hInstance)
-	: m_className("hwd3dPlayground"), m_wc({ 0 }), m_hwnd(nullptr),
-	  m_rc(nullptr), m_renderer(nullptr)
-{
+App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_wc({ 0 }), m_hwnd(nullptr) {
+	initWindow(hInstance);
+	initDirectX11();
+	initImGui();
+
+	m_renderer = std::make_unique<Renderer>(m_dxo);
+	m_rcommand = std::make_unique<RenderCommand>(m_dxo);
+}
+
+App::~App() {
+}
+
+void App::Update(float dt) {
+	m_rcommand->Clear();
+
+	m_renderer->BeginScene();
+
+	m_rcommand->DrawTriangle();
+
+	m_renderer->EndScene();
+
+	m_rcommand->Swap();
+}
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////// PRIVATE METHODS /////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+void App::initWindow(HINSTANCE& hInstance) {
 	// Register window class
 	m_wc.cbSize = sizeof(m_wc);
 	m_wc.style = CS_OWNDC;
@@ -50,24 +75,63 @@ App::App(HINSTANCE& hInstance)
 	}
 
 	ShowWindow(m_hwnd, SW_SHOW);
-
-	m_rc = new RenderCommand(m_hwnd);
-	m_renderer = new Renderer(*m_rc);
 }
 
-App::~App() {
-	delete m_rc;
+void App::initDirectX11() {
+	// Get viewport size
+	RECT rc;
+	GetClientRect(m_hwnd, &rc);
+	const int width = rc.right - rc.left;
+	const int height = rc.bottom - rc.top;
+
+	// SwapChain and Context description
+	m_sd.BufferDesc.Width = width;
+	m_sd.BufferDesc.Height = height;
+	m_sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	m_sd.BufferDesc.RefreshRate.Numerator = 0;
+	m_sd.BufferDesc.RefreshRate.Denominator = 0;
+	m_sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	m_sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	m_sd.SampleDesc.Count = 1;
+	m_sd.SampleDesc.Quality = 0;
+	m_sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	m_sd.BufferCount = 1; // Double buffering
+	m_sd.OutputWindow = m_hwnd;
+	m_sd.Windowed = TRUE;
+	m_sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	m_sd.Flags = 0;
+
+	// Create DirectX device
+	DX::ThrowIfFailed(CALL_INFO,
+		D3D11CreateDeviceAndSwapChain(
+			nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
+			D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,
+			D3D11_SDK_VERSION, &m_sd, &m_dxo.swapChain,
+			&m_dxo.device, nullptr, &m_dxo.context
+		)
+	);
+
+	// Get back buffer
+	ID3D11Texture2D* backBuffer = nullptr;
+	DX::ThrowIfFailed(CALL_INFO,
+		m_dxo.swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer))
+	);
+	DX::ThrowIfFailed(CALL_INFO,
+		m_dxo.device->CreateRenderTargetView(backBuffer, nullptr, &m_dxo.target)
+	);
+	backBuffer->Release();
+
+	// Setup the viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)width;
+	vp.Height = (float)height;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	m_dxo.context->RSSetViewports(1, &vp);
 }
 
-void App::Update(float dt) {
-	m_rc->Clear();
-
-	m_renderer->BeginScene();
-
-	m_rc->DrawTriangle();
-
-	m_renderer->EndScene();
-
-	m_rc->Swap();
+void App::initImGui() {
 }
 

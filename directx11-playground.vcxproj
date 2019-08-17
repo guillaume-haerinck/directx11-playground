@@ -156,10 +156,14 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphics\Buffer.cpp" />
+    <ClCompile Include="src\graphics\DXObjects.cpp" />
+    <ClCompile Include="src\graphics\DXObjects.h" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\graphics\DXException.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
+    <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -178,10 +182,12 @@
     <ClCompile Include="src\core\StepTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\graphics\Buffer.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\graphics\DXException.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
+    <ClInclude Include="src\graphics\Shader.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\core\StepTimer.h" />
   </ItemGroup>
