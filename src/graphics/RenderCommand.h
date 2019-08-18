@@ -13,9 +13,6 @@ public:
 	void Clear() const;
 	void Swap() const;
 
-	// TEMP
-	void DrawTriangle();
-
 private:
 	DXObjects m_dxo;
 };

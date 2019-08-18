@@ -4,12 +4,18 @@
 
 class Shader {
 public:
-	Shader(DXObjects dxObjects, const char* vsFilePath, const char* psFilePath);
+	Shader(DXObjects dxObjects, LPCWSTR vsFilePath, LPCWSTR psFilePath);
 	~Shader();
 
 	void Bind();
 	void Unbind();
 
+	Microsoft::WRL::ComPtr<ID3DBlob> GetVertexShaderBlob() { return m_vsShaderBlob; }
+
 private:
 	DXObjects m_dxo;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
+	Microsoft::WRL::ComPtr<ID3DBlob> m_psShaderBlob;
+	Microsoft::WRL::ComPtr<ID3DBlob> m_vsShaderBlob;
 };

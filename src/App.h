@@ -4,6 +4,8 @@
 #include "graphics/Renderer.h"
 #include "graphics/RenderCommand.h"
 
+#include "graphics/Shader.h"
+
 /*
  * @brief Base singleton class to create the application and run it
  */
@@ -30,4 +32,9 @@ private:
 	DXObjects m_dxo;
 	std::unique_ptr<Renderer> m_renderer;
 	std::unique_ptr<RenderCommand> m_rcommand;
+
+	// TEMP
+	Shader* m_shader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
 };
