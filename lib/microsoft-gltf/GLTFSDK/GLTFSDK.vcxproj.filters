@@ -7,8 +7,44 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GLTFSDK.CPP.autopkg" />
-    <None Include="packages.config" />
     <None Include="GenerateSchemaJsonHeader.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Inc\rapidjson\error\en.h" />
+    <ClInclude Include="Inc\rapidjson\error\error.h" />
+    <ClInclude Include="Inc\rapidjson\internal\biginteger.h" />
+    <ClInclude Include="Inc\rapidjson\internal\diyfp.h" />
+    <ClInclude Include="Inc\rapidjson\internal\dtoa.h" />
+    <ClInclude Include="Inc\rapidjson\internal\ieee754.h" />
+    <ClInclude Include="Inc\rapidjson\internal\itoa.h" />
+    <ClInclude Include="Inc\rapidjson\internal\meta.h" />
+    <ClInclude Include="Inc\rapidjson\internal\pow10.h" />
+    <ClInclude Include="Inc\rapidjson\internal\regex.h" />
+    <ClInclude Include="Inc\rapidjson\internal\stack.h" />
+    <ClInclude Include="Inc\rapidjson\internal\strfunc.h" />
+    <ClInclude Include="Inc\rapidjson\internal\strtod.h" />
+    <ClInclude Include="Inc\rapidjson\internal\swap.h" />
+    <ClInclude Include="Inc\rapidjson\msinttypes\inttypes.h" />
+    <ClInclude Include="Inc\rapidjson\msinttypes\stdint.h" />
+    <ClInclude Include="Inc\rapidjson\allocators.h" />
+    <ClInclude Include="Inc\rapidjson\cursorstreamwrapper.h" />
+    <ClInclude Include="Inc\rapidjson\document.h" />
+    <ClInclude Include="Inc\rapidjson\encodedstream.h" />
+    <ClInclude Include="Inc\rapidjson\encodings.h" />
+    <ClInclude Include="Inc\rapidjson\filereadstream.h" />
+    <ClInclude Include="Inc\rapidjson\filewritestream.h" />
+    <ClInclude Include="Inc\rapidjson\fwd.h" />
+    <ClInclude Include="Inc\rapidjson\istreamwrapper.h" />
+    <ClInclude Include="Inc\rapidjson\memorybuffer.h" />
+    <ClInclude Include="Inc\rapidjson\memorystream.h" />
+    <ClInclude Include="Inc\rapidjson\ostreamwrapper.h" />
+    <ClInclude Include="Inc\rapidjson\pointer.h" />
+    <ClInclude Include="Inc\rapidjson\prettywriter.h" />
+    <ClInclude Include="Inc\rapidjson\rapidjson.h" />
+    <ClInclude Include="Inc\rapidjson\reader.h" />
+    <ClInclude Include="Inc\rapidjson\schema.h" />
+    <ClInclude Include="Inc\rapidjson\stream.h" />
+    <ClInclude Include="Inc\rapidjson\stringbuffer.h" />
+    <ClInclude Include="Inc\rapidjson\writer.h" />
   </ItemGroup>
 </Project>
