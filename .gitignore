@@ -331,3 +331,6 @@ ASALocalRun/
 
 # Shaders build
 *.cso
+
+# Imgui
+imgui.ini

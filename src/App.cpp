@@ -3,7 +3,11 @@
 
 #include "graphics/DXException.h"
 
+IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+		return true;
+
 	switch (msg) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -34,7 +38,6 @@ App::~App() {
 void App::Update(float dt) {
 	m_rcommand->Clear();
 
-	/*
 	{
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
@@ -44,7 +47,6 @@ void App::Update(float dt) {
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 	}
-	*/
 
 	m_renderer->BeginScene();
 
@@ -52,12 +54,10 @@ void App::Update(float dt) {
 
 	m_renderer->EndScene();
 
-	/*
 	{
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
-	*/
 
 	m_rcommand->Swap();
 }
@@ -127,7 +127,7 @@ void App::initDirectX11() {
 	DX::ThrowIfFailed(CALL_INFO,
 		D3D11CreateDeviceAndSwapChain(
 			nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
-			D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,
+			0u, nullptr, 0,
 			D3D11_SDK_VERSION, &m_sd, &m_dxo.swapChain,
 			&m_dxo.device, nullptr, &m_dxo.context
 		)
