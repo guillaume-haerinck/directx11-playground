@@ -125,11 +125,16 @@ void App::initDirectX11() {
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	sd.Flags = 0;
 
+	UINT createDeviceFlags = 0;
+#ifndef NDEBUG
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif // !NDEBUG
+
 	// Create DirectX device
 	DX::ThrowIfFailed(CALL_INFO,
 		D3D11CreateDeviceAndSwapChain(
 			nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
-			0u, nullptr, 0,
+			createDeviceFlags, nullptr, 0,
 			D3D11_SDK_VERSION, &sd, &m_dxo.swapChain,
 			&m_dxo.device, nullptr, &m_dxo.context
 		)
