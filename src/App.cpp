@@ -20,7 +20,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_wc({ 0 }), m_hwnd(nullptr) {
+App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr) {
 	initWindow(hInstance);
 	initDirectX11();
 	initImGui();
@@ -68,19 +68,20 @@ void App::Update(float dt) {
 
 void App::initWindow(HINSTANCE& hInstance) {
 	// Register window class
-	m_wc.cbSize = sizeof(m_wc);
-	m_wc.style = CS_OWNDC;
-	m_wc.lpfnWndProc = WndProc;
-	m_wc.cbClsExtra = 0;
-	m_wc.cbWndExtra = 0;
-	m_wc.hInstance = hInstance;
-	m_wc.hIcon = nullptr;
-	m_wc.hCursor = nullptr;
-	m_wc.hbrBackground = nullptr;
-	m_wc.lpszMenuName = nullptr;
-	m_wc.lpszClassName = m_className;
-	m_wc.hIconSm = nullptr;
-	RegisterClassEx(&m_wc);
+	WNDCLASSEX wc;
+	wc.cbSize = sizeof(wc);
+	wc.style = CS_OWNDC;
+	wc.lpfnWndProc = WndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = hInstance;
+	wc.hIcon = nullptr;
+	wc.hCursor = nullptr;
+	wc.hbrBackground = nullptr;
+	wc.lpszMenuName = nullptr;
+	wc.lpszClassName = m_className;
+	wc.hIconSm = nullptr;
+	RegisterClassEx(&wc);
 
 	// Create window instance
 	RECT rc = { 0, 0, 800, 600 };
@@ -107,28 +108,29 @@ void App::initDirectX11() {
 	const int height = rc.bottom - rc.top;
 
 	// SwapChain and Context description
-	m_sd.BufferDesc.Width = width;
-	m_sd.BufferDesc.Height = height;
-	m_sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	m_sd.BufferDesc.RefreshRate.Numerator = 0;
-	m_sd.BufferDesc.RefreshRate.Denominator = 0;
-	m_sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	m_sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	m_sd.SampleDesc.Count = 1;
-	m_sd.SampleDesc.Quality = 0;
-	m_sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	m_sd.BufferCount = 1; // Double buffering
-	m_sd.OutputWindow = m_hwnd;
-	m_sd.Windowed = TRUE;
-	m_sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	m_sd.Flags = 0;
+	DXGI_SWAP_CHAIN_DESC sd;
+	sd.BufferDesc.Width = width;
+	sd.BufferDesc.Height = height;
+	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	sd.BufferDesc.RefreshRate.Numerator = 0;
+	sd.BufferDesc.RefreshRate.Denominator = 0;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	sd.SampleDesc.Count = 1;
+	sd.SampleDesc.Quality = 0;
+	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	sd.BufferCount = 1; // Double buffering
+	sd.OutputWindow = m_hwnd;
+	sd.Windowed = TRUE;
+	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	sd.Flags = 0;
 
 	// Create DirectX device
 	DX::ThrowIfFailed(CALL_INFO,
 		D3D11CreateDeviceAndSwapChain(
 			nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
 			0u, nullptr, 0,
-			D3D11_SDK_VERSION, &m_sd, &m_dxo.swapChain,
+			D3D11_SDK_VERSION, &sd, &m_dxo.swapChain,
 			&m_dxo.device, nullptr, &m_dxo.context
 		)
 	);

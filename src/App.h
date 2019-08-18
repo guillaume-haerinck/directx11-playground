@@ -25,8 +25,6 @@ private:
 
 private:
 	HWND m_hwnd;
-	WNDCLASSEX m_wc;
-	DXGI_SWAP_CHAIN_DESC m_sd;
 	const char* m_className;
 
 	DXObjects m_dxo;
