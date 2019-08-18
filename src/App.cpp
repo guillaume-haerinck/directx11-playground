@@ -128,7 +128,7 @@ void App::initDirectX11() {
 	UINT createDeviceFlags = 0;
 #ifndef NDEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif // !NDEBUG
+#endif
 
 	// Create DirectX device
 	DX::ThrowIfFailed(CALL_INFO,

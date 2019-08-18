@@ -8,7 +8,7 @@ public:
 	~Shader();
 
 	void Bind();
-	void UnBind();
+	void Unbind();
 
 private:
 	DXObjects m_dxo;

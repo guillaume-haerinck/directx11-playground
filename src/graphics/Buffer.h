@@ -8,7 +8,7 @@ public:
 	~VertexBuffer();
 
 	void Bind();
-	void UnBind();
+	void Unbind();
 
 private:
 	DXObjects m_dxObjects;
@@ -21,7 +21,7 @@ public:
 	~IndexBuffer();
 
 	void Bind();
-	void UnBind();
+	void Unbind();
 
 private:
 	DXObjects m_dxo;
