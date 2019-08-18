@@ -7,10 +7,11 @@ public:
 	Shader(DXObjects dxObjects, LPCWSTR vsFilePath, LPCWSTR psFilePath);
 	~Shader();
 
-	void Bind();
-	void Unbind();
+	void Bind() const;
+	void Unbind() const;
 
-	Microsoft::WRL::ComPtr<ID3DBlob> GetVertexShaderBlob() { return m_vsShaderBlob; }
+	// Used to setup Input layout
+	Microsoft::WRL::ComPtr<ID3DBlob> GetVertexShaderBlob() const { return m_vsShaderBlob; }
 
 private:
 	DXObjects m_dxo;

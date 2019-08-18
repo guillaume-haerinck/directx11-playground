@@ -1,7 +1,5 @@
 #pragma once
 
-// TODO check if the pointer ref count is incremented when copying the struct
-
 /*
  * @brief DirectX Objects needed for any interaction with the API
  */

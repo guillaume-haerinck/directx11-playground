@@ -13,9 +13,9 @@ Small DirectX software created to learn real-time rendering with this API before
 - [x] Basic triangle
 - [x] ImGui
 - [x] Shader abstaction
+- [x] Sandbox states
 - [ ] Buffer classes
 - [ ] Renderer
-- [ ] Sandbox states
 
 ## Based on
 

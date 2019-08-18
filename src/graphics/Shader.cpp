@@ -16,7 +16,7 @@ Shader::Shader(DXObjects dxObjects, LPCWSTR vsFilePath, LPCWSTR psFilePath) : m_
 		)
 	);
 	
-	// Create Pixel shader
+	// Create pixel shader
 	DX::ThrowIfFailed(CALL_INFO,
 		D3DReadFileToBlob(psFilePath, &m_psShaderBlob)
 	);
@@ -31,10 +31,11 @@ Shader::Shader(DXObjects dxObjects, LPCWSTR vsFilePath, LPCWSTR psFilePath) : m_
 Shader::~Shader() {
 }
 
-void Shader::Bind() {
+void Shader::Bind() const {
 	m_dxo.context->PSSetShader(m_pixelShader.Get(), nullptr, 0u);
 	m_dxo.context->VSSetShader(m_vertexShader.Get(), nullptr, 0u);
 }
 
-void Shader::Unbind() {
+void Shader::Unbind() const {
+	// TODO
 }
