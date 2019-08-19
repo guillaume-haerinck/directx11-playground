@@ -1,6 +1,6 @@
 #pragma once
 
-/*
+/**
  * @brief DirectX Objects needed for any interaction with the API
  */
 struct DXObjects {

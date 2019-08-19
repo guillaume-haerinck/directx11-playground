@@ -5,7 +5,7 @@
 #include "graphics/RenderCommand.h"
 #include "exemples/i-exemple.h"
 
-/*
+/**
  * @brief Base singleton class to create the application and run it
  */
 class App {

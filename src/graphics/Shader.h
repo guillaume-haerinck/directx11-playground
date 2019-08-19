@@ -4,6 +4,7 @@
 
 class Shader {
 public:
+	// TODO take an input buffer layout ?
 	Shader(DXObjects dxObjects, LPCWSTR vsFilePath, LPCWSTR psFilePath);
 	~Shader();
 

@@ -4,6 +4,7 @@
 
 class VertexBuffer {
 public:
+	// TODO takes vertices, size and stride ? (layout is handled by shader ?)
 	VertexBuffer(DXObjects dxObjects);
 	~VertexBuffer();
 
@@ -26,4 +27,32 @@ public:
 private:
 	DXObjects m_dxo;
 };
+
+
+class ConstantBuffer {
+public:
+	ConstantBuffer();
+	~ConstantBuffer();
+
+	void Bind();
+	void Unbind();
+
+private:
+
+};
+
+
+class TextureBuffer {
+public:
+	TextureBuffer();
+	~TextureBuffer();
+
+	void Bind();
+	void Unbind();
+
+private:
+
+};
+
+
 

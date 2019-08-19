@@ -9,12 +9,12 @@ class RenderCommand {
 public:
 	RenderCommand(DXObjects dxObjects);
 
-	/*
+	/**
 	 * @brief Clear the back buffer
 	 */
 	void Clear() const;
 
-	/*
+	/**
 	 * @brief Swap front and back buffers
 	 */
 	void Swap() const;

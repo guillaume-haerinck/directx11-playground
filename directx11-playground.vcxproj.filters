@@ -77,6 +77,9 @@
     <ClCompile Include="src\exemples\basic-triangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\exemples\rotating-cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h">
@@ -139,14 +142,17 @@
     <ClInclude Include="src\exemples\basic-triangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\exemples\rotating-cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="res\shaders\1-hello-shader\basicPS.hlsl" />
-    <FxCompile Include="res\shaders\1-hello-shader\basicVS.hlsl" />
     <FxCompile Include="res\shaders\2-texture-mapping\textureVS.hlsl" />
     <FxCompile Include="res\shaders\2-texture-mapping\texturePS.hlsl" />
-    <FxCompile Include="res\shaders\0-legacy\legacyVS.hlsl" />
-    <FxCompile Include="res\shaders\0-legacy\legacyPS.hlsl" />
+    <FxCompile Include="res\shaders\1-basic-ressource\basicPS.hlsl" />
+    <FxCompile Include="res\shaders\1-basic-ressource\basicVS.hlsl" />
+    <FxCompile Include="res\shaders\0-no-ressource\noRessourcePS.hlsl" />
+    <FxCompile Include="res\shaders\0-no-ressource\noRessourceVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="lib\imgui\misc\natvis\imgui.natvis" />

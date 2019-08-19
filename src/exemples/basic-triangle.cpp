@@ -5,9 +5,8 @@
 
 
 namespace exemple {
-	BasicTriangle::BasicTriangle(DXObjects dxObjects)
-		: m_dxo(dxObjects) {
-		m_shader = std::make_unique<Shader>(m_dxo, L"legacyVS.cso", L"legacyPS.cso");
+	BasicTriangle::BasicTriangle(DXObjects dxObjects) : m_dxo(dxObjects) {
+		m_shader = std::make_unique<Shader>(m_dxo, L"noRessourceVS.cso", L"noRessourcePS.cso");
 
 		struct Vertex {
 			float x;
@@ -22,7 +21,7 @@ namespace exemple {
 
 		// Input buffer layout
 		const D3D11_INPUT_ELEMENT_DESC ied[] = {
-			{ "Position", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
 
 		// Create vertex buffer
@@ -39,7 +38,7 @@ namespace exemple {
 			m_dxo.device->CreateBuffer(&bd, &sd, &m_vertexBuffer)
 		);
 
-		// Set vertex buffer to Input Assembler
+		// Bind vertex buffer
 		const UINT stride = sizeof(Vertex);
 		const UINT offset = 0u;
 		m_dxo.context->IASetVertexBuffers(0u, 1u, m_vertexBuffer.GetAddressOf(), &stride, &offset);
@@ -53,20 +52,21 @@ namespace exemple {
 				&m_inputLayout
 			)
 		);
+
 	}
 
 	BasicTriangle::~BasicTriangle() {
 	}
 
 	void BasicTriangle::Update() {
+		// Set primitive topology
+		m_dxo.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 		// Bind input buffer layout
 		m_dxo.context->IASetInputLayout(m_inputLayout.Get());
 
 		// Bind render target
 		m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), nullptr);
-
-		// Set primitive topology
-		m_dxo.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		m_shader->Bind();
 

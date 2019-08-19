@@ -3,6 +3,7 @@
 
 #include "graphics/DXException.h"
 #include "exemples/basic-triangle.h"
+#include "exemples/rotating-cube.h"
 
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -28,7 +29,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 
 	m_renderer = std::make_unique<Renderer>(m_dxo);
 	m_rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::BasicTriangle>(m_dxo);
+	m_activeExemple = std::make_unique<exemple::RotatingCube>(m_dxo);
 }
 
 App::~App() {
@@ -139,11 +140,18 @@ void App::initDirectX11() {
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
+	D3D_FEATURE_LEVEL featureLevels[] =
+	{
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0
+	};
+	UINT numFeatureLevels = ARRAYSIZE(featureLevels);
+
 	// Create DirectX device
 	DX::ThrowIfFailed(CALL_INFO,
 		D3D11CreateDeviceAndSwapChain(
 			nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
-			createDeviceFlags, nullptr, 0,
+			createDeviceFlags, featureLevels, numFeatureLevels,
 			D3D11_SDK_VERSION, &sd, &m_dxo.swapChain,
 			&m_dxo.device, nullptr, &m_dxo.context
 		)

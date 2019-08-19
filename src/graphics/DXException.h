@@ -1,6 +1,6 @@
 #pragma once
 
-/*
+/**
  * @brief Helper class for DirectX exceptions
  */
 class DXException : public std::exception {

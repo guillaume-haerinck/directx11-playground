@@ -30,7 +30,7 @@ public:
 	void Submit();
 
 	/**
-	 * @brief Cleanup the scene
+	 * @brief Cleanup the scene and sends what remains to the GPU
 	 * @note Must be called once for each frame
 	 */
 	void EndScene();
