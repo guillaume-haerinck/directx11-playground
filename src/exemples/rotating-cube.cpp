@@ -135,7 +135,6 @@ namespace exemple {
 		DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 		cb.View = DirectX::XMMatrixLookAtLH(Eye, At, Up);
 		cb.Projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 800 / (FLOAT)600, 0.01f, 100.0f);
-		cb.ColorTest = { 0.0f, 1.0f, 0.0f, 1.0f };
 		m_dxo.context->UpdateSubresource(m_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 		m_dxo.context->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 

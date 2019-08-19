@@ -8,7 +8,6 @@ struct ConstantBuffer {
 	DirectX::XMMATRIX World;
 	DirectX::XMMATRIX View;
 	DirectX::XMMATRIX Projection;
-	DirectX::XMFLOAT4 ColorTest;
 };
 
 namespace exemple {
