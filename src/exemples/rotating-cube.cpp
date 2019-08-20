@@ -28,15 +28,15 @@ namespace exemple {
 		/////////////////// VERTEX BUFFER
 
 		const Vertex vertices[] = {
-			{ XMFLOAT3(-1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },	// Back Lower left
-			{ XMFLOAT3(-1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Back Top left
-			{ XMFLOAT3( 1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Back Lower right
-			{ XMFLOAT3( 1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Back Top right
+			{ XMFLOAT3(-1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower left
+			{ XMFLOAT3(-1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top left
+			{ XMFLOAT3( 1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower right
+			{ XMFLOAT3( 1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top right
 
-			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },	// Front Lower left
-			{ XMFLOAT3(-1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Front Top left
+			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Lower left
+			{ XMFLOAT3(-1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Top left
 			{ XMFLOAT3( 1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Lower right
-			{ XMFLOAT3( 1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }	// Front Top right
+			{ XMFLOAT3( 1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }	// Front Top right
 		};
 		
 		// General temp data
@@ -60,7 +60,11 @@ namespace exemple {
 		WORD indices[] = {
 			// Front
 			0, 1, 2,
-			1, 3, 2
+			1, 3, 2,
+
+			// Back
+			4, 5, 6,
+			5, 7, 6
 		};
 
 		// Create Index Buffer
@@ -101,13 +105,15 @@ namespace exemple {
 		// Update constant buffer
 		ConstantBuffer cb;
 		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
-		XMVECTOR scaling = XMVectorSet(0.5f, 0.5f, 0.5f, 1.0f);
+
+		XMVECTOR scaling = XMVectorSet(0.3f, 0.3f, 0.3f, 1.0f);
 		XMVECTOR rotationOrigin = XMVectorZero();
-		XMVECTOR rotation = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-		XMVECTOR translation = XMVectorSet(0.3f, 0.0f, 0.0f, 1.0f);
+		float theta = XM_PIDIV4;
+		XMVECTOR rotation = XMVectorSet(0.0f, sin(theta / 2), 0.0f, cos(theta / 2)); // Y axis rotation
+		XMVECTOR translation = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 		XMMATRIX view = XMMatrixAffineTransformation(scaling, rotationOrigin, rotation, translation);
 
-		// DirectXMaths matrix are Column major and HLSL are Row major
+		// DirectXMaths matrix are Row major and HLSL are Column major
 		// So we must use the transpose matrix
 		XMStoreFloat4x4(&cb.matVP, XMMatrixTranspose(view));
 
@@ -126,7 +132,7 @@ namespace exemple {
 		m_dxo.context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 
 		// Draw the triangle
-		m_dxo.context->DrawIndexed(6u, 0u, 0);
+		m_dxo.context->DrawIndexed(12u, 0u, 0);
 	}
 
 	void RotatingCube::ImGuiUpdate() {
