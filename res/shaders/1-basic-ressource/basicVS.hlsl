@@ -1,9 +1,8 @@
 // Resource binding with constant buffer
 cbuffer cbPerFrame : register(b0)
 {
-	matrix World;
-	matrix View;
-	matrix Projection;
+	float4x4 matVP;
+	float4x4 matGeo;
 };
 
 // Expected input for this first stage of the pipeline
@@ -23,9 +22,7 @@ struct VSOutput
 VSOutput main(VSInput vin)
 {
 	VSOutput vout = (VSOutput) 0;
-	vout.Position = mul(float4(vin.Position, 1.0f), World);
-	// vout.Position = mul(vout.Position, View);
-	// vout.Position = mul(vout.Position, Projection);
+	vout.Position = mul(mul(float4(vin.Position, 1.0f), matGeo), matVP);
 	vout.Color = vin.Color;
 
 	return vout;
