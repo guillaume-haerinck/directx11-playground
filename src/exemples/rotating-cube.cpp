@@ -28,10 +28,15 @@ namespace exemple {
 		/////////////////// VERTEX BUFFER
 
 		const Vertex vertices[] = {
-			{ DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },	// Lower left
-			{ DirectX::XMFLOAT3(-1.0f, 1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Top left
-			{ DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Lower right
-			{ DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }		// Top right
+			{ XMFLOAT3(-1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },	// Back Lower left
+			{ XMFLOAT3(-1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Back Top left
+			{ XMFLOAT3( 1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Back Lower right
+			{ XMFLOAT3( 1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Back Top right
+
+			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },	// Front Lower left
+			{ XMFLOAT3(-1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Front Top left
+			{ XMFLOAT3( 1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Lower right
+			{ XMFLOAT3( 1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }	// Front Top right
 		};
 		
 		// General temp data
@@ -53,6 +58,7 @@ namespace exemple {
 		/////////////////// INDEX BUFFER
 
 		WORD indices[] = {
+			// Front
 			0, 1, 2,
 			1, 3, 2
 		};
@@ -94,8 +100,16 @@ namespace exemple {
 
 		// Update constant buffer
 		ConstantBuffer cb;
-		DirectX::XMStoreFloat4x4(&cb.matVP, DirectX::XMMatrixIdentity());
-		DirectX::XMStoreFloat4x4(&cb.matGeo, DirectX::XMMatrixIdentity());
+		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
+		XMVECTOR scaling = XMVectorSet(0.5f, 0.5f, 0.5f, 1.0f);
+		XMVECTOR rotationOrigin = XMVectorZero();
+		XMVECTOR rotation = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+		XMVECTOR translation = XMVectorSet(0.3f, 0.0f, 0.0f, 1.0f);
+		XMMATRIX view = XMMatrixAffineTransformation(scaling, rotationOrigin, rotation, translation);
+
+		// DirectXMaths matrix are Column major and HLSL are Row major
+		// So we must use the transpose matrix
+		XMStoreFloat4x4(&cb.matVP, XMMatrixTranspose(view));
 
 		m_dxo.context->UpdateSubresource(m_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 		m_dxo.context->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());

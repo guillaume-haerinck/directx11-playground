@@ -5,13 +5,13 @@
 #include "graphics/Shader.h"
 
 struct ConstantBuffer {
-	DirectX::XMFLOAT4X4 matVP;
-	DirectX::XMFLOAT4X4 matGeo;
+	XMFLOAT4X4 matVP;
+	XMFLOAT4X4 matGeo;
 };
 
 struct Vertex {
-	DirectX::XMFLOAT3 Position;
-	DirectX::XMFLOAT4 Color;
+	XMFLOAT3 Position;
+	XMFLOAT4 Color;
 };
 
 namespace exemple {
