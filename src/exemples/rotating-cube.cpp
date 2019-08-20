@@ -14,9 +14,10 @@ namespace exemple {
 		};
 
 		const Vertex vertices[] = {
-			{ DirectX::XMFLOAT3(0.0f,  0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-			{ DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-			{ DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+			{ DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },	// Lower left
+			{ DirectX::XMFLOAT3(-1.0f, 1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },	// Top left
+			{ DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Lower right
+			{ DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }		// Top right
 		};
 
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
@@ -73,9 +74,10 @@ namespace exemple {
 		UINT offset = 0;
 		m_dxo.context->IASetVertexBuffers(0u, 1u, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 
-		/*
+		
 		/////////////////// INDEX BUFFER
 
+		/*
 		WORD indices[] = { // Size is 36
 			3,1,0,
 			2,1,3,
@@ -95,10 +97,17 @@ namespace exemple {
 			6,4,5,
 			7,4,6,
 		};
+		*/
+
+		WORD indices[] = {
+			0, 1, 2,
+			1, 3, 2
+		};
 
 		// Create Index Buffer
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(WORD) * 36;
+		bd.ByteWidth = sizeof(indices);
+		bd.StructureByteStride = sizeof(WORD);
 		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 		sd.pSysMem = indices;
@@ -108,7 +117,6 @@ namespace exemple {
 
 		// Bind Index buffer
 		m_dxo.context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-		*/
 
 		//////////////////// CONSTANT BUFFER
 
@@ -150,7 +158,7 @@ namespace exemple {
 		m_shader->Bind();
 
 		// Draw the triangle
-		m_dxo.context->Draw(3u, 0u);
+		m_dxo.context->DrawIndexed(6u, 0u, 0);
 	}
 
 	void RotatingCube::ImGuiUpdate() {
