@@ -64,7 +64,23 @@ namespace exemple {
 
 			// Back
 			4, 5, 6,
-			5, 7, 6
+			5, 7, 6,
+
+			// Top
+			5, 1, 7,
+			7, 1, 3,
+
+			// Bottom
+			4, 0, 6,
+			6, 0, 2,
+
+			// Left
+			0, 1, 5,
+			0, 5, 4,
+
+			// Right
+			6, 7, 3,
+			6, 3, 2
 		};
 
 		// Create Index Buffer
@@ -94,6 +110,8 @@ namespace exemple {
 	}
 
 	void RotatingCube::Update() {
+		m_timer.Tick([&](){});
+
 		// Set primitive topology
 		m_dxo.context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -106,11 +124,11 @@ namespace exemple {
 		ConstantBuffer cb;
 		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
 
-		XMVECTOR scaling = XMVectorSet(0.3f, 0.3f, 0.3f, 1.0f);
+		XMVECTOR scaling = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
 		XMVECTOR rotationOrigin = XMVectorZero();
-		float theta = XM_PIDIV4;
-		XMVECTOR rotation = XMVectorSet(0.0f, sin(theta / 2), 0.0f, cos(theta / 2)); // Y axis rotation
-		XMVECTOR translation = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		XMVECTOR rotationEuler = XMVectorSet(XM_PIDIV4, m_timer.GetFrameCount() * 0.01, 0.0f, 1.0f); // Pitch, Yaw then Roll rotation
+		XMVECTOR rotation = XMQuaternionRotationRollPitchYawFromVector(rotationEuler);
+		XMVECTOR translation = XMVectorSet(0.0f, 0.0f, 0.3f, 1.0f);
 		XMMATRIX view = XMMatrixAffineTransformation(scaling, rotationOrigin, rotation, translation);
 
 		// DirectXMaths matrix are Row major and HLSL are Column major
@@ -132,7 +150,7 @@ namespace exemple {
 		m_dxo.context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 
 		// Draw the triangle
-		m_dxo.context->DrawIndexed(12u, 0u, 0);
+		m_dxo.context->DrawIndexed(36u, 0u, 0);
 	}
 
 	void RotatingCube::ImGuiUpdate() {

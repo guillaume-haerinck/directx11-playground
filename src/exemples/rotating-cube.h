@@ -1,6 +1,7 @@
 #pragma once
 
 #include "i-exemple.h"
+#include "core/StepTimer.h"
 #include "graphics/DXObjects.h"
 #include "graphics/Shader.h"
 
@@ -24,6 +25,7 @@ namespace exemple {
 		virtual void ImGuiUpdate() override;
 
 	private:
+		DX::StepTimer m_timer;
 		DXObjects m_dxo;
 		std::unique_ptr<Shader> m_shader;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
