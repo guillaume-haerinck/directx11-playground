@@ -9,4 +9,5 @@ struct DXObjects {
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> target;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencil;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState;
 };

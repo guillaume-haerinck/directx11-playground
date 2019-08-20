@@ -57,12 +57,23 @@ namespace exemple {
 
 		/////////////////// INDEX BUFFER
 
+		/*
+						    1______3
+						   /|      |
+						  /	|     /|
+						 /	0____/_2
+						5______7/ /
+						|      | /
+						|      |/
+						4______6
+		*/
+
 		WORD indices[] = {
-			// Front
+			// Back
 			0, 1, 2,
 			1, 3, 2,
 
-			// Back
+			// Front
 			4, 5, 6,
 			5, 7, 6,
 
@@ -115,8 +126,11 @@ namespace exemple {
 		// Set primitive topology
 		m_dxo.context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+		// Bind depth stencil state
+		m_dxo.context->OMSetDepthStencilState(m_dxo.depthStencilState.Get(), 1);
+
 		// Bind render target
-		m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), nullptr);
+		m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), m_dxo.depthStencil.Get());
 
 		m_shader->Bind();
 
