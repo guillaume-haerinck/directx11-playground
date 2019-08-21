@@ -6,24 +6,13 @@
 namespace exemple {
 	RotatingCube::RotatingCube(DXObjects dxObjects) : m_dxo(dxObjects)
 	{
-		m_shader = std::make_unique<Shader>(m_dxo, L"basicVS.cso", L"basicPS.cso");
+		///////////////////// SHADER & INPUT BUFFER
 
-		///////////////////// INPUT BUFFER
-
-		D3D11_INPUT_ELEMENT_DESC ied[] = {
+		std::vector<D3D11_INPUT_ELEMENT_DESC> ied = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
-
-		// Create input buffer layout
-		DX::ThrowIfFailed(CALL_INFO,
-			m_dxo.device->CreateInputLayout(
-				ied, ARRAYSIZE(ied),
-				m_shader->GetVertexShaderBlob()->GetBufferPointer(),
-				m_shader->GetVertexShaderBlob()->GetBufferSize(),
-				&m_inputLayout
-			)
-		);
+		m_shader = std::make_unique<Shader>(m_dxo, &ied, L"basicVS.cso", L"basicPS.cso");
 
 		/////////////////// VERTEX BUFFER
 
@@ -129,9 +118,6 @@ namespace exemple {
 
 		m_dxo.context->UpdateSubresource(m_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 		m_dxo.context->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-
-		// Bind input buffer layout
-		m_dxo.context->IASetInputLayout(m_inputLayout.Get());
 
 		// Bind vertex buffer
 		UINT stride = sizeof(Vertex);

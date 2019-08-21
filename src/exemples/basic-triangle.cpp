@@ -6,7 +6,11 @@
 
 namespace exemple {
 	BasicTriangle::BasicTriangle(DXObjects dxObjects) : m_dxo(dxObjects) {
-		m_shader = std::make_unique<Shader>(m_dxo, L"noRessourceVS.cso", L"noRessourcePS.cso");
+		// Input buffer layout
+		std::vector<D3D11_INPUT_ELEMENT_DESC> ied = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		};
+		m_shader = std::make_unique<Shader>(m_dxo, &ied, L"noRessourceVS.cso", L"noRessourcePS.cso");
 
 		struct Vertex {
 			float x;
@@ -17,11 +21,6 @@ namespace exemple {
 			{  0.0f,  0.5f },
 			{  0.5f, -0.5f },
 			{ -0.5f, -0.5f }
-		};
-
-		// Input buffer layout
-		const D3D11_INPUT_ELEMENT_DESC ied[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
 
 		// Create vertex buffer
@@ -42,17 +41,6 @@ namespace exemple {
 		const UINT stride = sizeof(Vertex);
 		const UINT offset = 0u;
 		m_dxo.context->IASetVertexBuffers(0u, 1u, m_vertexBuffer.GetAddressOf(), &stride, &offset);
-
-		// Create input buffer layout
-		DX::ThrowIfFailed(CALL_INFO,
-			m_dxo.device->CreateInputLayout(
-				ied, (UINT)std::size(ied),
-				m_shader->GetVertexShaderBlob()->GetBufferPointer(),
-				m_shader->GetVertexShaderBlob()->GetBufferSize(),
-				&m_inputLayout
-			)
-		);
-
 	}
 
 	BasicTriangle::~BasicTriangle() {

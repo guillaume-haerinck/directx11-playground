@@ -6,6 +6,7 @@ cbuffer cbPerFrame : register(b0)
 };
 
 // Expected input for this first stage of the pipeline
+// Set by input layout in the context
 struct VSInput
 {
 	float3 Position : POSITION;

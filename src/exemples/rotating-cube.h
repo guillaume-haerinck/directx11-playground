@@ -28,7 +28,6 @@ namespace exemple {
 		DX::StepTimer m_timer;
 		DXObjects m_dxo;
 		std::unique_ptr<Shader> m_shader;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;

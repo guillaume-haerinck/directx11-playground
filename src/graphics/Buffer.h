@@ -28,6 +28,8 @@ private:
 	DXObjects m_dxo;
 };
 
+// TODO check if constant and texture buffer are in these classes or in the shaders
+// They are like OGL uniforms
 
 class ConstantBuffer {
 public:
