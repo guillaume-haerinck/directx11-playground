@@ -158,23 +158,35 @@ void App::initDirectX11() {
 	);
 
 	// Get back buffer
-	ID3D11Texture2D* backBuffer = nullptr;
+	Microsoft::WRL::ComPtr<ID3D11Resource> backBuffer;
 	DX::ThrowIfFailed(CALL_INFO,
-		m_dxo.swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer))
+		m_dxo.swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer)
 	);
 	DX::ThrowIfFailed(CALL_INFO,
-		m_dxo.device->CreateRenderTargetView(backBuffer, nullptr, &m_dxo.target)
+		m_dxo.device->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_dxo.target)
 	);
-	backBuffer->Release();
+
+	// Create the depth stencil state
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState;
+	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+	dsDesc.DepthEnable = true;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	DX::ThrowIfFailed(CALL_INFO,
+		m_dxo.device->CreateDepthStencilState(&dsDesc, &depthStencilState)
+	);
+
+	// Bind depth stencil state
+	m_dxo.context->OMSetDepthStencilState(depthStencilState.Get(), 1);
 
 	// Create depth stencil texture
-	ID3D11Texture2D* depthStencil = nullptr;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> depthStencil;
 	D3D11_TEXTURE2D_DESC descDepth;
 	descDepth.Width = width;
 	descDepth.Height = height;
 	descDepth.MipLevels = 1;
 	descDepth.ArraySize = 1;
-	descDepth.Format = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
 	descDepth.SampleDesc.Count = 1;
 	descDepth.SampleDesc.Quality = 0;
 	descDepth.Usage = D3D11_USAGE_DEFAULT;
@@ -185,37 +197,14 @@ void App::initDirectX11() {
 		m_dxo.device->CreateTexture2D(&descDepth, nullptr, &depthStencil)
 	);
 
-	// Create the depth stencil state
-	D3D11_DEPTH_STENCIL_DESC dsDesc;
-	dsDesc.DepthEnable = false;
-	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	dsDesc.DepthFunc = D3D11_COMPARISON_NOT_EQUAL;
-
-	dsDesc.StencilEnable = true;
-	dsDesc.StencilReadMask = 0xFF;
-	dsDesc.StencilWriteMask = 0xFF;
-
-	dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	m_dxo.device->CreateDepthStencilState(&dsDesc, &m_dxo.depthStencilState);
-
 	// Create the depth stencil view
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
 	descDSV.Format = descDepth.Format;
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Texture2D.MipSlice = 0;
 	DX::ThrowIfFailed(CALL_INFO,
-		m_dxo.device->CreateDepthStencilView(depthStencil, &descDSV, &m_dxo.depthStencilView)
+		m_dxo.device->CreateDepthStencilView(depthStencil.Get(), &descDSV, &m_dxo.depthStencilView)
 	);
-	depthStencil->Release();
 
 	// Setup the viewport
 	D3D11_VIEWPORT vp;

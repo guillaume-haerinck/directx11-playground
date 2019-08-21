@@ -58,14 +58,14 @@ namespace exemple {
 		/////////////////// INDEX BUFFER
 
 		/* Welding order must be clockwise
-						    6______7
-						   /|      |
-						  / |     /|
-						 /  4____/_5
-						2______3/ /
-						|      | /
-						|      |/
-						0______1
+						    6_______7
+						   /|       |
+						  / |      /|
+						 /  4_____/_5
+						2_______3/ /
+						|       | /
+						|       |/
+						0_______1
 		*/
 
 		WORD indices[] = {
@@ -108,9 +108,6 @@ namespace exemple {
 
 		// Set primitive topology
 		m_dxo.context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		// Bind depth stencil state
-		m_dxo.context->OMSetDepthStencilState(m_dxo.depthStencilState.Get(), 1);
 
 		// Bind render target
 		m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), m_dxo.depthStencilView.Get());
