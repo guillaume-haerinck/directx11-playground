@@ -57,7 +57,7 @@ namespace exemple {
 						0_______1
 		*/
 
-		WORD indices[] = {
+		std::vector<WORD> indices = {
 			0,2,1, 2,3,1,
 			1,3,5, 3,7,5,
 			2,6,3, 3,6,7,
@@ -65,23 +65,13 @@ namespace exemple {
 			0,4,2, 2,4,6,
 			0,1,4, 1,5,4
 		};
-
-		// Create Index Buffer
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(indices);
-		bd.StructureByteStride = sizeof(WORD);
-		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		bd.CPUAccessFlags = 0;
-		sd.pSysMem = indices;
-		DX::ThrowIfFailed(CALL_INFO,
-			m_dxo.device->CreateBuffer(&bd, &sd, &m_indexBuffer)
-		);
+		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, &indices);
 
 		//////////////////// CONSTANT BUFFER
 
 		// Create the constant buffer
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(ConstantBuffer);
+		bd.ByteWidth = sizeof(ConstantBufferRect);
 		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		bd.CPUAccessFlags = 0;
 		DX::ThrowIfFailed(CALL_INFO,
@@ -104,7 +94,7 @@ namespace exemple {
 		m_shader->Bind();
 
 		// Update constant buffer
-		ConstantBuffer cb;
+		ConstantBufferRect cb;
 		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
 
 		XMMATRIX view = XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
@@ -124,8 +114,7 @@ namespace exemple {
 		UINT offset = 0;
 		m_dxo.context->IASetVertexBuffers(0u, 1u, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 
-		// Bind Index buffer
-		m_dxo.context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+		m_indexBuffer->Bind();
 
 		// Draw the triangle
 		m_dxo.context->DrawIndexed(36u, 0u, 0);

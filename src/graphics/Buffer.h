@@ -18,7 +18,7 @@ private:
 
 class IndexBuffer {
 public:
-	IndexBuffer(DXObjects dxObjects);
+	IndexBuffer(DXObjects dxObjects, std::vector<WORD>* indices);
 	~IndexBuffer();
 
 	void Bind();
@@ -26,6 +26,7 @@ public:
 
 private:
 	DXObjects m_dxo;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 };
 
 // TODO check if constant and texture buffer are in these classes or in the shaders

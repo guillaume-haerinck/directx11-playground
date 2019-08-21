@@ -4,8 +4,9 @@
 #include "core/StepTimer.h"
 #include "graphics/DXObjects.h"
 #include "graphics/Shader.h"
+#include "graphics/Buffer.h"
 
-struct ConstantBuffer {
+struct ConstantBufferRect {
 	XMFLOAT4X4 matVP;
 	XMFLOAT4X4 matGeo;
 };
@@ -28,8 +29,8 @@ namespace exemple {
 		DX::StepTimer m_timer;
 		DXObjects m_dxo;
 		std::unique_ptr<Shader> m_shader;
+		std::unique_ptr<IndexBuffer> m_indexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 	};
 }
