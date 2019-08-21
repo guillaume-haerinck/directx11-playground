@@ -211,8 +211,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\exemples\basic-triangle.cpp" />
-    <ClCompile Include="src\exemples\rotating-cube.cpp" />
+    <ClCompile Include="src\exemples\BasicTriangle.cpp" />
+    <ClCompile Include="src\exemples\RotatingCube.cpp" />
     <ClCompile Include="src\graphics\Buffer.cpp" />
     <ClCompile Include="src\graphics\DXObjects.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
@@ -247,9 +247,9 @@
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h" />
-    <ClInclude Include="src\exemples\basic-triangle.h" />
-    <ClInclude Include="src\exemples\i-exemple.h" />
-    <ClInclude Include="src\exemples\rotating-cube.h" />
+    <ClInclude Include="src\exemples\BasicTriangle.h" />
+    <ClInclude Include="src\exemples\IExemple.h" />
+    <ClInclude Include="src\exemples\RotatingCube.h" />
     <ClInclude Include="src\graphics\Buffer.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />

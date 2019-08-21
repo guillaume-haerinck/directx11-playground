@@ -4,16 +4,25 @@
 
 class VertexBuffer {
 public:
-	// TODO takes vertices, size and stride ? (layout is handled by shader ?)
-	// What about write access ? And multiple buffers for the same object ?
-	VertexBuffer(DXObjects dxObjects);
+	// TODO what about multiple buffer for the same object ?
+	// Use a function to add a buffer ? Or use another object ?
+
+	/**
+	 * @param dxObjects -
+	 * @param vertices -
+	 * @param count - The number of vertices
+	 * @param structureByteStride - The size in bytes of one vertex
+	 */
+	VertexBuffer(DXObjects dxObjects, void* vertices, unsigned int count, unsigned int structureByteStride);
 	~VertexBuffer();
 
-	void Bind();
-	void Unbind();
+	void Bind() const;
+	void Unbind() const;
 
 private:
-	DXObjects m_dxObjects;
+	DXObjects m_dxo;
+	unsigned int m_stride;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
 };
 
 

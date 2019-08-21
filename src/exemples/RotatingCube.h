@@ -1,6 +1,6 @@
 #pragma once
 
-#include "i-exemple.h"
+#include "IExemple.h"
 #include "core/StepTimer.h"
 #include "graphics/DXObjects.h"
 #include "graphics/Shader.h"
@@ -30,6 +30,6 @@ namespace exemple {
 		DXObjects m_dxo;
 		std::unique_ptr<Shader> m_shader;
 		std::unique_ptr<IndexBuffer> m_indexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+		std::unique_ptr<VertexBuffer> m_vertexBuffer;
 	};
 }

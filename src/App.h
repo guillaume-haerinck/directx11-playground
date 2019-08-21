@@ -3,7 +3,7 @@
 #include "graphics/DXObjects.h"
 #include "graphics/Renderer.h"
 #include "graphics/RenderCommand.h"
-#include "exemples/i-exemple.h"
+#include "exemples/IExemple.h"
 
 /**
  * @brief Base singleton class to create the application and run it

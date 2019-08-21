@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "basic-triangle.h"
+#include "BasicTriangle.h"
 
 #include "graphics/DXException.h"
 

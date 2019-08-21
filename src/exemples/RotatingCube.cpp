@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "rotating-cube.h"
+#include "RotatingCube.h"
 
 #include "graphics/DXException.h"
 
@@ -17,7 +17,7 @@ namespace exemple {
 
 		/////////////////// VERTEX BUFFER
 
-		const Vertex vertices[] = {
+		Vertex vertices[] = {
 			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Lower left
 			{ XMFLOAT3( 1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Lower right	
 			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Top left
@@ -30,18 +30,7 @@ namespace exemple {
 		};
 		
 		// Create vertex buffer
-		D3D11_BUFFER_DESC bd = {};
-		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.CPUAccessFlags = 0u;
-		bd.MiscFlags = 0u;
-		bd.ByteWidth = sizeof(vertices);
-		bd.StructureByteStride = sizeof(Vertex);
-		D3D11_SUBRESOURCE_DATA sd = {};
-		sd.pSysMem = vertices;
-		DX::ThrowIfFailed(CALL_INFO,
-			m_dxo.device->CreateBuffer(&bd, &sd, &m_vertexBuffer)
-		);
+		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, vertices, ARRAYSIZE(vertices), sizeof(Vertex));
 
 		/////////////////// INDEX BUFFER
 
@@ -89,11 +78,7 @@ namespace exemple {
 		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
 		m_shader->UpdateVSConstantBuffer(0, &cb);
 
-		// Bind vertex buffer
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		m_dxo.context->IASetVertexBuffers(0u, 1u, m_vertexBuffer.GetAddressOf(), &stride, &offset);
-
+		m_vertexBuffer->Bind();
 		m_indexBuffer->Bind();
 
 		// Draw the rectangle
