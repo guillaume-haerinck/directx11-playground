@@ -4,7 +4,7 @@
 
 class Shader {
 public:
-	// TODO take an input buffer layout ?
+	// TODO take an input buffer layout ? Vertex shader and pixel shader can both have many
 	Shader(DXObjects dxObjects, LPCWSTR vsFilePath, LPCWSTR psFilePath);
 	~Shader();
 

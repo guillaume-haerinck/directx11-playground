@@ -28,15 +28,15 @@ namespace exemple {
 		/////////////////// VERTEX BUFFER
 
 		const Vertex vertices[] = {
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower left
-			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top left
-			{ XMFLOAT3( 1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower right
-			{ XMFLOAT3( 1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top right
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Lower left
+			{ XMFLOAT3( 1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Lower right	
+			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Top left
+			{ XMFLOAT3( 1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Top right
 
-			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Lower left
-			{ XMFLOAT3(-1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Top left
-			{ XMFLOAT3( 1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Lower right
-			{ XMFLOAT3( 1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }	// Front Top right
+			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Back Lower left
+			{ XMFLOAT3( 1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Back Lower right	
+			{ XMFLOAT3(-1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Back Top left
+			{ XMFLOAT3( 1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }	// Back Top right
 		};
 		
 		// General temp data
@@ -57,41 +57,24 @@ namespace exemple {
 
 		/////////////////// INDEX BUFFER
 
-		/*
-						    1______3
+		/* Welding order must be clockwise
+						    6______7
 						   /|      |
 						  / |     /|
-						 /  0____/_2
-						5______7/ /
+						 /  4____/_5
+						2______3/ /
 						|      | /
 						|      |/
-						4______6
+						0______1
 		*/
 
 		WORD indices[] = {
-			// Back
-			0, 1, 2,
-			1, 3, 2,
-
-			// Front
-			4, 5, 6,
-			5, 7, 6,
-
-			// Top
-			5, 1, 7,
-			7, 1, 3,
-
-			// Bottom
-			4, 0, 6,
-			6, 0, 2,
-
-			// Left
-			0, 1, 5,
-			0, 5, 4,
-
-			// Right
-			6, 7, 3,
-			6, 3, 2
+			0,2,1, 2,3,1,
+			1,3,5, 3,7,5,
+			2,6,3, 3,6,7,
+			4,5,7, 4,7,6,
+			0,4,2, 2,4,6,
+			0,1,4, 1,5,4
 		};
 
 		// Create Index Buffer
