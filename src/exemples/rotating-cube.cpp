@@ -28,10 +28,10 @@ namespace exemple {
 		/////////////////// VERTEX BUFFER
 
 		const Vertex vertices[] = {
-			{ XMFLOAT3(-1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower left
-			{ XMFLOAT3(-1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top left
-			{ XMFLOAT3( 1.0f, -1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower right
-			{ XMFLOAT3( 1.0f,  1.0f, 0.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top right
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower left
+			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top left
+			{ XMFLOAT3( 1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Lower right
+			{ XMFLOAT3( 1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },	// Back Top right
 
 			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Lower left
 			{ XMFLOAT3(-1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Front Top left
@@ -60,8 +60,8 @@ namespace exemple {
 		/*
 						    1______3
 						   /|      |
-						  /	|     /|
-						 /	0____/_2
+						  / |     /|
+						 /  0____/_2
 						5______7/ /
 						|      | /
 						|      |/
@@ -130,7 +130,7 @@ namespace exemple {
 		m_dxo.context->OMSetDepthStencilState(m_dxo.depthStencilState.Get(), 1);
 
 		// Bind render target
-		m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), m_dxo.depthStencil.Get());
+		m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), m_dxo.depthStencilView.Get());
 
 		m_shader->Bind();
 
@@ -138,12 +138,10 @@ namespace exemple {
 		ConstantBuffer cb;
 		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
 
-		XMVECTOR scaling = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
-		XMVECTOR rotationOrigin = XMVectorZero();
-		XMVECTOR rotationEuler = XMVectorSet(XM_PIDIV4, m_timer.GetFrameCount() * 0.01, 0.0f, 1.0f); // Pitch, Yaw then Roll rotation
-		XMVECTOR rotation = XMQuaternionRotationRollPitchYawFromVector(rotationEuler);
-		XMVECTOR translation = XMVectorSet(0.0f, 0.0f, 0.3f, 1.0f);
-		XMMATRIX view = XMMatrixAffineTransformation(scaling, rotationOrigin, rotation, translation);
+		XMMATRIX view = XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
+			XMMatrixRotationX(m_timer.GetFrameCount() * 0.01) *
+			XMMatrixTranslation(0.0f, 0.0f, 4.0f) *
+			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f);
 
 		// DirectXMaths matrix are Row major and HLSL are Column major
 		// So we must use the transpose matrix
