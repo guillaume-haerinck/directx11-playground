@@ -8,7 +8,7 @@
 class Shader {
 public:
 	// TODO create hashmap from inputBuffer to reuse it if already exist
-	Shader(DXObjects dxObjects, std::vector<D3D11_INPUT_ELEMENT_DESC>* ied, LPCWSTR vsFilePath, LPCWSTR psFilePath);
+	Shader(DXObjects dxObjects, D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR vsFilePath, LPCWSTR psFilePath);
 	~Shader();
 
 	void Bind() const;

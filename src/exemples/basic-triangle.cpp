@@ -6,11 +6,10 @@
 
 namespace exemple {
 	BasicTriangle::BasicTriangle(DXObjects dxObjects) : m_dxo(dxObjects) {
-		// Input buffer layout
-		std::vector<D3D11_INPUT_ELEMENT_DESC> ied = {
+		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		m_shader = std::make_unique<Shader>(m_dxo, &ied, L"noRessourceVS.cso", L"noRessourcePS.cso");
+		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"noRessourceVS.cso", L"noRessourcePS.cso");
 
 		struct Vertex {
 			float x;

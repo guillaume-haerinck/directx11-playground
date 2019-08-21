@@ -18,11 +18,11 @@ private:
 
 class IndexBuffer {
 public:
-	IndexBuffer(DXObjects dxObjects, std::vector<WORD>* indices);
+	IndexBuffer(DXObjects dxObjects, WORD* indices, unsigned int size);
 	~IndexBuffer();
 
-	void Bind();
-	void Unbind();
+	void Bind() const;
+	void Unbind() const;
 
 private:
 	DXObjects m_dxo;

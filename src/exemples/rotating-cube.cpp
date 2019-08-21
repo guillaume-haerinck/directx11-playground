@@ -8,11 +8,11 @@ namespace exemple {
 	{
 		///////////////////// SHADER & INPUT BUFFER
 
-		std::vector<D3D11_INPUT_ELEMENT_DESC> ied = {
+		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
-		m_shader = std::make_unique<Shader>(m_dxo, &ied, L"basicVS.cso", L"basicPS.cso");
+		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"basicVS.cso", L"basicPS.cso");
 
 		/////////////////// VERTEX BUFFER
 
@@ -57,7 +57,7 @@ namespace exemple {
 						0_______1
 		*/
 
-		std::vector<WORD> indices = {
+		WORD indices[] = {
 			0,2,1, 2,3,1,
 			1,3,5, 3,7,5,
 			2,6,3, 3,6,7,
@@ -65,7 +65,7 @@ namespace exemple {
 			0,4,2, 2,4,6,
 			0,1,4, 1,5,4
 		};
-		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, &indices);
+		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, indices, ARRAYSIZE(indices));
 
 		//////////////////// CONSTANT BUFFER
 

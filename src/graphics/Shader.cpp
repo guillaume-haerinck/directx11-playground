@@ -3,7 +3,7 @@
 
 #include "DXException.h"
 
-Shader::Shader(DXObjects dxObjects, std::vector<D3D11_INPUT_ELEMENT_DESC>* ied, LPCWSTR vsFilePath, LPCWSTR psFilePath) : m_dxo(dxObjects)
+Shader::Shader(DXObjects dxObjects, D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR vsFilePath, LPCWSTR psFilePath) : m_dxo(dxObjects)
 {
 	// Create vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
@@ -20,7 +20,7 @@ Shader::Shader(DXObjects dxObjects, std::vector<D3D11_INPUT_ELEMENT_DESC>* ied, 
 	// Create input buffer layout
 	DX::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateInputLayout(
-			ied->data(), ied->size(),
+			ied, iedElementCount,
 			blob->GetBufferPointer(),
 			blob->GetBufferSize(),
 			&m_inputLayout
