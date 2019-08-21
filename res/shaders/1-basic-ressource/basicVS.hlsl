@@ -10,21 +10,17 @@ cbuffer cbPerFrame : register(b0)
 struct VSInput
 {
 	float3 Position : POSITION;
-	float4 Color : COLOR;
 };
 
-// Ouput to the next shader in the pipeline
+// Ouput to the next shader in the pipeline. Must have an SV_POSITION
 struct VSOutput
 {
 	float4 Position : SV_POSITION;
-	float4 Color : COLOR;
 };
 
 VSOutput main(VSInput vin)
 {
 	VSOutput vout = (VSOutput) 0;
 	vout.Position = mul(mul(float4(vin.Position, 1.0f), matGeo), matVP);
-	vout.Color = vin.Color;
-
 	return vout;
 }

@@ -74,12 +74,6 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\basic-triangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\exemples\rotating-cube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\exemples\BasicTriangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -140,15 +134,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\imstb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exemples\i-exemple.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exemples\basic-triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exemples\rotating-cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\exemples\BasicTriangle.h">
