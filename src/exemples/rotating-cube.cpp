@@ -6,13 +6,14 @@
 namespace exemple {
 	RotatingCube::RotatingCube(DXObjects dxObjects) : m_dxo(dxObjects)
 	{
-		///////////////////// SHADER & INPUT BUFFER
+		///////////////////// SHADER & INPUT BUFFER & CONSTANT BUFFER
 
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"basicVS.cso", L"basicPS.cso");
+		m_shader->AddVSConstantBuffer(sizeof(ConstantBufferRect));
 
 		/////////////////// VERTEX BUFFER
 
@@ -28,9 +29,6 @@ namespace exemple {
 			{ XMFLOAT3( 1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }	// Back Top right
 		};
 		
-		// General temp data
-		D3D11_SUBRESOURCE_DATA sd = {};
-
 		// Create vertex buffer
 		D3D11_BUFFER_DESC bd = {};
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -39,6 +37,7 @@ namespace exemple {
 		bd.MiscFlags = 0u;
 		bd.ByteWidth = sizeof(vertices);
 		bd.StructureByteStride = sizeof(Vertex);
+		D3D11_SUBRESOURCE_DATA sd = {};
 		sd.pSysMem = vertices;
 		DX::ThrowIfFailed(CALL_INFO,
 			m_dxo.device->CreateBuffer(&bd, &sd, &m_vertexBuffer)
@@ -66,17 +65,6 @@ namespace exemple {
 			0,1,4, 1,5,4
 		};
 		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, indices, ARRAYSIZE(indices));
-
-		//////////////////// CONSTANT BUFFER
-
-		// Create the constant buffer
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(ConstantBufferRect);
-		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		bd.CPUAccessFlags = 0;
-		DX::ThrowIfFailed(CALL_INFO,
-			m_dxo.device->CreateBuffer(&bd, nullptr, &m_constantBuffer)
-		);
 	}
 
 	RotatingCube::~RotatingCube() {
@@ -105,9 +93,7 @@ namespace exemple {
 		// DirectXMaths matrix are Row major and HLSL are Column major
 		// So we must use the transpose matrix
 		XMStoreFloat4x4(&cb.matVP, XMMatrixTranspose(view));
-
-		m_dxo.context->UpdateSubresource(m_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
-		m_dxo.context->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+		m_shader->UpdateVSConstantBuffer(0, &cb);
 
 		// Bind vertex buffer
 		UINT stride = sizeof(Vertex);

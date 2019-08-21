@@ -5,6 +5,7 @@
 class VertexBuffer {
 public:
 	// TODO takes vertices, size and stride ? (layout is handled by shader ?)
+	// What about write access ? And multiple buffers for the same object ?
 	VertexBuffer(DXObjects dxObjects);
 	~VertexBuffer();
 
@@ -28,34 +29,3 @@ private:
 	DXObjects m_dxo;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 };
-
-// TODO check if constant and texture buffer are in these classes or in the shaders
-// They are like OGL uniforms
-
-class ConstantBuffer {
-public:
-	ConstantBuffer();
-	~ConstantBuffer();
-
-	void Bind();
-	void Unbind();
-
-private:
-
-};
-
-
-class TextureBuffer {
-public:
-	TextureBuffer();
-	~TextureBuffer();
-
-	void Bind();
-	void Unbind();
-
-private:
-
-};
-
-
-
