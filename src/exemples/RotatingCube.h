@@ -6,16 +6,6 @@
 #include "graphics/Shader.h"
 #include "graphics/Buffer.h"
 
-struct ConstantBufferRect {
-	XMFLOAT4X4 matVP;
-	XMFLOAT4X4 matGeo;
-};
-
-struct Vertex {
-	XMFLOAT3 Position;
-	XMFLOAT4 Color;
-};
-
 namespace exemple {
 	class RotatingCube : public IExemple {
 	public:

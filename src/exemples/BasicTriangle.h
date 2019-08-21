@@ -3,6 +3,7 @@
 #include "IExemple.h"
 #include "graphics/DXObjects.h"
 #include "graphics/Shader.h"
+#include "graphics/Buffer.h"
 
 namespace exemple {
 	/**
@@ -19,7 +20,6 @@ namespace exemple {
 	private:
 		DXObjects m_dxo;
 		std::unique_ptr<Shader> m_shader;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+		std::unique_ptr<VertexBuffer> m_vertexBuffer;
 	};
 }

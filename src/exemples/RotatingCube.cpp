@@ -4,18 +4,26 @@
 #include "graphics/DXException.h"
 
 namespace exemple {
+	struct ConstantBuffer {
+		XMFLOAT4X4 matVP;
+		XMFLOAT4X4 matGeo;
+	};
+
 	RotatingCube::RotatingCube(DXObjects dxObjects) : m_dxo(dxObjects)
 	{
-		///////////////////// SHADER & INPUT BUFFER & CONSTANT BUFFER
-
+		// Shader
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"basicVS.cso", L"basicPS.cso");
-		m_shader->AddVSConstantBuffer(sizeof(ConstantBufferRect));
+		m_shader->AddVSConstantBuffer(sizeof(ConstantBuffer));
 
-		/////////////////// VERTEX BUFFER
+		// Vertex buffer
+		struct Vertex {
+			XMFLOAT3 Position;
+			XMFLOAT4 Color;
+		};
 
 		Vertex vertices[] = {
 			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }, // Front Lower left
@@ -28,12 +36,9 @@ namespace exemple {
 			{ XMFLOAT3(-1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },	// Back Top left
 			{ XMFLOAT3( 1.0f,  1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }	// Back Top right
 		};
-		
-		// Create vertex buffer
 		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, vertices, ARRAYSIZE(vertices), sizeof(Vertex));
 
-		/////////////////// INDEX BUFFER
-
+		// Index buffer
 		/* Welding order must be clockwise
 						    6_______7
 						   /|       |
@@ -44,7 +49,6 @@ namespace exemple {
 						|       |/
 						0_______1
 		*/
-
 		WORD indices[] = {
 			0,2,1, 2,3,1,
 			1,3,5, 3,7,5,
@@ -73,7 +77,7 @@ namespace exemple {
 		);
 
 		// Update constant buffer
-		ConstantBufferRect cb;
+		ConstantBuffer cb;
 		XMStoreFloat4x4(&cb.matVP, view);
 		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
 		m_shader->UpdateVSConstantBuffer(0, &cb);
