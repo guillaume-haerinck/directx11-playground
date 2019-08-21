@@ -19,13 +19,16 @@ private:
 
 class IndexBuffer {
 public:
-	IndexBuffer(DXObjects dxObjects, WORD* indices, unsigned int size);
+	IndexBuffer(DXObjects dxObjects, WORD* indices, unsigned int count);
 	~IndexBuffer();
 
 	void Bind() const;
 	void Unbind() const;
+	
+	unsigned int GetCount() const { return m_count; }
 
 private:
 	DXObjects m_dxo;
+	unsigned int m_count;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 };

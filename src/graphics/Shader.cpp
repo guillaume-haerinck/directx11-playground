@@ -68,6 +68,7 @@ unsigned int Shader::AddVSConstantBuffer(unsigned int byteWidth) {
 	unsigned int slot = m_vsConstantBuffers.size() - 1;
 
 	// TODO set all each time there is a new one ?
+	// TODO do this operation each time that bind is called ?
 	m_dxo.context->VSSetConstantBuffers(slot, 1, &constantBuffer);
 
 	return slot;
@@ -89,7 +90,8 @@ unsigned int Shader::AddPSConstantBuffer(unsigned int byteWidth) {
 	unsigned int slot = m_psConstantBuffers.size() - 1;
 
 	// TODO set all each time there is a new one ?
-	m_dxo.context->VSSetConstantBuffers(slot, 1, &constantBuffer);
+	// TODO do this operation each time that bind is called ?
+	m_dxo.context->PSSetConstantBuffers(slot, 1, &constantBuffer);
 
 	return slot;
 }

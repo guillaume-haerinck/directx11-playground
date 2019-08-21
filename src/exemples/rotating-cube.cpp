@@ -73,26 +73,20 @@ namespace exemple {
 	void RotatingCube::Update() {
 		m_timer.Tick([&](){});
 
-		// Set primitive topology
-		m_dxo.context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		// Bind render target
-		m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), m_dxo.depthStencilView.Get());
-
 		m_shader->Bind();
+
+		// DirectXMaths matrix are Row major and HLSL are Column major, so we must use the transpose matrix
+		XMMATRIX view = XMMatrixTranspose(
+			XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
+			XMMatrixRotationX(m_timer.GetFrameCount() * 0.01) *
+			XMMatrixTranslation(0.0f, 0.0f, 4.0f) *
+			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
+		);
 
 		// Update constant buffer
 		ConstantBufferRect cb;
+		XMStoreFloat4x4(&cb.matVP, view);
 		XMStoreFloat4x4(&cb.matGeo, XMMatrixIdentity());
-
-		XMMATRIX view = XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
-			XMMatrixRotationX(m_timer.GetFrameCount() * 0.01) *
-			XMMatrixTranslation(0.0f, 0.0f, 4.0f) *
-			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f);
-
-		// DirectXMaths matrix are Row major and HLSL are Column major
-		// So we must use the transpose matrix
-		XMStoreFloat4x4(&cb.matVP, XMMatrixTranspose(view));
 		m_shader->UpdateVSConstantBuffer(0, &cb);
 
 		// Bind vertex buffer
@@ -102,8 +96,8 @@ namespace exemple {
 
 		m_indexBuffer->Bind();
 
-		// Draw the triangle
-		m_dxo.context->DrawIndexed(36u, 0u, 0);
+		// Draw the rectangle
+		m_dxo.context->DrawIndexed(m_indexBuffer->GetCount(), 0u, 0);
 	}
 
 	void RotatingCube::ImGuiUpdate() {

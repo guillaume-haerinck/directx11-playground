@@ -17,11 +17,12 @@ VertexBuffer::~VertexBuffer() {
 /////////////////////////////// INDEX BUFFER //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-IndexBuffer::IndexBuffer(DXObjects dxObjects, WORD* indices, unsigned int size) : m_dxo(dxObjects)
+IndexBuffer::IndexBuffer(DXObjects dxObjects, WORD* indices, unsigned int count)
+	: m_dxo(dxObjects), m_count(count)
 {
 	D3D11_BUFFER_DESC bd = {};
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(WORD) * size;
+	bd.ByteWidth = sizeof(WORD) * count;
 	bd.StructureByteStride = sizeof(WORD);
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;

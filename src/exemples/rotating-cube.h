@@ -31,6 +31,5 @@ namespace exemple {
 		std::unique_ptr<Shader> m_shader;
 		std::unique_ptr<IndexBuffer> m_indexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
 	};
 }
