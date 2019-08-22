@@ -11,7 +11,7 @@ namespace exemple {
 		XMFLOAT4 color[6];
 	};
 
-	TexturedPrimitives::TexturedPrimitives(DXObjects dxObjects) : m_dxo(dxObjects) {
+	TexturedPrimitives::TexturedPrimitives(DXObjects& dxObjects) : m_dxo(dxObjects) {
 		// Shader
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
@@ -71,7 +71,7 @@ namespace exemple {
 		XMMATRIX view = XMMatrixTranspose(
 			XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
 			XMMatrixRotationX(m_timer.GetFrameCount() * 0.01) *
-			XMMatrixTranslation(0.0f, 0.0f, 4.0f) *
+			XMMatrixTranslation(-3.0f, 0.0f, 6.0f) *
 			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
 		);
 
@@ -84,8 +84,8 @@ namespace exemple {
 		m_vertexBuffer->Bind();
 		m_indexBuffer->Bind();
 
-		// Draw 2 instanced cubes
-		m_dxo.context->DrawIndexedInstanced(m_indexBuffer->GetCount(), 2u, 0u, 0, 0u);
+		// Draw 3 instanced cubes
+		m_dxo.context->DrawIndexedInstanced(m_indexBuffer->GetCount(), 3u, 0u, 0, 0u);
 	}
 	void TexturedPrimitives::ImGuiUpdate() {
 	}

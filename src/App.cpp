@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "App.h"
 
+#include <dxgidebug.h>
+
 #include "graphics/DXException.h"
 #include "exemples/1-basic-triangle/BasicTriangle.h"
 #include "exemples/2-rotating-cube/RotatingCube.h"
@@ -30,10 +32,11 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 
 	m_renderer = std::make_unique<Renderer>(m_dxo);
 	m_rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_dxo);
+	m_activeExemple = std::make_unique<exemple::BasicTriangle>(m_dxo);
 }
 
 App::~App() {
+	m_dxo.context->ClearState();
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
@@ -157,6 +160,15 @@ void App::initDirectX11() {
 			&m_dxo.device, nullptr, &m_dxo.context
 		)
 	);
+
+#ifndef NDEBUG
+	DX::ThrowIfFailed(CALL_INFO,
+		m_dxo.device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&m_debugDevice))
+	);
+	DX::ThrowIfFailed(CALL_INFO,
+		m_debugDevice->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL)
+	);
+#endif
 
 	// Get back buffer
 	Microsoft::WRL::ComPtr<ID3D11Resource> backBuffer;

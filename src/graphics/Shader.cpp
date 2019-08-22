@@ -3,7 +3,8 @@
 
 #include "DXException.h"
 
-Shader::Shader(DXObjects dxObjects, D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR vsFilePath, LPCWSTR psFilePath) : m_dxo(dxObjects)
+Shader::Shader(DXObjects& dxObjects, D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR vsFilePath, LPCWSTR psFilePath)
+	: m_dxo(dxObjects)
 {
 	// Create vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;

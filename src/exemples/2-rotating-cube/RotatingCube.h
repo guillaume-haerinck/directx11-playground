@@ -9,7 +9,7 @@
 namespace exemple {
 	class RotatingCube : public IExemple {
 	public:
-		RotatingCube(DXObjects dxObjects);
+		RotatingCube(DXObjects& dxObjects);
 		~RotatingCube();
 
 		virtual void Update() override;
@@ -17,7 +17,7 @@ namespace exemple {
 
 	private:
 		DX::StepTimer m_timer;
-		DXObjects m_dxo;
+		DXObjects& m_dxo;
 		std::unique_ptr<Shader> m_shader;
 		std::unique_ptr<IndexBuffer> m_indexBuffer;
 		std::unique_ptr<VertexBuffer> m_vertexBuffer;

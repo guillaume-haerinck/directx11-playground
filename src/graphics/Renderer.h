@@ -9,7 +9,7 @@
  */
 class Renderer {
 public:
-	Renderer(DXObjects dxObjects);
+	Renderer(DXObjects& dxObjects);
 	~Renderer();
 
 	/**

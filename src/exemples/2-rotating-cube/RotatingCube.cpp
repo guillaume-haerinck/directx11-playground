@@ -11,7 +11,7 @@ namespace exemple {
 		XMFLOAT4 color[6];
 	};
 
-	RotatingCube::RotatingCube(DXObjects dxObjects) : m_dxo(dxObjects)
+	RotatingCube::RotatingCube(DXObjects& dxObjects) : m_dxo(dxObjects)
 	{
 		// Shader
 		D3D11_INPUT_ELEMENT_DESC ied[] = {

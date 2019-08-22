@@ -21,7 +21,7 @@ public:
 	 * @param vsFilePath -
 	 * @param psFilePath -
 	 */
-	Shader(DXObjects dxObjects, D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR vsFilePath, LPCWSTR psFilePath);
+	Shader(DXObjects& dxObjects, D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR vsFilePath, LPCWSTR psFilePath);
 	~Shader();
 
 	void Bind() const;
@@ -44,7 +44,7 @@ public:
 	void UpdatePSConstantBuffer(unsigned int slot, void* data);
 
 private:
-	DXObjects m_dxo;
+	DXObjects& m_dxo;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;

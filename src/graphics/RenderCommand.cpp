@@ -3,7 +3,7 @@
 
 #include "DXException.h"
 
-RenderCommand::RenderCommand(DXObjects dxObjects) : m_dxo(dxObjects)
+RenderCommand::RenderCommand(DXObjects& dxObjects) : m_dxo(dxObjects)
 {
 	
 }

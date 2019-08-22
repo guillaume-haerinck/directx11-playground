@@ -15,6 +15,6 @@ struct VSOutput {
 VSOutput main(VSInput vin) {
 	VSOutput vout = (VSOutput)0;
 	vout.Position = mul(mul(float4(vin.Position, 1.0f), matGeo), matVP);
-	vout.Position.x += vin.InstanceID;
+	vout.Position.x += vin.InstanceID * 3;
 	return vout;
 }

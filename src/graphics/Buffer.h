@@ -15,7 +15,7 @@ public:
 	 * @param count - The number of vertices in the array
 	 * @param structureByteStride - The size in bytes of one vertex
 	 */
-	VertexBuffer(DXObjects dxObjects, void* vertices, unsigned int count, unsigned int structureByteStride);
+	VertexBuffer(DXObjects& dxObjects, void* vertices, unsigned int count, unsigned int structureByteStride);
 	~VertexBuffer();
 
 	void Bind() const;
@@ -24,7 +24,7 @@ public:
 	unsigned int GetCount() const { return m_count;  }
 
 private:
-	DXObjects m_dxo;
+	DXObjects& m_dxo;
 	unsigned int m_stride;
 	unsigned int m_count;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
@@ -36,7 +36,7 @@ private:
  */
 class IndexBuffer {
 public:
-	IndexBuffer(DXObjects dxObjects, WORD* indices, unsigned int count);
+	IndexBuffer(DXObjects& dxObjects, WORD* indices, unsigned int count);
 	~IndexBuffer();
 
 	void Bind() const;
@@ -45,7 +45,7 @@ public:
 	unsigned int GetCount() const { return m_count; }
 
 private:
-	DXObjects m_dxo;
+	DXObjects& m_dxo;
 	unsigned int m_count;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 };

@@ -7,7 +7,7 @@
  */
 class RenderCommand {
 public:
-	RenderCommand(DXObjects dxObjects);
+	RenderCommand(DXObjects& dxObjects);
 
 	/**
 	 * @brief Clear the back buffer
@@ -20,5 +20,5 @@ public:
 	void Swap() const;
 
 private:
-	DXObjects m_dxo;
+	DXObjects& m_dxo;
 };

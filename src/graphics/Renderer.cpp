@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Renderer.h"
 
-Renderer::Renderer(DXObjects dxObjects) : m_rc(dxObjects)
+Renderer::Renderer(DXObjects& dxObjects) : m_rc(dxObjects)
 {
 	
 }

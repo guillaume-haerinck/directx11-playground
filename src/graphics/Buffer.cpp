@@ -7,7 +7,7 @@
 ////////////////////////////// VERTEX BUFFER //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-VertexBuffer::VertexBuffer(DXObjects dxObjects, void* vertices, unsigned int count, unsigned int structureByteStride)
+VertexBuffer::VertexBuffer(DXObjects& dxObjects, void* vertices, unsigned int count, unsigned int structureByteStride)
 	: m_dxo(dxObjects), m_stride(structureByteStride), m_count(count)
 {
 	D3D11_BUFFER_DESC bd = {};
@@ -42,7 +42,7 @@ void VertexBuffer::Unbind() const {
 /////////////////////////////// INDEX BUFFER //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-IndexBuffer::IndexBuffer(DXObjects dxObjects, WORD* indices, unsigned int count)
+IndexBuffer::IndexBuffer(DXObjects& dxObjects, WORD* indices, unsigned int count)
 	: m_dxo(dxObjects), m_count(count)
 {
 	D3D11_BUFFER_DESC bd = {};
