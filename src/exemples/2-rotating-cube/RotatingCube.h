@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IExemple.h"
+#include "exemples/IExemple.h"
 #include "core/StepTimer.h"
 #include "graphics/DXObjects.h"
 #include "graphics/Shader.h"

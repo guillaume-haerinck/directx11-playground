@@ -2,8 +2,8 @@
 #include "App.h"
 
 #include "graphics/DXException.h"
-#include "exemples/BasicTriangle.h"
-#include "exemples/RotatingCube.h"
+#include "exemples/1-basic-triangle/BasicTriangle.h"
+#include "exemples/2-rotating-cube/RotatingCube.h"
 
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {

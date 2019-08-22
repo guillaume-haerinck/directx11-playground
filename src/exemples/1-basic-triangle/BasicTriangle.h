@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IExemple.h"
+#include "exemples/IExemple.h"
 #include "graphics/DXObjects.h"
 #include "graphics/Shader.h"
 #include "graphics/Buffer.h"

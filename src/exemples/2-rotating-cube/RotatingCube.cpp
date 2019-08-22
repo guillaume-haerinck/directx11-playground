@@ -19,7 +19,7 @@ namespace exemple {
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
-		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"basicVS.cso", L"basicPS.cso");
+		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"RotatingCubeVS.cso", L"RotatingCubePS.cso");
 		m_shader->AddVSConstantBuffer(sizeof(VSConstantBuffer0));
 		m_shader->AddPSConstantBuffer(sizeof(PSConstantBuffer0));
 
