@@ -50,4 +50,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 	std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> m_vsConstantBuffers;
 	std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> m_psConstantBuffers;
+	std::vector<unsigned int> m_vsConstantBuffersSize;
+	std::vector<unsigned int> m_psConstantBuffersSize;
 };

@@ -56,15 +56,16 @@ unsigned int Shader::AddVSConstantBuffer(unsigned int byteWidth) {
 	ID3D11Buffer* constantBuffer = nullptr;
 	
 	D3D11_BUFFER_DESC bd = {};
-	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.Usage = D3D11_USAGE_DYNAMIC;
 	bd.ByteWidth = byteWidth;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bd.CPUAccessFlags = 0;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	DX::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateBuffer(&bd, nullptr, &constantBuffer)
 	);
 	
 	m_vsConstantBuffers.push_back(constantBuffer);
+	m_vsConstantBuffersSize.push_back(byteWidth);
 	unsigned int slot = m_vsConstantBuffers.size() - 1;
 
 	// TODO set all each time there is a new one ?
@@ -78,15 +79,16 @@ unsigned int Shader::AddPSConstantBuffer(unsigned int byteWidth) {
 	ID3D11Buffer* constantBuffer = nullptr;
 
 	D3D11_BUFFER_DESC bd = {};
-	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.Usage = D3D11_USAGE_DYNAMIC;
 	bd.ByteWidth = byteWidth;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bd.CPUAccessFlags = 0;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	DX::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateBuffer(&bd, nullptr, &constantBuffer)
 	);
 
 	m_psConstantBuffers.push_back(constantBuffer);
+	m_psConstantBuffersSize.push_back(byteWidth);
 	unsigned int slot = m_psConstantBuffers.size() - 1;
 
 	// TODO set all each time there is a new one ?
@@ -98,7 +100,16 @@ unsigned int Shader::AddPSConstantBuffer(unsigned int byteWidth) {
 
 void Shader::UpdateVSConstantBuffer(unsigned int slot, void* data) {
 	try {
-		m_dxo.context->UpdateSubresource(m_vsConstantBuffers.at(slot).Get(), 0, nullptr, data, 0, 0);
+		D3D11_MAPPED_SUBRESOURCE msr;
+		DX::ThrowIfFailed(CALL_INFO,
+			m_dxo.context->Map(
+				m_vsConstantBuffers.at(slot).Get(), 0u,
+				D3D11_MAP_WRITE_DISCARD, 0u, &msr
+			)
+		);
+		memcpy(msr.pData, data, m_vsConstantBuffersSize.at(slot));
+		m_dxo.context->Unmap(m_vsConstantBuffers.at(slot).Get(), 0u);
+		
 	} catch (const std::out_of_range& e) {
 		__debugbreak();
 		throw std::out_of_range("[Shader] UpdateVSConstantBuffer out of range slot !");
@@ -107,7 +118,16 @@ void Shader::UpdateVSConstantBuffer(unsigned int slot, void* data) {
 
 void Shader::UpdatePSConstantBuffer(unsigned int slot, void* data) {
 	try {
-		m_dxo.context->UpdateSubresource(m_psConstantBuffers.at(slot).Get(), 0, nullptr, data, 0, 0);
+		D3D11_MAPPED_SUBRESOURCE msr;
+		DX::ThrowIfFailed(CALL_INFO,
+			m_dxo.context->Map(
+				m_psConstantBuffers.at(slot).Get(), 0u,
+				D3D11_MAP_WRITE_DISCARD, 0u, &msr
+			)
+		);
+		memcpy(msr.pData, data, m_psConstantBuffersSize.at(slot));
+		m_dxo.context->Unmap(m_psConstantBuffers.at(slot).Get(), 0u);
+
 	} catch (const std::out_of_range& e) {
 		__debugbreak();
 		throw std::out_of_range("[Shader] UpdatePSConstantBuffer out of range slot !");
