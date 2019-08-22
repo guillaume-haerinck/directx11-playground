@@ -4,6 +4,7 @@
 #include "graphics/DXException.h"
 #include "exemples/1-basic-triangle/BasicTriangle.h"
 #include "exemples/2-rotating-cube/RotatingCube.h"
+#include "exemples/3-textured-primitives/TexturedPrimitives.h"
 
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -29,7 +30,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 
 	m_renderer = std::make_unique<Renderer>(m_dxo);
 	m_rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::RotatingCube>(m_dxo);
+	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_dxo);
 }
 
 App::~App() {

@@ -21,8 +21,7 @@ public:
 	void BeginScene();
 
 	/**
-	 * @brief Issue a draw call to the GPU through renderCommand 
-	 *		  (In the future, it might add it to a render queue)
+	 * @brief Issue a draw call to the GPU through renderCommand
 	 * @note Must be called between BeginScene() and EndScene()
 	 *
 	 * TODO take a material, a buffer and a transform

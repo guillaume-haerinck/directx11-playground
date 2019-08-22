@@ -3,13 +3,10 @@
 #include "DXObjects.h"
 
 /**
- * @brief Used to store the main model data sent to the GPU
+ * @brief Send model data to the GPU and keep a reference to it
  */
 class VertexBuffer {
 public:
-	// TODO what about multiple buffer for the same object ?
-	// Use a function to add a buffer ? Or use another object ?
-
 	/**
 	 * @brief Create the buffer to the directX API
 	 *
@@ -32,6 +29,7 @@ private:
 	unsigned int m_count;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
 };
+
 
 /**
  * @brief Used to prevent duplication of vertices for the same model

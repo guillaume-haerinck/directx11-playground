@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "RotatingCube.h"
 
-#include "graphics/DXException.h"
-
 namespace exemple {
 	struct VSConstantBuffer0 {
 		XMFLOAT4X4 matVP;
@@ -22,6 +20,17 @@ namespace exemple {
 		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"RotatingCubeVS.cso", L"RotatingCubePS.cso");
 		m_shader->AddVSConstantBuffer(sizeof(VSConstantBuffer0));
 		m_shader->AddPSConstantBuffer(sizeof(PSConstantBuffer0));
+
+		// Update PSconstant buffer as it will not change
+		PSConstantBuffer0 psCB = {
+			XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
+			XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
+			XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
+			XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
+			XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
+			XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
+		};
+		m_shader->UpdatePSConstantBuffer(0, &psCB);
 
 		// Vertex buffer
 		struct Vertex {
@@ -85,21 +94,10 @@ namespace exemple {
 		XMStoreFloat4x4(&vsCB.matGeo, XMMatrixIdentity());
 		m_shader->UpdateVSConstantBuffer(0, &vsCB);
 
-		// Update PSconstant buffer
-		PSConstantBuffer0 psCB = {
-			XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
-		};
-		m_shader->UpdatePSConstantBuffer(0, &psCB);
-
 		m_vertexBuffer->Bind();
 		m_indexBuffer->Bind();
 
-		// Draw the rectangle
+		// Draw the cube
 		m_dxo.context->DrawIndexed(m_indexBuffer->GetCount(), 0u, 0);
 	}
 

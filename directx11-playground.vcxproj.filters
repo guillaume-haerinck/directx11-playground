@@ -172,5 +172,7 @@
     <FxCompile Include="res\shaders\1-basic-triangle\BasicTriangleVS.hlsl" />
     <FxCompile Include="res\shaders\2-rotating-cube\RotatingCubePS.hlsl" />
     <FxCompile Include="res\shaders\2-rotating-cube\RotatingCubeVS.hlsl" />
+    <FxCompile Include="res\shaders\3-textured-primitives\TexturedPrimitivesPS.hlsl" />
+    <FxCompile Include="res\shaders\3-textured-primitives\TexturedPrimitivesVS.hlsl" />
   </ItemGroup>
 </Project>
