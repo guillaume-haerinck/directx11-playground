@@ -214,8 +214,7 @@
     <ClCompile Include="src\exemples\1-basic-triangle\BasicTriangle.cpp" />
     <ClCompile Include="src\exemples\2-rotating-cube\RotatingCube.cpp" />
     <ClCompile Include="src\exemples\3-textured-primitives\TexturedPrimitives.cpp" />
-    <ClCompile Include="src\exemples\4-phong-lighting\PhongLighting.cpp" />
-    <ClCompile Include="src\exemples\5-model-loading\ModelLoading.cpp" />
+    <ClCompile Include="src\factories\PrimitiveFactory.cpp" />
     <ClCompile Include="src\graphics\Buffer.cpp" />
     <ClCompile Include="src\graphics\DXObjects.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
@@ -253,9 +252,8 @@
     <ClInclude Include="src\exemples\1-basic-triangle\BasicTriangle.h" />
     <ClInclude Include="src\exemples\2-rotating-cube\RotatingCube.h" />
     <ClInclude Include="src\exemples\3-textured-primitives\TexturedPrimitives.h" />
-    <ClInclude Include="src\exemples\4-phong-lighting\PhongLighting.h" />
-    <ClInclude Include="src\exemples\5-model-loading\ModelLoading.h" />
     <ClInclude Include="src\exemples\IExemple.h" />
+    <ClInclude Include="src\factories\PrimitiveFactory.h" />
     <ClInclude Include="src\graphics\Buffer.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />

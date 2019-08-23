@@ -80,13 +80,16 @@
     <ClCompile Include="src\exemples\3-textured-primitives\TexturedPrimitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\4-phong-lighting\PhongLighting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\exemples\5-model-loading\ModelLoading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\DXObjects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\exemples\4-blinn-phong-shading\BlinnPhongShading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\factories\PrimitiveFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -157,10 +160,13 @@
     <ClInclude Include="src\exemples\3-textured-primitives\TexturedPrimitives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\exemples\4-phong-lighting\PhongLighting.h">
+    <ClInclude Include="src\exemples\5-model-loading\ModelLoading.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\exemples\5-model-loading\ModelLoading.h">
+    <ClInclude Include="src\exemples\4-blinn-phong-shading\BlinnPhongShading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\factories\PrimitiveFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

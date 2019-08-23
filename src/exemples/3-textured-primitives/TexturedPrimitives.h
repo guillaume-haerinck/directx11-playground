@@ -5,6 +5,7 @@
 #include "graphics/DXObjects.h"
 #include "graphics/Shader.h"
 #include "graphics/Buffer.h"
+#include "factories/PrimitiveFactory.h"
 
 namespace exemple {
 	class TexturedPrimitives : public IExemple {
@@ -21,6 +22,8 @@ namespace exemple {
 		std::unique_ptr<Shader> m_shader;
 		std::unique_ptr<IndexBuffer> m_indexBuffer;
 		std::unique_ptr<VertexBuffer> m_vertexBuffer;
+
+		Sphere m_sphere;
 	};
 };
 

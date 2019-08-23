@@ -26,7 +26,16 @@ int CALLBACK WinMain(
 			// TODO handle game loop with deltatime and framerate
 			app->Update(0.0f);
 		}
+
+		ID3D11Debug* debug = app->GetDebugDevice();
 		delete app;
+
+		if (debug != nullptr) {
+			// All refCount must be 0, IntRef is not important
+			debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+			// delete debug;
+		}
+
 		_CrtDumpMemoryLeaks();
 		return static_cast<int>(msg.wParam);
 

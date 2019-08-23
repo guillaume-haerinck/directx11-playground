@@ -36,29 +36,8 @@ namespace exemple {
 			XMFLOAT3 Position;
 		};
 
-		Vertex vertices[] = {
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f) }, // Front Lower left
-			{ XMFLOAT3(1.0f, -1.0f, -1.0f) }, // Front Lower right	
-			{ XMFLOAT3(-1.0f,  1.0f, -1.0f) }, // Front Top left
-			{ XMFLOAT3(1.0f,  1.0f, -1.0f) }, // Front Top right
-
-			{ XMFLOAT3(-1.0f, -1.0f,  1.0f) }, // Back Lower left
-			{ XMFLOAT3(1.0f, -1.0f,  1.0f) }, // Back Lower right	
-			{ XMFLOAT3(-1.0f,  1.0f,  1.0f) }, // Back Top left
-			{ XMFLOAT3(1.0f,  1.0f,  1.0f) }  // Back Top right
-		};
-		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, vertices, ARRAYSIZE(vertices), sizeof(Vertex));
-
-		// Index buffer
-		WORD indices[] = {
-			0,2,1, 2,3,1,
-			1,3,5, 3,7,5,
-			2,6,3, 3,6,7,
-			4,5,7, 4,7,6,
-			0,4,2, 2,4,6,
-			0,1,4, 1,5,4
-		};
-		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, indices, ARRAYSIZE(indices));
+		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_sphere.GetVertices().data(), m_sphere.GetVertices().size(), sizeof(Vertex));
+		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, (WORD*)m_sphere.GetIndices().data(), m_sphere.GetIndices().size());
 	}
 
 	TexturedPrimitives::~TexturedPrimitives() {
@@ -85,7 +64,7 @@ namespace exemple {
 		m_indexBuffer->Bind();
 
 		// Draw 3 instanced cubes
-		m_dxo.context->DrawIndexedInstanced(m_indexBuffer->GetCount(), 3u, 0u, 0, 0u);
+		m_dxo.context->DrawIndexed(m_indexBuffer->GetCount(), 0u, 0);
 	}
 	void TexturedPrimitives::ImGuiUpdate() {
 	}

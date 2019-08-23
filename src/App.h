@@ -19,6 +19,8 @@ public:
 	 */
 	void Update(float dt);
 
+	ID3D11Debug* GetDebugDevice() { return m_debugDevice; }
+
 private:
 	void initWindow(HINSTANCE& hInstance);
 	void initDirectX11();
@@ -29,7 +31,7 @@ private:
 	const char* m_className;
 
 	DXObjects m_dxo;
-	std::unique_ptr<ID3D11Debug> m_debugDevice;
+	ID3D11Debug* m_debugDevice;
 	std::unique_ptr<Renderer> m_renderer;
 	std::unique_ptr<RenderCommand> m_rcommand;
 	std::unique_ptr<IExemple> m_activeExemple;

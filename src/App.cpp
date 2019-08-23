@@ -32,11 +32,12 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 
 	m_renderer = std::make_unique<Renderer>(m_dxo);
 	m_rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::BasicTriangle>(m_dxo);
+	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_dxo);
 }
 
 App::~App() {
 	m_dxo.context->ClearState();
+
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
@@ -48,7 +49,6 @@ void App::Update(float dt) {
 	// Update GUI
 	{
 		m_activeExemple->ImGuiUpdate();
-
 		{
 			ImGui_ImplDX11_NewFrame();
 			ImGui_ImplWin32_NewFrame();
@@ -164,9 +164,6 @@ void App::initDirectX11() {
 #ifndef NDEBUG
 	DX::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&m_debugDevice))
-	);
-	DX::ThrowIfFailed(CALL_INFO,
-		m_debugDevice->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL)
 	);
 #endif
 
