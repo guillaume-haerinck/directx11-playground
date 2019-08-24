@@ -37,7 +37,7 @@ namespace exemple {
 		};
 
 		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_sphere.GetVertices().data(), m_sphere.GetVertices().size(), sizeof(Vertex));
-		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, (WORD*)m_sphere.GetIndices().data(), m_sphere.GetIndices().size());
+		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, m_sphere.GetIndices().data(), m_sphere.GetIndices().size());
 	}
 
 	TexturedPrimitives::~TexturedPrimitives() {

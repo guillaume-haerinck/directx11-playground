@@ -23,7 +23,7 @@ namespace exemple {
 		std::unique_ptr<IndexBuffer> m_indexBuffer;
 		std::unique_ptr<VertexBuffer> m_vertexBuffer;
 
-		Sphere m_sphere;
+		prim::Icosahedron m_sphere;
 	};
 };
 

@@ -32,44 +32,8 @@ namespace exemple {
 		};
 		m_shader->UpdatePSConstantBuffer(0, &psCB);
 
-		// Vertex buffer
-		struct Vertex {
-			XMFLOAT3 Position;
-		};
-
-		Vertex vertices[] = {
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f) }, // Front Lower left
-			{ XMFLOAT3( 1.0f, -1.0f, -1.0f) }, // Front Lower right	
-			{ XMFLOAT3(-1.0f,  1.0f, -1.0f) }, // Front Top left
-			{ XMFLOAT3( 1.0f,  1.0f, -1.0f) }, // Front Top right
-									  
-			{ XMFLOAT3(-1.0f, -1.0f,  1.0f) }, // Back Lower left
-			{ XMFLOAT3( 1.0f, -1.0f,  1.0f) }, // Back Lower right	
-			{ XMFLOAT3(-1.0f,  1.0f,  1.0f) }, // Back Top left
-			{ XMFLOAT3( 1.0f,  1.0f,  1.0f) }  // Back Top right
-		};
-		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, vertices, ARRAYSIZE(vertices), sizeof(Vertex));
-
-		// Index buffer
-		/* Welding order must be clockwise
-						    6_______7
-						   /|       |
-						  / |      /|
-						 /  4_____/_5
-						2_______3/ /
-						|       | /
-						|       |/
-						0_______1
-		*/
-		WORD indices[] = {
-			0,2,1, 2,3,1,
-			1,3,5, 3,7,5,
-			2,6,3, 3,6,7,
-			4,5,7, 4,7,6,
-			0,4,2, 2,4,6,
-			0,1,4, 1,5,4
-		};
-		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, indices, ARRAYSIZE(indices));
+		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_box.GetVertices().data(), m_box.GetVertices().size(), sizeof(XMFLOAT3));
+		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, m_box.GetIndices().data(), m_box.GetIndices().size());
 	}
 
 	RotatingCube::~RotatingCube() {
