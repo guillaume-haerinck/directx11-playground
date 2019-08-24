@@ -27,7 +27,7 @@
 #include <stdint.h>
 
 // DirectX
-#include <D3d11.h>
+#include <d3d11_1.h>
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 #include <dxgidebug.h>

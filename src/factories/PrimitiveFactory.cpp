@@ -56,7 +56,9 @@ namespace prim {
 	///////////////////////////////////////////////////////////////////////////
 
 	IcoSphere::IcoSphere(float radius, unsigned int subdivisionCount) {
+		Icosahedron icasahedron(radius);
 
+		// TODO subdivide
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -102,7 +104,7 @@ namespace prim {
 
 	Icosahedron::Icosahedron(float radius) {
 		const float X = radius;
-		const float Z = (1.0 + sqrt(5.0)) / 2.0;
+		const float Z = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
 
 		m_vertices = {
 			XMFLOAT3(-X,0,Z), XMFLOAT3(X,0,Z), XMFLOAT3(-X,0,-Z), XMFLOAT3(X,0,-Z),
