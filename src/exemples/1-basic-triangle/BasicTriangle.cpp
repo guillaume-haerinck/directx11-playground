@@ -11,17 +11,13 @@ namespace exemple {
 		};
 		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso", L"BasicTrianglePS.cso");
 
-		struct Vertex {
-			XMFLOAT2 Position;
-		};
-
 		// Vertex buffer
-		Vertex vertices[] = {
+		XMFLOAT2 vertices[] = {
 			{ XMFLOAT2(0.0f,  0.5f) },
 			{ XMFLOAT2(0.5f, -0.5f) },
 			{ XMFLOAT2 (-0.5f, -0.5f) }
 		};
-		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, vertices, ARRAYSIZE(vertices), sizeof(Vertex));
+		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, vertices, ARRAYSIZE(vertices), sizeof(XMFLOAT2));
 	}
 
 	BasicTriangle::~BasicTriangle() {

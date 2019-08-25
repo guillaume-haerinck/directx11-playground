@@ -10,6 +10,8 @@ cbuffer cbPerFrame : register(b0)
 struct VSInput
 {
 	float3 Position : POSITION;
+	float3 Normal : NORMAL;
+	float2 TexCoord : TEXCOORD;
 };
 
 // Ouput to the next shader in the pipeline. Must have an SV_POSITION

@@ -89,7 +89,7 @@
     <ClCompile Include="lib\microsoft-dds-texture-loader\DDSTextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lib\wic-texture-loader\WICTextureLoader.cpp">
+    <ClCompile Include="lib\microsoft-wic-texture-loader\WICTextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -166,7 +166,7 @@
     <ClInclude Include="lib\microsoft-dds-texture-loader\DDSTextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lib\wic-texture-loader\WICTextureLoader.h">
+    <ClInclude Include="lib\microsoft-wic-texture-loader\WICTextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

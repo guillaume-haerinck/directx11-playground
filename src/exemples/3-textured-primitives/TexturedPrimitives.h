@@ -23,7 +23,9 @@ namespace exemple {
 		std::unique_ptr<IndexBuffer> m_indexBuffer;
 		std::unique_ptr<VertexBuffer> m_vertexBuffer;
 
-		prim::Icosahedron m_sphere;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_srv;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> m_sampler;
+		prim::UVSphere m_sphere;
 	};
 };
 

@@ -1,43 +1,46 @@
 #include "pch.h"
 #include "TexturedPrimitives.h"
 
+#include "graphics/DXException.h"
+
+#include <microsoft-wic-texture-loader/WICTextureLoader.h>
+
 namespace exemple {
 	struct VSConstantBuffer0 {
 		XMFLOAT4X4 matVP;
 		XMFLOAT4X4 matGeo;
 	};
 
-	struct PSConstantBuffer0 {
-		XMFLOAT4 color[6];
-	};
-
 	TexturedPrimitives::TexturedPrimitives(DXObjects& dxObjects) : m_dxo(dxObjects) {
 		// Shader
-		D3D11_INPUT_ELEMENT_DESC ied[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-		};
-		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"TexturedPrimitivesVS.cso", L"TexturedPrimitivesPS.cso");
+		m_shader = std::make_unique<Shader>(m_dxo, prim::InputElements, prim::InputElementCount, L"TexturedPrimitivesVS.cso", L"TexturedPrimitivesPS.cso");
 		m_shader->AddVSConstantBuffer(sizeof(VSConstantBuffer0));
-		m_shader->AddPSConstantBuffer(sizeof(PSConstantBuffer0));
-
-		// Update PSconstant buffer as it will not change
-		PSConstantBuffer0 psCB = {
-			XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
-		};
-		m_shader->UpdatePSConstantBuffer(0, &psCB);
 
 		// Vertex buffer
-		struct Vertex {
-			XMFLOAT3 Position;
-		};
-
-		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_sphere.GetVertices().data(), m_sphere.GetVertices().size(), sizeof(Vertex));
+		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_sphere.GetVertices().data(), m_sphere.GetVertices().size(), prim::InputElementSize);
 		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, m_sphere.GetIndices().data(), m_sphere.GetIndices().size());
+		
+		// Texture
+		Microsoft::WRL::ComPtr<ID3D11Resource> res;
+		DX::ThrowIfFailed(CALL_INFO,
+			CreateWICTextureFromFile(m_dxo.device.Get(), m_dxo.context.Get(),  L"res/textures/test.jpg", res.GetAddressOf(), m_srv.GetAddressOf())
+		);
+
+		// Bind texture
+		m_dxo.context->PSSetShaderResources(0u, 1u, m_srv.GetAddressOf());
+
+		// Set sampler state
+		D3D11_SAMPLER_DESC sdesc = {};
+		sdesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		sdesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		DX::ThrowIfFailed(CALL_INFO,
+			m_dxo.device->CreateSamplerState(&sdesc, &m_sampler)
+		);
+
+		// Bind sampler
+		m_dxo.context->PSSetSamplers(0, 1, m_sampler.GetAddressOf());
 	}
 
 	TexturedPrimitives::~TexturedPrimitives() {

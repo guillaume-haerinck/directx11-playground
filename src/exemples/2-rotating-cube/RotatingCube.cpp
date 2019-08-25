@@ -14,10 +14,7 @@ namespace exemple {
 	RotatingCube::RotatingCube(DXObjects& dxObjects) : m_dxo(dxObjects)
 	{
 		// Shader
-		D3D11_INPUT_ELEMENT_DESC ied[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-		};
-		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"RotatingCubeVS.cso", L"RotatingCubePS.cso");
+		m_shader = std::make_unique<Shader>(m_dxo, prim::InputElements, prim::InputElementCount, L"RotatingCubeVS.cso", L"RotatingCubePS.cso");
 		m_shader->AddVSConstantBuffer(sizeof(VSConstantBuffer0));
 		m_shader->AddPSConstantBuffer(sizeof(PSConstantBuffer0));
 
@@ -32,7 +29,7 @@ namespace exemple {
 		};
 		m_shader->UpdatePSConstantBuffer(0, &psCB);
 
-		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_box.GetVertices().data(), m_box.GetVertices().size(), sizeof(XMFLOAT3));
+		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_box.GetVertices().data(), m_box.GetVertices().size(), prim::InputElementSize);
 		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, m_box.GetIndices().data(), m_box.GetIndices().size());
 	}
 

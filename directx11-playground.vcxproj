@@ -90,6 +90,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,6 +108,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -215,7 +217,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="lib\wic-texture-loader\WICTextureLoader.cpp">
+    <ClCompile Include="lib\microsoft-wic-texture-loader\WICTextureLoader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -258,7 +260,7 @@
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="lib\microsoft-dds-texture-loader\DDSTextureLoader.h" />
-    <ClInclude Include="lib\wic-texture-loader\WICTextureLoader.h" />
+    <ClInclude Include="lib\microsoft-wic-texture-loader\WICTextureLoader.h" />
     <ClInclude Include="src\exemples\1-basic-triangle\BasicTriangle.h" />
     <ClInclude Include="src\exemples\2-rotating-cube\RotatingCube.h" />
     <ClInclude Include="src\exemples\3-textured-primitives\TexturedPrimitives.h" />

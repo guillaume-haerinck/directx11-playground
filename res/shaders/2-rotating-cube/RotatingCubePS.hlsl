@@ -6,6 +6,7 @@ cbuffer cbPerFrame : register(b0)
 // Expected input for this last shader in the pipeline
 struct PSInput
 {
+	float4 Position : SV_POSITION;
 	uint tid : SV_PrimitiveID;
 };
 

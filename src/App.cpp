@@ -226,7 +226,7 @@ void App::initDirectX11() {
 	m_dxo.context->RSSetViewports(1, &vp);
 
 	// Bind what will not change for a while
-	m_dxo.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	m_dxo.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_dxo.context->OMSetRenderTargets(1u, m_dxo.target.GetAddressOf(), m_dxo.depthStencilView.Get());
 }
 

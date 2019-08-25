@@ -8,7 +8,10 @@ namespace prim {
 	///////////////////////////////////////////////////////////////////////////
 
 	UVSphere::UVSphere(float radius, float sectorCount, float stackCount) {
-		float x, y, z, xy;
+		float x, y, z, xy;								// vertex position
+		float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
+		float s, t;                                     // vertex texCoord
+		
 		float sectorStep = 2 * XM_PI / sectorCount;
 		float stackStep = XM_PI / stackCount;
 		float sectorAngle, stackAngle;
@@ -22,9 +25,21 @@ namespace prim {
 			// add (sectorCount+1) vertices per stack
 			for (int j = 0; j <= sectorCount; ++j) {
 				sectorAngle = j * sectorStep;           // starting from 0 to 2pi
+				
+				// vertex position
 				x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
 				y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
-				m_vertices.push_back(XMFLOAT3(x, y, z));
+				
+				// normalized vertex normal (nx, ny, nz)
+				nx = x * lengthInv;
+				ny = y * lengthInv;
+				nz = z * lengthInv;
+				
+				// vertex tex coord (s, t) range between [0, 1]
+				s = (float)j / sectorCount;
+				t = (float)i / stackCount;
+
+				m_vertices.push_back({ XMFLOAT3(x, y, z), XMFLOAT3(nx, ny, nz), XMFLOAT2(s, t) });
 			}
 		}
 
@@ -67,18 +82,18 @@ namespace prim {
 
 	Box::Box(float width, float height) {
 		m_vertices = {
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f) }, // Front Lower left
-			{ XMFLOAT3(1.0f, -1.0f, -1.0f) }, // Front Lower right	
-			{ XMFLOAT3(-1.0f,  1.0f, -1.0f) }, // Front Top left
-			{ XMFLOAT3(1.0f,  1.0f, -1.0f) }, // Front Top right
-
-			{ XMFLOAT3(-1.0f, -1.0f,  1.0f) }, // Back Lower left
-			{ XMFLOAT3(1.0f, -1.0f,  1.0f) }, // Back Lower right	
-			{ XMFLOAT3(-1.0f,  1.0f,  1.0f) }, // Back Top left
-			{ XMFLOAT3(1.0f,  1.0f,  1.0f) }  // Back Top right
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, -1.0f),  XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(1.0f,  1.0f, -1.0f),  XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+										
+			{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(1.0f, -1.0f,  1.0f),  XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(1.0f,  1.0f,  1.0f),  XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) }
 		};
 
-		/* Welding order must be clockwise
+		/*
 							6_______7
 						   /|       |
 						  / |      /|
@@ -107,9 +122,18 @@ namespace prim {
 		const float Z = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
 
 		m_vertices = {
-			XMFLOAT3(-X,0,Z), XMFLOAT3(X,0,Z), XMFLOAT3(-X,0,-Z), XMFLOAT3(X,0,-Z),
-			XMFLOAT3(0,Z,X), XMFLOAT3(0,Z,-X), XMFLOAT3(0,-Z,X), XMFLOAT3(0,-Z,-X),
-			XMFLOAT3(Z,X,0), XMFLOAT3(-Z,X, 0), XMFLOAT3(Z,-X,0), XMFLOAT3(-Z,-X, 0)
+			{ XMFLOAT3(-X,0,Z),  XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(X,0,Z), 	 XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-X,0,-Z), XMFLOAT3(), XMFLOAT2() }, 
+			{ XMFLOAT3(X,0,-Z),	 XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(0,Z,X), 	 XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(0,Z,-X),  XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(0,-Z,X),  XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(0,-Z,-X), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(Z,X,0), 	 XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-Z,X, 0), XMFLOAT3(), XMFLOAT2() }, 
+			{ XMFLOAT3(Z,-X,0),  XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-Z,-X, 0),XMFLOAT3(), XMFLOAT2() }
 		};
 
 		m_indices = {
