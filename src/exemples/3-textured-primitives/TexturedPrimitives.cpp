@@ -53,7 +53,7 @@ namespace exemple {
 		XMMATRIX view = XMMatrixTranspose(
 			XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
 			XMMatrixRotationX(m_timer.GetFrameCount() * 0.01) *
-			XMMatrixTranslation(-3.0f, 0.0f, 6.0f) *
+			XMMatrixTranslation(0.0f, 0.0f, 6.0f) *
 			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
 		);
 

@@ -25,7 +25,7 @@ namespace exemple {
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_srv;
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> m_sampler;
-		prim::Box m_sphere;
+		prim::Icosahedron m_sphere;
 	};
 };
 

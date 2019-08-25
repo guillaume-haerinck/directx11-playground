@@ -142,28 +142,41 @@ namespace prim {
 
 	Icosahedron::Icosahedron(float radius) {
 		const float X = radius;
-		const float Z = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
+		float t = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
+		t *= radius;
 
 		m_vertices = {
-			{ XMFLOAT3(-X,0,Z),  XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(X,0,Z), 	 XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(-X,0,-Z), XMFLOAT3(), XMFLOAT2() }, 
-			{ XMFLOAT3(X,0,-Z),	 XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(0,Z,X), 	 XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(0,Z,-X),  XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(0,-Z,X),  XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(0,-Z,-X), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(Z,X,0), 	 XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(-Z,X, 0), XMFLOAT3(), XMFLOAT2() }, 
-			{ XMFLOAT3(Z,-X,0),  XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(-Z,-X, 0),XMFLOAT3(), XMFLOAT2() }
+			{ XMFLOAT3(-X, 0, t), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( X, 0, t), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-X, 0,-t), XMFLOAT3(), XMFLOAT2() }, 
+			{ XMFLOAT3( X, 0,-t), XMFLOAT3(), XMFLOAT2() },
+
+			{ XMFLOAT3( 0, t, X), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( 0, t,-X), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( 0,-t, X), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( 0,-t,-X), XMFLOAT3(), XMFLOAT2() },
+
+			{ XMFLOAT3( t, X, 0), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-t, X, 0), XMFLOAT3(), XMFLOAT2() }, 
+			{ XMFLOAT3( t,-X, 0), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-t,-X, 0), XMFLOAT3(), XMFLOAT2() }
 		};
 
+		// Compute TextCoord
+		const float invHalfPI = 1 / XM_PI * 0.5;
+		const float invPI = 1 / XM_PI;
+		for (int i = 0; i < m_vertices.size(); i++) {
+			XMFLOAT3 pos = m_vertices.at(i).position;
+			XMVECTOR posNorm = XMVector3Normalize((XMVectorSet(pos.x, pos.y, pos.z, 1.0f)));
+			m_vertices.at(i).texCoord.x = (atan2(XMVectorGetX(posNorm), XMVectorGetZ(posNorm)) + XM_PI) * invHalfPI;
+			m_vertices.at(i).texCoord.y = (acos(XMVectorGetY(posNorm)) + XM_PI) * invPI;
+		}
+
 		m_indices = {
-			0,4,1,  0,9,4,  9,5,4,  4,5,8,  4,8,1,
-			8,10,1, 8,3,10, 5,3,8,  5,2,3,  2,7,3,
-			7,10,3, 7,6,10, 7,11,6, 11,0,6, 0,1,6,
-			6,1,10, 9,0,11, 9,11,2, 9,2,5,  7,2,11
+			0,1,4,  0,4,9,  9,4,5,  4, 8,5,  4,1,8,
+			8,1,10, 8,10,3, 5,8,3,  5, 3,2,  2,3,7,
+			7,3,10, 7,10,6, 7,6,11, 11,6,0,  0,6,1,
+			6,10,1, 9,11,0, 9,2,11, 9, 5,2,  7,11,2
 		};
 	}
 };
