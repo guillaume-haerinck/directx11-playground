@@ -33,7 +33,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 
 	m_renderer = std::make_unique<Renderer>(m_dxo);
 	m_rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::ModelLoading>(m_dxo);
+	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_dxo);
 }
 
 App::~App() {
