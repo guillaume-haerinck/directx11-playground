@@ -12,7 +12,7 @@ namespace exemple {
 	class BasicTriangle : public IExemple {
 	public:
 		BasicTriangle(DXObjects& dxObjects);
-		~BasicTriangle();
+		virtual ~BasicTriangle();
 
 		virtual void Update() override;
 		virtual void ImGuiUpdate() override;

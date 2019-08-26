@@ -11,7 +11,7 @@ namespace exemple {
 	class RotatingCube : public IExemple {
 	public:
 		RotatingCube(DXObjects& dxObjects);
-		~RotatingCube();
+		virtual ~RotatingCube();
 
 		virtual void Update() override;
 		virtual void ImGuiUpdate() override;

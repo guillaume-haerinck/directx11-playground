@@ -146,20 +146,32 @@ namespace prim {
 		t *= radius;
 
 		m_vertices = {
-			{ XMFLOAT3(-X, 0, t), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3( X, 0, t), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(-X, 0,-t), XMFLOAT3(), XMFLOAT2() }, 
-			{ XMFLOAT3( X, 0,-t), XMFLOAT3(), XMFLOAT2() },
+			// Z Plane orthogonal rectangles (Vertical)
+			{ XMFLOAT3(-X, t, 0), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( X, t, 0), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-X,-t, 0), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( X,-t, 0), XMFLOAT3(), XMFLOAT2() },
+			// X Plane orthogonal rectangles
+			{ XMFLOAT3( 0,-X, t), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( 0, X, t), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( 0,-X,-t), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( 0, X,-t), XMFLOAT3(), XMFLOAT2() },
+			// Y Plane orthogonal rectangles
+			{ XMFLOAT3( t, 0, -X), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3( t, 0,  X), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-t, 0, -X), XMFLOAT3(), XMFLOAT2() },
+			{ XMFLOAT3(-t, 0,  X), XMFLOAT3(), XMFLOAT2() }
+		};
 
-			{ XMFLOAT3( 0, t, X), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3( 0, t,-X), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3( 0,-t, X), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3( 0,-t,-X), XMFLOAT3(), XMFLOAT2() },
-
-			{ XMFLOAT3( t, X, 0), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(-t, X, 0), XMFLOAT3(), XMFLOAT2() }, 
-			{ XMFLOAT3( t,-X, 0), XMFLOAT3(), XMFLOAT2() },
-			{ XMFLOAT3(-t,-X, 0), XMFLOAT3(), XMFLOAT2() }
+		m_indices = {
+			// 5 faces around point 0
+			0,11,5,	0,5,1,  0,1,7,   0,7,10, 0,10,11,
+			// 5 adjacent faces
+			1,5,9,  5,11,4, 11,10,2, 10,7,6, 7,1,8,
+			// 5 faces around point 3
+			3,9,4,  3,4,2,  3,2,6,   3,6,8,  3,8,9,
+			// 5 adjacent faces
+			4,9,5,  2,4,11, 6,2,10,  8,6,7,  9,8,1
 		};
 
 		// Compute TextCoord
@@ -172,11 +184,6 @@ namespace prim {
 			m_vertices.at(i).texCoord.y = (acos(XMVectorGetY(posNorm)) + XM_PI) * invPI;
 		}
 
-		m_indices = {
-			0,1,4,  0,4,9,  9,4,5,  4, 8,5,  4,1,8,
-			8,1,10, 8,10,3, 5,8,3,  5, 3,2,  2,3,7,
-			7,3,10, 7,10,6, 7,6,11, 11,6,0,  0,6,1,
-			6,10,1, 9,11,0, 9,2,11, 9, 5,2,  7,11,2
-		};
+		// TODO compute normals from triangles
 	}
 };

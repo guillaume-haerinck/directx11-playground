@@ -12,14 +12,22 @@
 #include <Windows.h>
 
 // Common
-#include <exception>
-#include <stdexcept>
 #include <algorithm>
 #include <memory>
 #include <cmath>
+#include <cstdlib>
+#include <filesystem>
+
+// Debug
+#include <exception>
+#include <stdexcept>
+#include <cassert>
+
+// Steams
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 // Data structures
 #include <vector>

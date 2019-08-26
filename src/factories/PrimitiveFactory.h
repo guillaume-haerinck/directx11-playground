@@ -40,7 +40,7 @@ namespace prim {
 
 	/**
 	 * @brief Proceduraly generated ICO Sphere
-	 * @link https://schneide.blog/2016/07/15/generating-an-icosphere-in-c/
+	 * @link https://www.youtube.com/watch?v=4u7HXv4b5-U
 	 */
 	class IcoSphere : public IPrimitive {
 	public:
