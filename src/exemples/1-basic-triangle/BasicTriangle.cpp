@@ -5,11 +5,16 @@
 
 namespace exemple {
 	BasicTriangle::BasicTriangle(DXObjects& dxObjects) : m_dxo(dxObjects) {
+		m_rcommand = std::make_unique<RenderCommand>(dxObjects);
+
 		// Shader
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		m_shader = std::make_unique<Shader>(m_dxo, ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso", L"BasicTrianglePS.cso");
+		auto temp = m_rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
+		m_VSShader = std::get<0>(temp);
+		m_inputLayout = std::get<1>(temp);
+		m_PSShader = m_rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
 
 		// Vertex buffer
 		XMFLOAT2 vertices[] = {
@@ -17,18 +22,18 @@ namespace exemple {
 			{ XMFLOAT2(0.5f, -0.5f) },
 			{ XMFLOAT2 (-0.5f, -0.5f) }
 		};
-		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, vertices, ARRAYSIZE(vertices), sizeof(XMFLOAT2));
+		m_vertexBuffer = m_rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
 	}
 
 	BasicTriangle::~BasicTriangle() {
 	}
 
 	void BasicTriangle::Update() {
-		m_shader->Bind();
+		m_rcommand->BindVertexShader(m_VSShader.Get(), m_inputLayout.Get());
+		m_rcommand->BindPixelShader(m_PSShader.Get());
+		m_rcommand->BindVertexBuffer(m_vertexBuffer.Get(), sizeof(XMFLOAT2));
 
-		m_vertexBuffer->Bind();
-
-		m_dxo.context->Draw(m_vertexBuffer->GetCount(), 0u);
+		m_dxo.context->Draw(3u, 0u);
 	}
 
 	void BasicTriangle::ImGuiUpdate() {

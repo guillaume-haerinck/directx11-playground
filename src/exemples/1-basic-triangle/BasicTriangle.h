@@ -2,8 +2,7 @@
 
 #include "exemples/IExemple.h"
 #include "graphics/DXObjects.h"
-#include "graphics/Shader.h"
-#include "graphics/Buffer.h"
+#include "graphics/RenderCommand.h"
 
 namespace exemple {
 	/**
@@ -19,7 +18,10 @@ namespace exemple {
 
 	private:
 		DXObjects& m_dxo;
-		std::unique_ptr<Shader> m_shader;
-		std::unique_ptr<VertexBuffer> m_vertexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VSShader;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PSShader;
+		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+		std::unique_ptr<RenderCommand> m_rcommand;
 	};
 }

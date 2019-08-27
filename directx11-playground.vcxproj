@@ -226,18 +226,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\exemples\1-basic-triangle\BasicTriangle.cpp" />
-    <ClCompile Include="src\exemples\2-rotating-cube\RotatingCube.cpp" />
-    <ClCompile Include="src\exemples\3-textured-primitives\TexturedPrimitives.cpp" />
-    <ClCompile Include="src\exemples\4-model-loading\ModelLoading.cpp" />
-    <ClCompile Include="src\factories\ModelFactory.cpp" />
-    <ClCompile Include="src\factories\PrimitiveFactory.cpp" />
-    <ClCompile Include="src\graphics\Buffer.cpp" />
     <ClCompile Include="src\graphics\DXObjects.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\graphics\DXException.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
-    <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -252,6 +245,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\systems\RenderSystem.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
     <ClCompile Include="src\core\StepTimer.cpp" />
   </ItemGroup>
@@ -304,22 +298,25 @@
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="lib\microsoft-dds-texture-loader\DDSTextureLoader.h" />
     <ClInclude Include="lib\microsoft-wic-texture-loader\WICTextureLoader.h" />
+    <ClInclude Include="src\components\graphics\IndexBuffer.h" />
+    <ClInclude Include="src\components\graphics\Layer.h" />
+    <ClInclude Include="src\components\graphics\Mesh.h" />
+    <ClInclude Include="src\components\graphics\PBRMaterial.h" />
+    <ClInclude Include="src\components\graphics\PhongMaterial.h" />
+    <ClInclude Include="src\components\graphics\PixelShader.h" />
+    <ClInclude Include="src\components\graphics\VertexBuffer.h" />
+    <ClInclude Include="src\components\graphics\VertexShader.h" />
     <ClInclude Include="src\exemples\1-basic-triangle\BasicTriangle.h" />
-    <ClInclude Include="src\exemples\2-rotating-cube\RotatingCube.h" />
-    <ClInclude Include="src\exemples\3-textured-primitives\TexturedPrimitives.h" />
-    <ClInclude Include="src\exemples\4-model-loading\ModelLoading.h" />
     <ClInclude Include="src\exemples\IExemple.h" />
-    <ClInclude Include="src\factories\ModelFactory.h" />
-    <ClInclude Include="src\factories\PrimitiveFactory.h" />
-    <ClInclude Include="src\graphics\Buffer.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\graphics\DXException.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
-    <ClInclude Include="src\graphics\Shader.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\core\StepTimer.h" />
+    <ClInclude Include="src\systems\ISystem.h" />
+    <ClInclude Include="src\systems\RenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="lib\imgui\misc\natvis\imgui.natvis" />
