@@ -11,9 +11,7 @@ namespace exemple {
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		auto temp = m_rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
-		m_VSShader = std::get<0>(temp);
-		m_inputLayout = std::get<1>(temp);
+		std::tie(m_VSShader, m_inputLayout) = m_rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
 		m_PSShader = m_rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
 
 		// Vertex buffer

@@ -33,6 +33,7 @@
 #include <vector>
 #include <string>
 #include <stdint.h>
+#include <tuple>
 
 // DirectX
 #include <d3d11_1.h>

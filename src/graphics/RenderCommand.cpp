@@ -97,7 +97,7 @@ std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexS
 		)
 	);
 
-	return std::make_tuple(vertexShader, inputLayout);
+	return { vertexShader, inputLayout };
 }
 
 ID3D11PixelShader* RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
