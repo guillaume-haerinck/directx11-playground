@@ -2,6 +2,10 @@
 
 #include "DXObjects.h"
 
+// TODO keep track of bound objects with static data
+// TODO keep track of already created shaders
+// TODO remove access to DXObjects to every class so that they must use rendercommand
+
 /**
  * @brief Issue draw commands to Direct3D API
  */

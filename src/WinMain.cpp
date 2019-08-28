@@ -7,22 +7,6 @@
 #include "App.h"
 #include "graphics/DXException.h"
 
-struct test {
-	float z;
-
-	test(float z) : z(z) {}
-
-	~test() {
-		std::cout << "here";
-	}
-};
-
-struct position {
-	float x;
-	float y;
-	std::unique_ptr<test> myTest;
-};
-
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -31,14 +15,6 @@ int CALLBACK WinMain(
 ) {
 	try {
 		App* app = new App(hInstance);
-
-		entt::registry registry;
-		auto entity = registry.create();
-		registry.assign<position>(entity, 1.f, 1.f, std::make_unique<test>(1.0f));
-
-		registry.view<position>().each([](auto& pos) {
-			pos.x += 5;
-		});
 
 		MSG msg = { 0 };
 		while (msg.message != WM_QUIT) {

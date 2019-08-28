@@ -1,7 +1,7 @@
 #pragma once
 
 namespace comp {
-	struct Layer
+	struct Model
 	{
 
 	};

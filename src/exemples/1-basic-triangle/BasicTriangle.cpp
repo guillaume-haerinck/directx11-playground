@@ -2,6 +2,8 @@
 #include "BasicTriangle.h"
 
 #include "graphics/DXException.h"
+#include "components/graphics/Mesh.h"
+#include "components/graphics/Shader.h"
 
 namespace exemple {
 	BasicTriangle::BasicTriangle(DXObjects& dxObjects) : m_dxo(dxObjects) {
@@ -11,8 +13,8 @@ namespace exemple {
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		std::tie(m_VSShader, m_inputLayout) = m_rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
-		m_PSShader = m_rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
+		auto [VSShader, inputLayout] = m_rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
+		auto PSShader = m_rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
 
 		// Vertex buffer
 		XMFLOAT2 vertices[] = {
@@ -20,18 +22,26 @@ namespace exemple {
 			{ XMFLOAT2(0.5f, -0.5f) },
 			{ XMFLOAT2 (-0.5f, -0.5f) }
 		};
-		m_vertexBuffer = m_rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
+		auto vertexBuffer = m_rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
+
+		// Assign data to an entity
+		auto entity = registry.create();
+		registry.assign<comp::Mesh>(entity, vertexBuffer, sizeof(XMFLOAT2));
+		registry.assign<comp::VertexShader>(entity, VSShader, inputLayout);
+		registry.assign<comp::PixelShader>(entity, PSShader);
 	}
 
 	BasicTriangle::~BasicTriangle() {
 	}
 
 	void BasicTriangle::Update() {
-		m_rcommand->BindVertexShader(m_VSShader.Get(), m_inputLayout.Get());
-		m_rcommand->BindPixelShader(m_PSShader.Get());
-		m_rcommand->BindVertexBuffer(m_vertexBuffer.Get(), sizeof(XMFLOAT2));
+		registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>().each([&](auto& mesh, auto& VSShader, auto& PSShader) {
+			m_rcommand->BindVertexShader(VSShader.shader.Get(), VSShader.layout.Get());
+			m_rcommand->BindPixelShader(PSShader.shader.Get());
+			m_rcommand->BindVertexBuffer(mesh.vertexBuffer.Get(), mesh.VBStride);
 
-		m_dxo.context->Draw(3u, 0u);
+			m_dxo.context->Draw(3u, 0u);
+		});
 	}
 
 	void BasicTriangle::ImGuiUpdate() {

@@ -18,10 +18,7 @@ namespace exemple {
 
 	private:
 		DXObjects& m_dxo;
-		Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VSShader;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-		Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PSShader;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
 		std::unique_ptr<RenderCommand> m_rcommand;
+		entt::registry registry;
 	};
 }
