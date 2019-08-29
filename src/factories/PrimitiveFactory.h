@@ -2,6 +2,9 @@
 
 #include "core/Context.h"
 
+/**
+ * @brief Creates primitive Mesh components
+ */
 class PrimitiveFactory {
 public:
 	PrimitiveFactory(Context& context);
@@ -14,27 +17,27 @@ public:
 	};
 
 	/**
-	 * @brief Proceduraly generated UV Sphere
+	 * @brief Creates UV Sphere Mesh component
 	 * @link http://www.songho.ca/opengl/gl_sphere.html
 	 */
-	unsigned int CreateUVSphere(float radius = 1, float sectorCount = 14, float stackCount = 28);
+	comp::Mesh CreateUVSphere(float radius = 1, float sectorCount = 14, float stackCount = 28);
 
 	/**
-	 * @brief Proceduraly generated ICO Sphere
+	 * @brief Creates ICO Sphere Mesh component
 	 * @link https://www.youtube.com/watch?v=4u7HXv4b5-U
 	 */
-	unsigned int CreateIcoSphere(float radius = 1, unsigned int subdivisionCount = 3);
+	comp::Mesh CreateIcoSphere(float radius = 1, unsigned int subdivisionCount = 3);
 
 	/**
-	 * @brief Proceduraly generated Box
+	 * @brief Creates a Box Mesh component
 	 */
-	unsigned int CreateBox(float width = 1, float height = 1);
+	comp::Mesh CreateBox(float width = 1, float height = 1);
 
 	/**
-	 * @brief Proceduraly generated Icosahedron
+	 * @brief Creates Icosahedron Mesh component
 	 * @link http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
 	 */
-	unsigned int CreateIcosahedron(float radius = 1);
+	comp::Mesh CreateIcosahedron(float radius = 1);
 
 	D3D11_INPUT_ELEMENT_DESC* GetIed() { return m_ied.data(); }
 	unsigned int GetIedElementCount() { return m_ied.size(); }

@@ -13,7 +13,7 @@ PrimitiveFactory::~PrimitiveFactory()
 {
 }
 
-unsigned int PrimitiveFactory::CreateUVSphere(float radius, float sectorCount, float stackCount) {
+comp::Mesh PrimitiveFactory::CreateUVSphere(float radius, float sectorCount, float stackCount) {
 	float x, y, z, xy;								// vertex position
 	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
 	float s, t;                                     // vertex texCoord
@@ -73,15 +73,21 @@ unsigned int PrimitiveFactory::CreateUVSphere(float radius, float sectorCount, f
 		}
 	}
 
-	// Create an entity with data
-	return 0;
+	// Create UV sphere
+	comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices.data(), vertices.size(), sizeof(Vertex));
+	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices.data(), indices.size());
+
+	// Store data
+	comp::Mesh mesh(vertexBuffer, indexBuffer);
+	return mesh;
 }
 
-unsigned int PrimitiveFactory::CreateIcoSphere(float radius, unsigned int subdivisionCount) {
-	return 0;
+comp::Mesh PrimitiveFactory::CreateIcoSphere(float radius, unsigned int subdivisionCount) {
+	comp::VertexBuffer vb = {};
+	return comp::Mesh(vb);
 }
 
-unsigned int PrimitiveFactory::CreateBox(float width, float height) {
+comp::Mesh PrimitiveFactory::CreateBox(float width, float height) {
 	//    v6----- v5
 	//   /|      /|
 	//  v1------v0|
@@ -140,14 +146,12 @@ unsigned int PrimitiveFactory::CreateBox(float width, float height) {
 	comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, ARRAYSIZE(vertices), sizeof(Vertex));
 	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
-	// Store data to an entity
-	auto entity = m_ctx.registry.create();
-	m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer, indexBuffer);
-
-	return entity;
+	// Store data
+	comp::Mesh mesh(vertexBuffer, indexBuffer);
+	return mesh;
 }
 
-unsigned int PrimitiveFactory::CreateIcosahedron(float radius) {
+comp::Mesh PrimitiveFactory::CreateIcosahedron(float radius) {
 	const float X = radius;
 	float t = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
 	t *= radius;
@@ -191,6 +195,11 @@ unsigned int PrimitiveFactory::CreateIcosahedron(float radius) {
 		vertices[i].texCoord.y = (acos(XMVectorGetY(posNorm)) + XM_PI) * invPI;
 	}
 
-	// TODO compute normals from triangles
-	return 0;
+	// Create Icosahedron
+	comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, ARRAYSIZE(vertices), sizeof(Vertex));
+	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
+
+	// Store data
+	comp::Mesh mesh(vertexBuffer, indexBuffer);
+	return mesh;
 }

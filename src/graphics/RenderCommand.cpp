@@ -12,7 +12,7 @@ RenderCommand::RenderCommand(DXObjects& dxObjects) : m_dxo(dxObjects)
 }
 
 void RenderCommand::Clear() const {
-	const float color[] = { 0.0f, 1.0f, 1.0f, 1.0f };
+	const float color[] = { 0.0f, 0.5f, 1.0f, 1.0f };
 	m_dxo.context->ClearRenderTargetView(m_dxo.target.Get(), color);
 	m_dxo.context->ClearDepthStencilView(m_dxo.depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
@@ -89,7 +89,7 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsi
 	return cb;
 }
 
-std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR filePath) const {
+std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const {
 	ID3D11VertexShader* vertexShader;
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
 	DX::ThrowIfFailed(CALL_INFO,
@@ -105,7 +105,7 @@ std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexS
 	ID3D11InputLayout* inputLayout;
 	DX::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateInputLayout(
-			ied, iedElementCount,
+			iedArray, iedElementCount,
 			blob->GetBufferPointer(),
 			blob->GetBufferSize(),
 			&inputLayout

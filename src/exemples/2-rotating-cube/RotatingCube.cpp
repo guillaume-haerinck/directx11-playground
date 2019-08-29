@@ -36,9 +36,11 @@ namespace exemple {
 		m_ctx.rcommand->UpdateConstantBuffer(PSCB0, &PSCB0data);
 
 		// Save data to entity
-		auto entity = primFactory.CreateBox();
+		auto entity = m_ctx.registry.create();
+		comp::Mesh mesh = primFactory.CreateBox();
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout, &VSCB0, 1);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader, &PSCB0, 1);
+		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 	}
 
 	RotatingCube::~RotatingCube() {
@@ -60,6 +62,11 @@ namespace exemple {
 
 		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 			.each([&, VSCB0data](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+			// TODO discard if entity has a geometry shader
+			// TODO handle this in a system
+			// TODO check for indexed drawing or not
+			// TODO update constant buffer elsewhere
+
 			m_ctx.rcommand->BindVertexShader(VShader.shader.Get(), VShader.layout.Get());
 			m_ctx.rcommand->BindVSConstantBuffer(VShader.constantBuffers.at(0));
 			m_ctx.rcommand->UpdateConstantBuffer(VShader.constantBuffers.at(0), (void*) &VSCB0data);

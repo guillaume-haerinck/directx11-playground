@@ -4,11 +4,7 @@
 #include "components/graphics/Mesh.h"
 #include "components/graphics/Shader.h"
 
-// TODO keep track of bound objects with static data
 // TODO keep track of already created shaders
-// TODO remove access to DXObjects to every class so that they must use rendercommand
-// TODO make the whole class static, search for best performance
-// TODO check performance problems when nesting in a Context struct
 
 /**
  * @brief Issue draw commands to Direct3D API
@@ -35,8 +31,6 @@ public:
 	///////////////////////////////// CREATION ////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
-	// TODO return a component for each
-
 	/**
 	 * @param vertices - Array of data
 	 * @param count - The number of elements in the array
@@ -46,7 +40,7 @@ public:
 	comp::IndexBuffer CreateIndexBuffer(WORD* indices, unsigned int count) const;
 	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
 
-	std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR filePath) const;
+	std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const;
 	ID3D11PixelShader* CreatePixelShader(LPCWSTR filePath) const;
 
 	///////////////////////////////////////////////////////////////////////////
