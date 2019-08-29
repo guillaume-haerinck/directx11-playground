@@ -35,8 +35,8 @@ namespace exemple {
 	void BasicTriangle::Update() {
 		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
-			 m_ctx.rcommand->BindVertexShader(VShader.shader.Get(), VShader.layout.Get());
-			 m_ctx.rcommand->BindPixelShader(PShader.shader.Get());
+			 m_ctx.rcommand->BindVertexShader(VShader);
+			 m_ctx.rcommand->BindPixelShader(PShader);
 			 m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 			 m_ctx.rcommand->Draw(mesh.vb.count);
 		});

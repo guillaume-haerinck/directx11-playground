@@ -141,27 +141,27 @@ void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {
 	m_dxo.context->IASetIndexBuffer(ib.buffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 }
 
-void RenderCommand::BindVertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout) {
-	if (m_lastVShaderBound != shader) {
-		m_lastVShaderBound = shader;
-		m_dxo.context->IASetInputLayout(layout);
-		m_dxo.context->VSSetShader(shader, nullptr, 0u);
+void RenderCommand::BindVertexShader(comp::VertexShader vs) {
+	if (m_lastVShaderBound != vs.shader.Get()) {
+		m_lastVShaderBound = vs.shader.Get();
+		m_dxo.context->IASetInputLayout(vs.layout.Get());
+		m_dxo.context->VSSetShader(vs.shader.Get(), nullptr, 0u);
+
+		for (auto cb : vs.constantBuffers) {
+			m_dxo.context->VSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
+		}
 	}
 }
 
-void RenderCommand::BindVSConstantBuffer(comp::ConstantBuffer cb) const {
-	m_dxo.context->VSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
-}
+void RenderCommand::BindPixelShader(comp::PixelShader ps) {
+	if (m_lastPShaderBound != ps.shader.Get()) {
+		m_lastPShaderBound = ps.shader.Get();
+		m_dxo.context->PSSetShader(ps.shader.Get(), nullptr, 0u);
 
-void RenderCommand::BindPixelShader(ID3D11PixelShader* shader) {
-	if (m_lastPShaderBound != shader) {
-		m_lastPShaderBound = shader;
-		m_dxo.context->PSSetShader(shader, nullptr, 0u);
+		for (auto cb : ps.constantBuffers) {
+			m_dxo.context->PSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
+		}
 	}
-}
-
-void RenderCommand::BindPSConstantBuffer(comp::ConstantBuffer cb) const {
-	m_dxo.context->PSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
 }
 
 void RenderCommand::UpdateConstantBuffer(comp::ConstantBuffer cb, void* data) const {

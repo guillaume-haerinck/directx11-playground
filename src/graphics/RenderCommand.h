@@ -73,11 +73,8 @@ public:
 	void BindVertexBuffer(comp::VertexBuffer vb) const;
 	void BindIndexBuffer(comp::IndexBuffer ib) const;
 
-	void BindVertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout);
-	void BindVSConstantBuffer(comp::ConstantBuffer cb) const;
-
-	void BindPixelShader(ID3D11PixelShader* shader);
-	void BindPSConstantBuffer(comp::ConstantBuffer cb) const;
+	void BindVertexShader(comp::VertexShader vs);
+	void BindPixelShader(comp::PixelShader ps);
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////// UPDATING ////////////////////////////////
