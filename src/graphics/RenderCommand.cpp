@@ -21,7 +21,7 @@ void RenderCommand::Swap() const {
 	m_dxo.swapChain->Present(1u, 0u);
 }
 
-ID3D11Buffer* RenderCommand::CreateVertexBuffer(void* vertices, unsigned int byteWidth, unsigned int stride) const {
+comp::VertexBuffer RenderCommand::CreateVertexBuffer(void* vertices, unsigned int count, unsigned int stride) const {
 	ID3D11Buffer* vertexBuffer;
 
 	D3D11_BUFFER_DESC bd = {};
@@ -29,7 +29,7 @@ ID3D11Buffer* RenderCommand::CreateVertexBuffer(void* vertices, unsigned int byt
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.CPUAccessFlags = 0u;
 	bd.MiscFlags = 0u;
-	bd.ByteWidth = byteWidth;
+	bd.ByteWidth = count * stride;
 	bd.StructureByteStride = stride;
 
 	D3D11_SUBRESOURCE_DATA sd = {};
@@ -39,10 +39,15 @@ ID3D11Buffer* RenderCommand::CreateVertexBuffer(void* vertices, unsigned int byt
 		m_dxo.device->CreateBuffer(&bd, &sd, &vertexBuffer)
 	);
 
-	return vertexBuffer;
+	comp::VertexBuffer vb = {};
+	vb.buffer = vertexBuffer;
+	vb.stride = stride;
+	vb.count = count;
+	vb.byteWidth = count * stride;
+	return vb;
 }
 
-ID3D11Buffer* RenderCommand::CreateIndexBuffer(WORD* indices, unsigned int count) const {
+comp::IndexBuffer RenderCommand::CreateIndexBuffer(WORD* indices, unsigned int count) const {
 	ID3D11Buffer* indexBuffer;
 
 	D3D11_BUFFER_DESC bd = {};
@@ -59,10 +64,13 @@ ID3D11Buffer* RenderCommand::CreateIndexBuffer(WORD* indices, unsigned int count
 		m_dxo.device->CreateBuffer(&bd, &sd, &indexBuffer)
 	);
 
-	return indexBuffer;
+	comp::IndexBuffer ib = {};
+	ib.buffer = indexBuffer;
+	ib.count = count;
+	return ib;
 }
 
-ID3D11Buffer* RenderCommand::CreateConstantBuffer(unsigned int byteWidth) const {
+comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const {
 	ID3D11Buffer* constantBuffer = nullptr;
 
 	D3D11_BUFFER_DESC bd = {};
@@ -74,7 +82,11 @@ ID3D11Buffer* RenderCommand::CreateConstantBuffer(unsigned int byteWidth) const 
 		m_dxo.device->CreateBuffer(&bd, nullptr, &constantBuffer)
 	);
 
-	return constantBuffer;
+	comp::ConstantBuffer cb = {};
+	cb.buffer = constantBuffer;
+	cb.slot = slot;
+	cb.byteWidth = byteWidth;
+	return cb;
 }
 
 std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR filePath) const {
@@ -120,13 +132,13 @@ ID3D11PixelShader* RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 	return pixelShader;
 }
 
-void RenderCommand::BindVertexBuffer(ID3D11Buffer* buffer, unsigned int stride) const {
+void RenderCommand::BindVertexBuffer(comp::VertexBuffer vb) const {
 	UINT offset = 0;
-	m_dxo.context->IASetVertexBuffers(0u, 1u, &buffer, &stride, &offset);
+	m_dxo.context->IASetVertexBuffers(0u, 1u, vb.buffer.GetAddressOf(), &vb.stride, &offset);
 }
 
-void RenderCommand::BindIndexBuffer(ID3D11Buffer* buffer) const {
-	m_dxo.context->IASetIndexBuffer(buffer, DXGI_FORMAT_R16_UINT, 0);
+void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {
+	m_dxo.context->IASetIndexBuffer(ib.buffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 }
 
 void RenderCommand::BindVertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout) {
@@ -137,8 +149,8 @@ void RenderCommand::BindVertexShader(ID3D11VertexShader* shader, ID3D11InputLayo
 	}
 }
 
-void RenderCommand::BindVSConstantBuffer(ID3D11Buffer* buffer, unsigned int slot) const {
-	m_dxo.context->VSSetConstantBuffers(slot, 1, &buffer);
+void RenderCommand::BindVSConstantBuffer(comp::ConstantBuffer cb) const {
+	m_dxo.context->VSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
 }
 
 void RenderCommand::BindPixelShader(ID3D11PixelShader* shader) {
@@ -148,20 +160,20 @@ void RenderCommand::BindPixelShader(ID3D11PixelShader* shader) {
 	}
 }
 
-void RenderCommand::BindPSConstantBuffer(ID3D11Buffer* buffer, unsigned int slot) const {
-	m_dxo.context->PSSetConstantBuffers(slot, 1, &buffer);
+void RenderCommand::BindPSConstantBuffer(comp::ConstantBuffer cb) const {
+	m_dxo.context->PSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
 }
 
-void RenderCommand::UpdateConstantBuffer(ID3D11Buffer* buffer, void* data, unsigned int byteWidth) const {
+void RenderCommand::UpdateConstantBuffer(comp::ConstantBuffer cb, void* data) const {
 	D3D11_MAPPED_SUBRESOURCE msr;
 	DX::ThrowIfFailed(CALL_INFO,
 		m_dxo.context->Map(
-			buffer, 0u,
+			cb.buffer.Get(), 0u,
 			D3D11_MAP_WRITE_DISCARD, 0u, &msr
 		)
 	);
-	memcpy(msr.pData, data, byteWidth);
-	m_dxo.context->Unmap(buffer, 0u);
+	memcpy(msr.pData, data, cb.byteWidth);
+	m_dxo.context->Unmap(cb.buffer.Get(), 0u);
 }
 
 void RenderCommand::Draw(unsigned int count) const {

@@ -137,12 +137,12 @@ unsigned int PrimitiveFactory::CreateBox(float width, float height) {
 	};
 
 	// Create Box
-	auto vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(Vertex));
-	auto indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
+	comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, ARRAYSIZE(vertices), sizeof(Vertex));
+	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
 	// Store data to an entity
 	auto entity = m_ctx.registry.create();
-	m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer, sizeof(Vertex), ARRAYSIZE(vertices), indexBuffer, ARRAYSIZE(indices));
+	m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer, indexBuffer);
 
 	return entity;
 }

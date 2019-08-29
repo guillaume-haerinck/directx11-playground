@@ -20,11 +20,11 @@ namespace exemple {
 			{ XMFLOAT2(0.5f, -0.5f) },
 			{ XMFLOAT2 (-0.5f, -0.5f) }
 		};
-		auto vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
+		comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
 
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer, sizeof(XMFLOAT2), ARRAYSIZE(vertices));
+		m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer);
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 	}
@@ -37,8 +37,8 @@ namespace exemple {
 			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			 m_ctx.rcommand->BindVertexShader(VShader.shader.Get(), VShader.layout.Get());
 			 m_ctx.rcommand->BindPixelShader(PShader.shader.Get());
-			 m_ctx.rcommand->BindVertexBuffer(mesh.vertexBuffer.Get(), mesh.VBStride);
-			 m_ctx.rcommand->Draw(mesh.VBCount);
+			 m_ctx.rcommand->BindVertexBuffer(mesh.vb);
+			 m_ctx.rcommand->Draw(mesh.vb.count);
 		});
 	}
 

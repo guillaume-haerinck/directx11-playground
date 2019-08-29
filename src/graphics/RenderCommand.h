@@ -1,6 +1,8 @@
 #pragma once
 
 #include "DXObjects.h"
+#include "components/graphics/Mesh.h"
+#include "components/graphics/Shader.h"
 
 // TODO keep track of bound objects with static data
 // TODO keep track of already created shaders
@@ -37,12 +39,12 @@ public:
 
 	/**
 	 * @param vertices - Array of data
-	 * @param byteWidth - Total size of the array in bytes
+	 * @param count - The number of elements in the array
 	 * @param stride - Size in bytes of one element of the array
 	 */
-	ID3D11Buffer* CreateVertexBuffer(void* vertices, unsigned int byteWidth, unsigned int stride) const;
-	ID3D11Buffer* CreateIndexBuffer(WORD* indices, unsigned int count) const;
-	ID3D11Buffer* CreateConstantBuffer(unsigned int byteWidth) const;
+	comp::VertexBuffer CreateVertexBuffer(void* vertices, unsigned int count, unsigned int stride) const;
+	comp::IndexBuffer CreateIndexBuffer(WORD* indices, unsigned int count) const;
+	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
 
 	std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* ied, unsigned int iedElementCount, LPCWSTR filePath) const;
 	ID3D11PixelShader* CreatePixelShader(LPCWSTR filePath) const;
@@ -51,23 +53,20 @@ public:
 	////////////////////////////////// BINDING ////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
-	// TODO take a component for each
-
-	void BindVertexBuffer(ID3D11Buffer* buffer, unsigned int stride) const;
-	void BindIndexBuffer(ID3D11Buffer* buffer) const;
+	void BindVertexBuffer(comp::VertexBuffer vb) const;
+	void BindIndexBuffer(comp::IndexBuffer ib) const;
 
 	void BindVertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout);
-	void BindVSConstantBuffer(ID3D11Buffer* buffer, unsigned int slot) const;
+	void BindVSConstantBuffer(comp::ConstantBuffer cb) const;
 
 	void BindPixelShader(ID3D11PixelShader* shader);
-	void BindPSConstantBuffer(ID3D11Buffer* buffer, unsigned int slot) const;
+	void BindPSConstantBuffer(comp::ConstantBuffer cb) const;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////// UPDATING ////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	
-	// TODO take a component and data
-	void UpdateConstantBuffer(ID3D11Buffer* buffer, void* data, unsigned int byteWidth) const;
+	void UpdateConstantBuffer(comp::ConstantBuffer cb, void* data) const;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////// DRAWING ////////////////////////////////

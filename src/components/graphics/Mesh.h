@@ -8,6 +8,24 @@ namespace comp {
 	/**
 	 * @brief
 	 */
+	struct VertexBuffer {
+		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
+		unsigned int stride;
+		unsigned int count;
+		unsigned int byteWidth;
+	};
+
+	/**
+	 * @brief
+	 */
+	struct IndexBuffer {
+		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
+		unsigned int count;
+	};
+
+	/**
+	 * @brief
+	 */
 	struct Texture {
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
@@ -17,11 +35,8 @@ namespace comp {
 	 * @brief
 	 */
 	struct Mesh {
-		Mesh(ID3D11Buffer* vertexBuffer, unsigned int vertexBufferStride, unsigned int vertexBufferCount,
-			ID3D11Buffer* indexBuffer = nullptr, unsigned int indexBufferCount = 0, 
-			Texture* textureArray = nullptr, unsigned int textureCount = 0) 
-			: vertexBuffer(vertexBuffer), VBStride(vertexBufferStride), VBCount(vertexBufferCount),
-			  indexBuffer(indexBuffer), IBCount(indexBufferCount)
+		Mesh(VertexBuffer vertexBuffer, IndexBuffer indexBuffer = {}, Texture* textureArray = nullptr, unsigned int textureCount = 0)
+			: vb(vertexBuffer), ib(indexBuffer)
 		{
 			if (textureArray != nullptr && textureCount > 0) {
 				textures.resize(textureCount);
@@ -31,11 +46,8 @@ namespace comp {
 			}
 		}
 
-		Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
-		unsigned int VBStride;
-		unsigned int VBCount;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
-		unsigned int IBCount;
+		VertexBuffer vb;
+		IndexBuffer ib;
 		std::vector<Texture> textures;
 	};
 }
