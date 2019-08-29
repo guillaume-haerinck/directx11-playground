@@ -3,6 +3,9 @@
 
 #include "DXException.h"
 
+ID3D11VertexShader* RenderCommand::m_lastVShaderBound = nullptr;
+ID3D11PixelShader* RenderCommand::m_lastPShaderBound = nullptr;
+
 RenderCommand::RenderCommand(DXObjects& dxObjects) : m_dxo(dxObjects)
 {
 	
@@ -126,17 +129,23 @@ void RenderCommand::BindIndexBuffer(ID3D11Buffer* buffer) const {
 	m_dxo.context->IASetIndexBuffer(buffer, DXGI_FORMAT_R16_UINT, 0);
 }
 
-void RenderCommand::BindVertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout) const {
-	m_dxo.context->IASetInputLayout(layout);
-	m_dxo.context->VSSetShader(shader, nullptr, 0u);
+void RenderCommand::BindVertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout) {
+	if (m_lastVShaderBound != shader) {
+		m_lastVShaderBound = shader;
+		m_dxo.context->IASetInputLayout(layout);
+		m_dxo.context->VSSetShader(shader, nullptr, 0u);
+	}
 }
 
 void RenderCommand::BindVSConstantBuffer(ID3D11Buffer* buffer, unsigned int slot) const {
 	m_dxo.context->VSSetConstantBuffers(slot, 1, &buffer);
 }
 
-void RenderCommand::BindPixelShader(ID3D11PixelShader* shader) const {
-	m_dxo.context->PSSetShader(shader, nullptr, 0u);
+void RenderCommand::BindPixelShader(ID3D11PixelShader* shader) {
+	if (m_lastPShaderBound != shader) {
+		m_lastPShaderBound = shader;
+		m_dxo.context->PSSetShader(shader, nullptr, 0u);
+	}
 }
 
 void RenderCommand::BindPSConstantBuffer(ID3D11Buffer* buffer, unsigned int slot) const {
@@ -153,4 +162,8 @@ void RenderCommand::UpdateConstantBuffer(ID3D11Buffer* buffer, void* data, unsig
 	);
 	memcpy(msr.pData, data, size);
 	m_dxo.context->Unmap(buffer, 0u);
+}
+
+void RenderCommand::Draw(unsigned int count) const {
+	m_dxo.context->Draw(count, 0u);
 }

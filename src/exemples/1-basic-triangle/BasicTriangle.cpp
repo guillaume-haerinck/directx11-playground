@@ -26,7 +26,7 @@ namespace exemple {
 
 		// Assign data to an entity
 		auto entity = registry.create();
-		registry.assign<comp::Mesh>(entity, vertexBuffer, sizeof(XMFLOAT2));
+		registry.assign<comp::Mesh>(entity, vertexBuffer, sizeof(XMFLOAT2), ARRAYSIZE(vertices));
 		registry.assign<comp::VertexShader>(entity, VSShader, inputLayout);
 		registry.assign<comp::PixelShader>(entity, PSShader);
 	}
@@ -35,12 +35,12 @@ namespace exemple {
 	}
 
 	void BasicTriangle::Update() {
-		registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>().each([&](auto& mesh, auto& VSShader, auto& PSShader) {
+		registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
+			.each([&](comp::Mesh& mesh, comp::VertexShader& VSShader, comp::PixelShader& PSShader) {
 			m_rcommand->BindVertexShader(VSShader.shader.Get(), VSShader.layout.Get());
 			m_rcommand->BindPixelShader(PSShader.shader.Get());
 			m_rcommand->BindVertexBuffer(mesh.vertexBuffer.Get(), mesh.VBStride);
-
-			m_dxo.context->Draw(3u, 0u);
+			m_rcommand->Draw(mesh.VBCount);
 		});
 	}
 

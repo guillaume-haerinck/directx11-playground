@@ -17,9 +17,11 @@ namespace comp {
 	 * @brief
 	 */
 	struct Mesh {
-		Mesh(ID3D11Buffer* vertexBuffer, unsigned int vertexBufferStride, ID3D11Buffer* indexBuffer = nullptr,
+		Mesh(ID3D11Buffer* vertexBuffer, unsigned int vertexBufferStride, unsigned int vertexBufferCount,
+			ID3D11Buffer* indexBuffer = nullptr, unsigned int indexBufferCount = 0, 
 			Texture* textureArray = nullptr, unsigned int textureCount = 0) 
-			: vertexBuffer(vertexBuffer), VBStride(vertexBufferStride), indexBuffer(indexBuffer) 
+			: vertexBuffer(vertexBuffer), VBStride(vertexBufferStride), VBCount(vertexBufferCount),
+			  indexBuffer(indexBuffer), IBCount(indexBufferCount)
 		{
 			if (textureArray != nullptr && textureCount > 0) {
 				textures.resize(textureCount);
@@ -31,7 +33,9 @@ namespace comp {
 
 		Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 		unsigned int VBStride;
+		unsigned int VBCount;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
+		unsigned int IBCount;
 		std::vector<Texture> textures;
 	};
 }
