@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "RotatingCube.h"
 
+#include "factories/PrimitiveFactory.h"
+#include "components/graphics/Shader.h"
+#include "components/graphics/Mesh.h"
+
 namespace exemple {
 	struct VSConstantBuffer0 {
 		XMFLOAT4X4 matVP;
@@ -11,15 +15,17 @@ namespace exemple {
 		XMFLOAT4 color[6];
 	};
 
-	RotatingCube::RotatingCube(DXObjects& dxObjects) : m_dxo(dxObjects)
-	{
+	RotatingCube::RotatingCube(Context& context) : m_ctx(context) {
+		PrimitiveFactory primFactory(context);
+
 		// Shader
-		m_shader = std::make_unique<Shader>(m_dxo, prim::InputElements, prim::InputElementCount, L"RotatingCubeVS.cso", L"RotatingCubePS.cso");
-		m_shader->AddVSConstantBuffer(sizeof(VSConstantBuffer0));
-		m_shader->AddPSConstantBuffer(sizeof(PSConstantBuffer0));
+		auto [VShader, inputLayout] = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"RotatingCubeVS.cso");
+		auto PShader = m_ctx.rcommand->CreatePixelShader(L"RotatingCubePS.cso");
+		auto VSCB0 = m_ctx.rcommand->CreateConstantBuffer((sizeof(VSConstantBuffer0)));
+		auto PSCB0 = m_ctx.rcommand->CreateConstantBuffer((sizeof(PSConstantBuffer0)));
 
 		// Update PSconstant buffer as it will not change
-		PSConstantBuffer0 psCB = {
+		PSConstantBuffer0 PSCB0data = {
 			XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
 			XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
 			XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
@@ -27,10 +33,14 @@ namespace exemple {
 			XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
 			XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
 		};
-		m_shader->UpdatePSConstantBuffer(0, &psCB);
+		m_ctx.rcommand->UpdateConstantBuffer(PSCB0, &PSCB0data, sizeof(PSCB0data));
 
-		m_vertexBuffer = std::make_unique<VertexBuffer>(m_dxo, m_box.GetVertices().data(), m_box.GetVertices().size(), prim::InputElementSize);
-		m_indexBuffer = std::make_unique<IndexBuffer>(m_dxo, m_box.GetIndices().data(), m_box.GetIndices().size());
+		// Save data to entity
+		auto entity = primFactory.CreateBox();
+		comp::ConstantBuffer VSCB0comp = { VSCB0, 0, sizeof(VSCB0) };
+		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout, &VSCB0comp, 1);
+		comp::ConstantBuffer PSCB0comp = { PSCB0, 0, sizeof(PSCB0) };
+		m_ctx.registry.assign<comp::PixelShader>(entity, PShader, &PSCB0comp, 1);
 	}
 
 	RotatingCube::~RotatingCube() {
@@ -39,8 +49,6 @@ namespace exemple {
 	void RotatingCube::Update() {
 		m_timer.Tick([&](){});
 
-		m_shader->Bind();
-
 		// DirectXMaths matrix are Row major and HLSL are Column major, so we must use the transpose matrix
 		XMMATRIX view = XMMatrixTranspose(
 			XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
@@ -48,18 +56,23 @@ namespace exemple {
 			XMMatrixTranslation(0.0f, 0.0f, 4.0f) *
 			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
 		);
+		VSConstantBuffer0 VSCB0data;
+		XMStoreFloat4x4(&VSCB0data.matVP, view);
+		XMStoreFloat4x4(&VSCB0data.matGeo, XMMatrixIdentity());
 
-		// Update VSconstant buffer
-		VSConstantBuffer0 vsCB;
-		XMStoreFloat4x4(&vsCB.matVP, view);
-		XMStoreFloat4x4(&vsCB.matGeo, XMMatrixIdentity());
-		m_shader->UpdateVSConstantBuffer(0, &vsCB);
+		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
+			.each([&, VSCB0data](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+			m_ctx.rcommand->BindVertexShader(VShader.shader.Get(), VShader.layout.Get());
+			m_ctx.rcommand->BindVSConstantBuffer(VShader.constantBuffers.at(0).buffer.Get(), VShader.constantBuffers.at(0).slot);
+			m_ctx.rcommand->UpdateConstantBuffer(VShader.constantBuffers.at(0).buffer.Get(), (void*) &VSCB0data, VShader.constantBuffers.at(0).byteWidth);
 
-		m_vertexBuffer->Bind();
-		m_indexBuffer->Bind();
+			m_ctx.rcommand->BindPixelShader(PShader.shader.Get());
+			m_ctx.rcommand->BindPSConstantBuffer(PShader.constantBuffers.at(0).buffer.Get(), PShader.constantBuffers.at(0).slot);
 
-		// Draw the cube
-		m_dxo.context->DrawIndexed(m_indexBuffer->GetCount(), 0u, 0);
+			m_ctx.rcommand->BindVertexBuffer(mesh.vertexBuffer.Get(), mesh.VBStride);
+			m_ctx.rcommand->BindIndexBuffer(mesh.indexBuffer.Get());
+			m_ctx.rcommand->DrawIndexed(mesh.IBCount);
+		});
 	}
 
 	void RotatingCube::ImGuiUpdate() {

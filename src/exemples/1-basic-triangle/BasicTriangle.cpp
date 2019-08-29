@@ -6,15 +6,13 @@
 #include "components/graphics/Shader.h"
 
 namespace exemple {
-	BasicTriangle::BasicTriangle(DXObjects& dxObjects) : m_dxo(dxObjects) {
-		m_rcommand = std::make_unique<RenderCommand>(dxObjects);
-
+	BasicTriangle::BasicTriangle(Context& context) : m_ctx(context) {
 		// Shader
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		auto [VSShader, inputLayout] = m_rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
-		auto PSShader = m_rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
+		auto [VShader, inputLayout] = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
+		auto PShader = m_ctx.rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
 
 		// Vertex buffer
 		XMFLOAT2 vertices[] = {
@@ -22,25 +20,25 @@ namespace exemple {
 			{ XMFLOAT2(0.5f, -0.5f) },
 			{ XMFLOAT2 (-0.5f, -0.5f) }
 		};
-		auto vertexBuffer = m_rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
+		auto vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
 
 		// Assign data to an entity
-		auto entity = registry.create();
-		registry.assign<comp::Mesh>(entity, vertexBuffer, sizeof(XMFLOAT2), ARRAYSIZE(vertices));
-		registry.assign<comp::VertexShader>(entity, VSShader, inputLayout);
-		registry.assign<comp::PixelShader>(entity, PSShader);
+		auto entity = m_ctx.registry.create();
+		m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer, sizeof(XMFLOAT2), ARRAYSIZE(vertices));
+		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout);
+		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 	}
 
 	BasicTriangle::~BasicTriangle() {
 	}
 
 	void BasicTriangle::Update() {
-		registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
-			.each([&](comp::Mesh& mesh, comp::VertexShader& VSShader, comp::PixelShader& PSShader) {
-			m_rcommand->BindVertexShader(VSShader.shader.Get(), VSShader.layout.Get());
-			m_rcommand->BindPixelShader(PSShader.shader.Get());
-			m_rcommand->BindVertexBuffer(mesh.vertexBuffer.Get(), mesh.VBStride);
-			m_rcommand->Draw(mesh.VBCount);
+		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
+			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+			 m_ctx.rcommand->BindVertexShader(VShader.shader.Get(), VShader.layout.Get());
+			 m_ctx.rcommand->BindPixelShader(PShader.shader.Get());
+			 m_ctx.rcommand->BindVertexBuffer(mesh.vertexBuffer.Get(), mesh.VBStride);
+			 m_ctx.rcommand->Draw(mesh.VBCount);
 		});
 	}
 

@@ -225,7 +225,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\core\Context.cpp" />
     <ClCompile Include="src\exemples\1-basic-triangle\BasicTriangle.cpp" />
+    <ClCompile Include="src\exemples\2-rotating-cube\RotatingCube.cpp" />
+    <ClCompile Include="src\factories\PrimitiveFactory.cpp" />
     <ClCompile Include="src\graphics\DXObjects.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
     <ClCompile Include="src\App.cpp" />
@@ -303,8 +306,11 @@
     <ClInclude Include="src\components\graphics\Mesh.h" />
     <ClInclude Include="src\components\graphics\Model.h" />
     <ClInclude Include="src\components\graphics\Shader.h" />
+    <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\exemples\1-basic-triangle\BasicTriangle.h" />
+    <ClInclude Include="src\exemples\2-rotating-cube\RotatingCube.h" />
     <ClInclude Include="src\exemples\IExemple.h" />
+    <ClInclude Include="src\factories\PrimitiveFactory.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />
     <ClInclude Include="src\App.h" />

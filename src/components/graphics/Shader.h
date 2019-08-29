@@ -9,8 +9,9 @@ namespace comp {
 	 * @brief
 	 */
 	struct ConstantBuffer {
-		ID3D11Buffer* buffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
 		unsigned int slot;
+		unsigned int byteWidth;
 		// TODO keep track of the layout
 	};
 

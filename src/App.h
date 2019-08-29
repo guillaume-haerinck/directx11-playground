@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/Context.h"
 #include "graphics/DXObjects.h"
 #include "graphics/Renderer.h"
 #include "graphics/RenderCommand.h"
@@ -31,8 +32,7 @@ private:
 	const char* m_className;
 
 	DXObjects m_dxo;
+	Context m_ctx;
 	ID3D11Debug* m_debugDevice;
-	std::unique_ptr<Renderer> m_renderer;
-	std::unique_ptr<RenderCommand> m_rcommand;
 	std::unique_ptr<IExemple> m_activeExemple;
 };

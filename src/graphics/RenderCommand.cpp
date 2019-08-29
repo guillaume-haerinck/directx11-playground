@@ -152,7 +152,7 @@ void RenderCommand::BindPSConstantBuffer(ID3D11Buffer* buffer, unsigned int slot
 	m_dxo.context->PSSetConstantBuffers(slot, 1, &buffer);
 }
 
-void RenderCommand::UpdateConstantBuffer(ID3D11Buffer* buffer, void* data, unsigned int size) const {
+void RenderCommand::UpdateConstantBuffer(ID3D11Buffer* buffer, void* data, unsigned int byteWidth) const {
 	D3D11_MAPPED_SUBRESOURCE msr;
 	DX::ThrowIfFailed(CALL_INFO,
 		m_dxo.context->Map(
@@ -160,10 +160,14 @@ void RenderCommand::UpdateConstantBuffer(ID3D11Buffer* buffer, void* data, unsig
 			D3D11_MAP_WRITE_DISCARD, 0u, &msr
 		)
 	);
-	memcpy(msr.pData, data, size);
+	memcpy(msr.pData, data, byteWidth);
 	m_dxo.context->Unmap(buffer, 0u);
 }
 
 void RenderCommand::Draw(unsigned int count) const {
 	m_dxo.context->Draw(count, 0u);
+}
+
+void RenderCommand::DrawIndexed(unsigned int count) const {
+	m_dxo.context->DrawIndexed(count, 0u, 0);
 }
