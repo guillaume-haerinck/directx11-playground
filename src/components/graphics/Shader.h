@@ -19,13 +19,13 @@ namespace comp {
 	 * @brief
 	 */
 	struct VertexShader {
-		VertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout, ConstantBuffer* CBuffers = nullptr, unsigned int CBufferCount = 0) 
+		VertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout, ConstantBuffer* CBufferArray = nullptr, unsigned int CBufferCount = 0) 
 			: shader(shader), layout(layout)
 		{
-			if (CBuffers != nullptr && CBufferCount > 0) {
+			if (CBufferArray != nullptr && CBufferCount > 0) {
 				constantBuffers.resize(CBufferCount);
 				for (int i = 0; i < CBufferCount; i++) {
-					constantBuffers.at(i) = CBuffers[i];
+					constantBuffers.at(i) = CBufferArray[i];
 				}
 			}
 		}
@@ -39,13 +39,13 @@ namespace comp {
 	 * @brief
 	 */
 	struct PixelShader {
-		PixelShader(ID3D11PixelShader* shader, ConstantBuffer* CBuffers = nullptr, unsigned int CBufferCount = 0)
+		PixelShader(ID3D11PixelShader* shader, ConstantBuffer* CBufferArray = nullptr, unsigned int CBufferCount = 0)
 			: shader(shader)
 		{
-			if (CBuffers != nullptr && CBufferCount > 0) {
+			if (CBufferArray != nullptr && CBufferCount > 0) {
 				constantBuffers.resize(CBufferCount);
 				for (int i = 0; i < CBufferCount; i++) {
-					constantBuffers.at(i) = CBuffers[i];
+					constantBuffers.at(i) = CBufferArray[i];
 				}
 			}
 		}
