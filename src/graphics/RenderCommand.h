@@ -37,10 +37,33 @@ public:
 	 * @param stride - Size in bytes of one element of the array
 	 */
 	comp::VertexBuffer CreateVertexBuffer(void* vertices, unsigned int count, unsigned int stride) const;
+
+	/**
+	 * @param indices - Array of data
+	 * @param count - The number of elements in the array
+	 */
 	comp::IndexBuffer CreateIndexBuffer(WORD* indices, unsigned int count) const;
+
+	/**
+	 * @param slot - The register in the shader that the buffer will be bound to (c0 or c1; etc)
+	 * @param byteWidth - The total size in bytes of the buffer
+	 */
 	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
 
+	/**
+	 * @param iedArray - Input layout of the shader
+	 * @param iedElementCount - Number of elements inside of the iedArray
+	 * @param filepath - The relative path from the .exe to the .cso containing the shader
+	 *
+	 * @exemple auto [VShader, layout] = CreateVertexShader(ied, ARRAYSIZE(ied), L"myshader.cso")
+	 */
 	std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const;
+
+	/**
+	 * @param filePath - The relative path from the .exe to the .cso containing the shader
+	 *
+	 * @exemple CreatePixelShader(L"myShader.cso")
+	 */
 	ID3D11PixelShader* CreatePixelShader(LPCWSTR filePath) const;
 
 	///////////////////////////////////////////////////////////////////////////
@@ -63,8 +86,8 @@ public:
 	void UpdateConstantBuffer(comp::ConstantBuffer cb, void* data) const;
 
 	///////////////////////////////////////////////////////////////////////////
-	///////////////////////////////// DRAWING ////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////
+	///////////////////////////////// DRAWING /////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
 	void Draw(unsigned int count) const;
 	void DrawIndexed(unsigned int count) const;
