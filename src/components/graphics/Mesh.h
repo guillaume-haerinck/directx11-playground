@@ -26,9 +26,11 @@ namespace comp {
 	/**
 	 * @brief
 	 */
+	// TODO  handle slot & texture array
 	struct Texture {
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
+		unsigned int slot;
 	};
 
 	/**

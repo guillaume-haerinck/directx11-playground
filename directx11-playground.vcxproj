@@ -228,6 +228,7 @@
     <ClCompile Include="src\core\Context.cpp" />
     <ClCompile Include="src\exemples\1-basic-triangle\BasicTriangle.cpp" />
     <ClCompile Include="src\exemples\2-rotating-cube\RotatingCube.cpp" />
+    <ClCompile Include="src\exemples\3-textured-primitives\TexturedPrimitives.cpp" />
     <ClCompile Include="src\factories\PrimitiveFactory.cpp" />
     <ClCompile Include="src\graphics\DXObjects.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\exemples\1-basic-triangle\BasicTriangle.h" />
     <ClInclude Include="src\exemples\2-rotating-cube\RotatingCube.h" />
+    <ClInclude Include="src\exemples\3-textured-primitives\TexturedPrimitives.h" />
     <ClInclude Include="src\exemples\IExemple.h" />
     <ClInclude Include="src\factories\PrimitiveFactory.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />

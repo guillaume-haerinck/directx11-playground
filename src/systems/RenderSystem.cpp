@@ -16,6 +16,12 @@ void RenderSystem::Update() {
 		m_ctx.rcommand->BindPixelShader(PShader);
 		m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 
+		for (auto texture : mesh.textures) {
+			// TODO handle texture slots
+			// TODO handle layering to draw the objects with the same textures at the same time
+			m_ctx.rcommand->BindTexture(texture);
+		}
+
 		if (mesh.ib.count > 0) {
 			m_ctx.rcommand->BindIndexBuffer(mesh.ib);
 			m_ctx.rcommand->DrawIndexed(mesh.ib.count);

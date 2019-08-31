@@ -1,15 +1,13 @@
 #include "pch.h"
 #include "RenderCommand.h"
 
+#include <microsoft-wic-texture-loader/WICTextureLoader.h>
+
 #include "DXException.h"
 
-ID3D11VertexShader* RenderCommand::m_lastVShaderBound = nullptr;
-ID3D11PixelShader* RenderCommand::m_lastPShaderBound = nullptr;
-
-RenderCommand::RenderCommand(DXObjects& dxObjects) : m_dxo(dxObjects)
-{
-	
-}
+RenderCommand::RenderCommand(DXObjects& dxObjects) 
+	: m_dxo(dxObjects), m_lastPShaderBound(nullptr), m_lastVShaderBound(nullptr)
+{}
 
 void RenderCommand::Clear() const {
 	const float color[] = { 0.0f, 0.5f, 1.0f, 1.0f };
@@ -89,6 +87,32 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsi
 	return cb;
 }
 
+comp::Texture RenderCommand::CreateTexture(LPCWSTR filepath) const {
+	// Create resource
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
+	Microsoft::WRL::ComPtr<ID3D11Resource> res;
+	DX::ThrowIfFailed(CALL_INFO,
+		CreateWICTextureFromFile(m_dxo.device.Get(), m_dxo.context.Get(), filepath, res.GetAddressOf(), srv.GetAddressOf())
+	);
+
+	// Set sampler state
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
+	D3D11_SAMPLER_DESC sdesc = {};
+	sdesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sdesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	DX::ThrowIfFailed(CALL_INFO,
+		m_dxo.device->CreateSamplerState(&sdesc, &sampler)
+	);
+
+	// Return result
+	comp::Texture texture = {};
+	texture.sampler = sampler;
+	texture.srv = srv;
+	return texture;
+}
+
 std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const {
 	ID3D11VertexShader* vertexShader;
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
@@ -139,6 +163,11 @@ void RenderCommand::BindVertexBuffer(comp::VertexBuffer vb) const {
 
 void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {
 	m_dxo.context->IASetIndexBuffer(ib.buffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+}
+
+void RenderCommand::BindTexture(comp::Texture texture) const {
+	m_dxo.context->PSSetShaderResources(0u, 1u, texture.srv.GetAddressOf());
+	m_dxo.context->PSSetSamplers(0, 1, texture.sampler.GetAddressOf());
 }
 
 void RenderCommand::BindVertexShader(comp::VertexShader vs) {

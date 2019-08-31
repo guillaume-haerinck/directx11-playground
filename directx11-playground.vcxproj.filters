@@ -89,6 +89,9 @@
     <ClCompile Include="src\exemples\2-rotating-cube\RotatingCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\exemples\3-textured-primitives\TexturedPrimitives.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h">
@@ -290,6 +293,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\exemples\2-rotating-cube\RotatingCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exemples\3-textured-primitives\TexturedPrimitives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

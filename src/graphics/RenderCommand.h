@@ -51,6 +51,11 @@ public:
 	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
 
 	/**
+	 * @param filepath - The relative path from the .exe to the image (.png or .jpg)
+	 */
+	comp::Texture CreateTexture(LPCWSTR filepath) const;
+
+	/**
 	 * @param iedArray - Input layout of the shader
 	 * @param iedElementCount - Number of elements inside of the iedArray
 	 * @param filepath - The relative path from the .exe to the .cso containing the shader
@@ -73,6 +78,8 @@ public:
 	void BindVertexBuffer(comp::VertexBuffer vb) const;
 	void BindIndexBuffer(comp::IndexBuffer ib) const;
 
+	void BindTexture(comp::Texture texture) const;
+
 	void BindVertexShader(comp::VertexShader vs);
 	void BindPixelShader(comp::PixelShader ps);
 
@@ -92,6 +99,6 @@ public:
 private:
 	DXObjects& m_dxo;
 	
-	static ID3D11VertexShader* m_lastVShaderBound;
-	static ID3D11PixelShader* m_lastPShaderBound;
+	ID3D11VertexShader* m_lastVShaderBound;
+	ID3D11PixelShader* m_lastPShaderBound;
 };
