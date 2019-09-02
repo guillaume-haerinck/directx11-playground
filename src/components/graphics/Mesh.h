@@ -23,7 +23,7 @@ namespace comp {
 	 * @brief
 	 */
 	struct Mesh {
-		Mesh(VertexBuffer vb, IndexBuffer ib = {}) : vb(vb), ib(ib) {}
+		Mesh(VertexBuffer vb = { nullptr, 0, 0, 0 }, IndexBuffer ib = { nullptr, 0 }) : vb(vb), ib(ib) {}
 
 		VertexBuffer vb;
 		IndexBuffer ib;

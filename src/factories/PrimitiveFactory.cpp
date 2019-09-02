@@ -78,13 +78,15 @@ comp::Mesh PrimitiveFactory::CreateUVSphere(float radius, float sectorCount, flo
 	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices.data(), indices.size());
 
 	// Store data
-	comp::Mesh mesh(vertexBuffer, indexBuffer);
+	comp::Mesh mesh = {};
+	mesh.ib = indexBuffer;
+	mesh.vb = vertexBuffer;
 	return mesh;
 }
 
 comp::Mesh PrimitiveFactory::CreateIcoSphere(float radius, unsigned int subdivisionCount) {
-	comp::VertexBuffer vb = {};
-	return comp::Mesh(vb);
+	comp::Mesh mesh = {};
+	return mesh;
 }
 
 comp::Mesh PrimitiveFactory::CreateBox(float width, float height) {
@@ -147,7 +149,9 @@ comp::Mesh PrimitiveFactory::CreateBox(float width, float height) {
 	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
 	// Store data
-	comp::Mesh mesh(vertexBuffer, indexBuffer);
+	comp::Mesh mesh = {};
+	mesh.ib = indexBuffer;
+	mesh.vb = vertexBuffer;
 	return mesh;
 }
 
@@ -200,6 +204,8 @@ comp::Mesh PrimitiveFactory::CreateIcosahedron(float radius) {
 	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
 	// Store data
-	comp::Mesh mesh(vertexBuffer, indexBuffer);
+	comp::Mesh mesh = {};
+	mesh.ib = indexBuffer;
+	mesh.vb = vertexBuffer;
 	return mesh;
 }
