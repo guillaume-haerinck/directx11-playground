@@ -1,21 +1,8 @@
-# DirectX 11 Playground
+# DirectX 11 ECS Playground
 
-Small DirectX software created to learn real-time rendering with this API before delving deeper with Vulkan and DirectX 12.
+Small DirectX renderer with an Entity Component System architecture.
 
 **DISCLAIMER** : DirectX is a Microsoft API, so this project is Windows OS only, and must be built with Visual studio.
-
-## Status
-
-- [x] Project setup
-- [x] Window creation
-- [x] Init DirectX device
-- [x] App abstraction
-- [x] Basic triangle
-- [x] ImGui
-- [x] Shader abstaction
-- [x] Sandbox states
-- [ ] Buffer classes
-- [ ] Renderer
 
 ## Based on
 
