@@ -92,6 +92,9 @@
     <ClCompile Include="src\exemples\3-textured-primitives\TexturedPrimitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\components\graphics\GraphicsComponents.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h">
@@ -281,9 +284,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\components\graphics\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\graphics\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\factories\PrimitiveFactory.h">

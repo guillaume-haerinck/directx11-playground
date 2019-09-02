@@ -225,6 +225,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\components\graphics\GraphicsComponents.cpp" />
     <ClCompile Include="src\core\Context.cpp" />
     <ClCompile Include="src\exemples\1-basic-triangle\BasicTriangle.cpp" />
     <ClCompile Include="src\exemples\2-rotating-cube\RotatingCube.cpp" />
@@ -305,7 +306,6 @@
     <ClInclude Include="src\components\graphics\Layer.h" />
     <ClInclude Include="src\components\graphics\Material.h" />
     <ClInclude Include="src\components\graphics\Mesh.h" />
-    <ClInclude Include="src\components\graphics\Model.h" />
     <ClInclude Include="src\components\graphics\Shader.h" />
     <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\exemples\1-basic-triangle\BasicTriangle.h" />
