@@ -1,5 +1,9 @@
 #include "pch.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include "App.h"
 #include "graphics/DXException.h"
 
@@ -31,6 +35,7 @@ int CALLBACK WinMain(
 			debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 		}
 
+		_CrtDumpMemoryLeaks();
 		return static_cast<int>(msg.wParam);
 
 	} catch (const DXException& e) {

@@ -2,8 +2,6 @@
 
 Small DirectX renderer with an Entity Component System architecture.
 
-**DISCLAIMER** : DirectX is a Microsoft API, so this project is Windows OS only, and must be built with Visual studio.
-
 ## Based on
 
 ### Youtube tutorials
@@ -19,6 +17,7 @@ Small DirectX renderer with an Entity Component System architecture.
 ### Repos
 
 - [DirectX SDK samples](https://github.com/walbourn/directx-sdk-samples/tree/master/Direct3D11Tutorials)
+- [gltf DXViewer](https://github.com/microsoft/glTF-DXViewer)
 
 ### Books
 

@@ -19,6 +19,9 @@ namespace comp {
 	 */
 	struct PBRMaterial {
 		std::vector<Texture> textures;
+		XMFLOAT3 baseColor;
+		float metalicness;
+		float roughness;
 	};
 
 	enum PhongTexSlot {
