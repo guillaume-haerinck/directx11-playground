@@ -4,8 +4,7 @@
 #include "graphics/DXException.h"
 #include "factories/PrimitiveFactory.h"
 #include "systems/RenderSystem.h"
-
-
+#include "components/graphics/Material.h"
 
 namespace exemple {
 	struct VSConstantBuffer0 {
@@ -16,27 +15,30 @@ namespace exemple {
 	TexturedPrimitives::TexturedPrimitives(Context& context) : m_ctx(context) {
 		// Init
 		PrimitiveFactory primFactory(context);
-		m_systems.push_back(std::make_unique<RenderSystem>(context));
+		auto entity = m_ctx.registry.create();
 
 		// Shader
 		auto [VShader, inputLayout] = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"TexturedPrimitivesVS.cso");
 		auto PShader = m_ctx.rcommand->CreatePixelShader(L"TexturedPrimitivesPS.cso");
 		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
-
-		// Other data
-		auto texture = m_ctx.rcommand->CreateTexture(L"res/textures/test.jpg");
-		auto mesh = primFactory.CreateUVSphere();
-		mesh.textures.push_back(texture);
-
-		// Create entity
-		auto entity = m_ctx.registry.create();
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout, &m_VSCB0, 1);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+
+		// Material
+		comp::PhongMaterial material = {};
+		auto texture = m_ctx.rcommand->CreateTexture(L"res/textures/test.jpg");
+		texture.slot = comp::PhongTexSlot::DIFFUSE;
+		material.textures.push_back(texture);
+		m_ctx.registry.assign<comp::PhongMaterial>(entity, material);
+
+		// Mesh
+		auto mesh = primFactory.CreateUVSphere();
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 	}
 
 	TexturedPrimitives::~TexturedPrimitives() {
 	}
+
 	void TexturedPrimitives::Update() {
 		m_timer.Tick([&]() {});
 
@@ -54,9 +56,26 @@ namespace exemple {
 		m_ctx.rcommand->UpdateConstantBuffer(m_VSCB0, &VSCB0data);
 
 		// Update systems
-		for (int i = 0; i < m_systems.size(); i++) {
-			m_systems.at(i)->Update();
-		}
+		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader, comp::PhongMaterial>()
+			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader, comp::PhongMaterial& material) {
+			m_ctx.rcommand->BindVertexShader(VShader);
+			m_ctx.rcommand->BindPixelShader(PShader);
+			m_ctx.rcommand->BindVertexBuffer(mesh.vb);
+
+			for (auto texture : material.textures) {
+				// TODO handle texture slots
+				// TODO handle layering to draw the objects with the same textures at the same time
+				m_ctx.rcommand->BindTexture(texture);
+			}
+
+			if (mesh.ib.count > 0) {
+				m_ctx.rcommand->BindIndexBuffer(mesh.ib);
+				m_ctx.rcommand->DrawIndexed(mesh.ib.count);
+			}
+			else {
+				m_ctx.rcommand->Draw(mesh.vb.count);
+			}
+		});
 	}
 
 	void TexturedPrimitives::ImGuiUpdate() {

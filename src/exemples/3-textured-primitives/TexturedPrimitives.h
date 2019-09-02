@@ -3,7 +3,6 @@
 #include "exemples/IExemple.h"
 #include "core/StepTimer.h"
 #include "core/Context.h"
-#include "systems/ISystem.h"
 
 namespace exemple {
 	class TexturedPrimitives : public IExemple {
@@ -18,7 +17,6 @@ namespace exemple {
 		DX::StepTimer m_timer;
 		Context& m_ctx;
 		comp::ConstantBuffer m_VSCB0;
-		std::vector<std::unique_ptr<ISystem>> m_systems;
 	};
 };
 

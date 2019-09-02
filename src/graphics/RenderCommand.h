@@ -3,6 +3,7 @@
 #include "DXObjects.h"
 #include "components/graphics/Mesh.h"
 #include "components/graphics/Shader.h"
+#include "components/graphics/Material.h"
 
 // TODO keep track of already created shaders
 

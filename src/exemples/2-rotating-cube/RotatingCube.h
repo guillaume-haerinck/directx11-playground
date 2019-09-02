@@ -20,6 +20,5 @@ namespace exemple {
 		DX::StepTimer m_timer;
 		Context& m_ctx;
 		comp::ConstantBuffer m_VSCB0;
-		std::vector<std::unique_ptr<ISystem>> m_systems;
 	};
 }

@@ -22,30 +22,17 @@ namespace comp {
 	/**
 	 * @brief
 	 */
-	// TODO  handle slot & texture array
-	struct Texture {
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
-		Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
-		unsigned int slot;
+	struct Mesh {
+		Mesh(VertexBuffer vb, IndexBuffer ib = {}) : vb(vb), ib(ib) {}
+
+		VertexBuffer vb;
+		IndexBuffer ib;
 	};
 
 	/**
 	 * @brief
 	 */
-	struct Mesh {
-		Mesh(VertexBuffer vertexBuffer, IndexBuffer indexBuffer = {}, Texture* textureArray = nullptr, unsigned int textureCount = 0)
-			: vb(vertexBuffer), ib(indexBuffer)
-		{
-			if (textureArray != nullptr && textureCount > 0) {
-				textures.resize(textureCount);
-				for (int i = 0; i < textureCount; i++) {
-					textures.at(i) = textureArray[i];
-				}
-			}
-		}
-
-		VertexBuffer vb;
-		IndexBuffer ib;
-		std::vector<Texture> textures;
+	struct Meshes {
+		std::vector<Mesh> meshes;
 	};
 }

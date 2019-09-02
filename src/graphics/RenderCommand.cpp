@@ -166,8 +166,8 @@ void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {
 }
 
 void RenderCommand::BindTexture(comp::Texture texture) const {
-	m_dxo.context->PSSetShaderResources(0u, 1u, texture.srv.GetAddressOf());
-	m_dxo.context->PSSetSamplers(0, 1, texture.sampler.GetAddressOf());
+	m_dxo.context->PSSetShaderResources(texture.slot, 1u, texture.srv.GetAddressOf());
+	m_dxo.context->PSSetSamplers(texture.slot, 1, texture.sampler.GetAddressOf());
 }
 
 void RenderCommand::BindVertexShader(comp::VertexShader vs) {

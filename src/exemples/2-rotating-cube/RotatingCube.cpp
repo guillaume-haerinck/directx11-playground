@@ -18,7 +18,6 @@ namespace exemple {
 	RotatingCube::RotatingCube(Context& context) : m_ctx(context) {
 		// Init
 		PrimitiveFactory primFactory(context);
-		m_systems.push_back(std::make_unique<RenderSystem>(context));
 
 		// Shader
 		auto [VShader, inputLayout] = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"RotatingCubeVS.cso");
@@ -67,9 +66,16 @@ namespace exemple {
 		m_ctx.rcommand->UpdateConstantBuffer(m_VSCB0, &VSCB0data);
 
 		// Update systems
-		for (int i = 0; i < m_systems.size(); i++) {
-			m_systems.at(i)->Update();
-		}
+		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
+			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+			m_ctx.rcommand->BindVertexShader(VShader);
+			m_ctx.rcommand->BindPixelShader(PShader);
+
+			m_ctx.rcommand->BindVertexBuffer(mesh.vb);
+			m_ctx.rcommand->BindIndexBuffer(mesh.ib);
+
+			m_ctx.rcommand->DrawIndexed(mesh.ib.count);
+		});
 	}
 
 	void RotatingCube::ImGuiUpdate() {
