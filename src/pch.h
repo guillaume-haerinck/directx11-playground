@@ -33,6 +33,7 @@
 #include <vector>
 #include <string>
 #include <stdint.h>
+#include <tuple>
 
 // DirectX
 #include <d3d11_1.h>
@@ -48,3 +49,4 @@ using namespace DirectX;
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx11.h"
 #include "imgui/imgui_impl_win32.h"
+#include "entt/entt.hpp"

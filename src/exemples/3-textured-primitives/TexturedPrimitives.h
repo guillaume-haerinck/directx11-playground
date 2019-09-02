@@ -2,15 +2,13 @@
 
 #include "exemples/IExemple.h"
 #include "core/StepTimer.h"
-#include "graphics/DXObjects.h"
-#include "graphics/Shader.h"
-#include "graphics/Buffer.h"
-#include "factories/PrimitiveFactory.h"
+#include "core/Context.h"
+#include "systems/ISystem.h"
 
 namespace exemple {
 	class TexturedPrimitives : public IExemple {
 	public:
-		TexturedPrimitives(DXObjects& dxObjects);
+		TexturedPrimitives(Context& context);
 		virtual ~TexturedPrimitives();
 
 		virtual void Update() override;
@@ -18,14 +16,9 @@ namespace exemple {
 
 	private:
 		DX::StepTimer m_timer;
-		DXObjects& m_dxo;
-		std::unique_ptr<Shader> m_shader;
-		std::unique_ptr<IndexBuffer> m_indexBuffer;
-		std::unique_ptr<VertexBuffer> m_vertexBuffer;
-
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_srv;
-		Microsoft::WRL::ComPtr<ID3D11SamplerState> m_sampler;
-		prim::UVSphere m_sphere;
+		Context& m_ctx;
+		comp::ConstantBuffer m_VSCB0;
+		std::vector<std::unique_ptr<ISystem>> m_systems;
 	};
 };
 

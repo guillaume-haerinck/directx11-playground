@@ -7,7 +7,6 @@
 #include "exemples/1-basic-triangle/BasicTriangle.h"
 #include "exemples/2-rotating-cube/RotatingCube.h"
 #include "exemples/3-textured-primitives/TexturedPrimitives.h"
-#include "exemples/4-model-loading/ModelLoading.h"
 
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -31,9 +30,8 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initDirectX11();
 	initImGui();
 
-	m_renderer = std::make_unique<Renderer>(m_dxo);
-	m_rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_dxo);
+	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
+	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_ctx);
 }
 
 App::~App() {
@@ -45,7 +43,7 @@ App::~App() {
 }
 
 void App::Update(float dt) {
-	m_rcommand->Clear();
+	m_ctx.rcommand->Clear();
 
 	// Update GUI
 	{
@@ -63,18 +61,16 @@ void App::Update(float dt) {
 	
 	// Update Geometry
 	{
-		m_renderer->BeginScene();
 		m_activeExemple->Update();
 	}
 	
 	// Render
 	{
-		m_renderer->EndScene();
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	m_rcommand->Swap();
+	m_ctx.rcommand->Swap();
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -145,8 +141,7 @@ void App::initDirectX11() {
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	D3D_FEATURE_LEVEL featureLevels[] =
-	{
+	D3D_FEATURE_LEVEL featureLevels[] = {
 		D3D_FEATURE_LEVEL_11_1
 	};
 	UINT numFeatureLevels = ARRAYSIZE(featureLevels);

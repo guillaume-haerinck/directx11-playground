@@ -1,9 +1,8 @@
 #pragma once
 
 #include "exemples/IExemple.h"
-#include "graphics/DXObjects.h"
-#include "graphics/Shader.h"
-#include "graphics/Buffer.h"
+#include "core/Context.h"
+#include "graphics/RenderCommand.h"
 
 namespace exemple {
 	/**
@@ -11,15 +10,13 @@ namespace exemple {
 	 */
 	class BasicTriangle : public IExemple {
 	public:
-		BasicTriangle(DXObjects& dxObjects);
+		BasicTriangle(Context& context);
 		virtual ~BasicTriangle();
 
 		virtual void Update() override;
 		virtual void ImGuiUpdate() override;
 
 	private:
-		DXObjects& m_dxo;
-		std::unique_ptr<Shader> m_shader;
-		std::unique_ptr<VertexBuffer> m_vertexBuffer;
+		Context& m_ctx;
 	};
 }
