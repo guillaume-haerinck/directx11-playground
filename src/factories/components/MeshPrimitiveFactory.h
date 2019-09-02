@@ -5,10 +5,10 @@
 /**
  * @brief Creates primitive Mesh components
  */
-class PrimitiveFactory {
+class MeshPrimitiveFactory {
 public:
-	PrimitiveFactory(Context& context);
-	~PrimitiveFactory();
+	MeshPrimitiveFactory(Context& context);
+	~MeshPrimitiveFactory();
 
 	struct Vertex {
 		XMFLOAT3 position;

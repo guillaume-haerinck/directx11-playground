@@ -5,16 +5,23 @@
 #include <GLTFSDK/GLBResourceReader.h>
 #include <GLTFSDK/Deserialize.h>
 
+#include "components/graphics/Model.h"
+
 /**
  * @brief
  */
 class ModelFactory {
 public:
-	ModelFactory(std::filesystem::path gltfFilePath);
+	ModelFactory();
 	~ModelFactory();
 
-private:
+	/**
+	 * @brief
+	 */
+	comp::Model CreateModel(std::filesystem::path gltfFilePat);
 
+private:
+	Microsoft::glTF::Document ReadGltf(std::filesystem::path gltfFilePat);
 };
 
 /**
@@ -26,7 +33,6 @@ public:
 	 * @param basePath - The absolute path (without the filename)
 	 */
 	StreamReader(std::filesystem::path basePath);
-	virtual ~StreamReader();
 
 	/**
 	 * @brief Resolves the relative URIs of any external resources declared in the glTF manifest

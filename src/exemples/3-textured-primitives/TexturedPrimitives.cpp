@@ -2,7 +2,7 @@
 #include "TexturedPrimitives.h"
 
 #include "graphics/DXException.h"
-#include "factories/PrimitiveFactory.h"
+#include "factories/components/MeshPrimitiveFactory.h"
 #include "systems/RenderSystem.h"
 #include "components/graphics/Material.h"
 
@@ -14,7 +14,7 @@ namespace exemple {
 
 	TexturedPrimitives::TexturedPrimitives(Context& context) : m_ctx(context) {
 		// Init
-		PrimitiveFactory primFactory(context);
+		MeshPrimitiveFactory primFactory(context);
 		auto entity = m_ctx.registry.create();
 
 		// Shader
@@ -62,18 +62,12 @@ namespace exemple {
 			m_ctx.rcommand->BindPixelShader(PShader);
 			m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 
-			// TODO bind all at once
 			for (auto texture : material.textures) {
 				m_ctx.rcommand->BindTexture(texture);
 			}
 
-			if (mesh.ib.count > 0) {
-				m_ctx.rcommand->BindIndexBuffer(mesh.ib);
-				m_ctx.rcommand->DrawIndexed(mesh.ib.count);
-			}
-			else {
-				m_ctx.rcommand->Draw(mesh.vb.count);
-			}
+			m_ctx.rcommand->BindIndexBuffer(mesh.ib);
+			m_ctx.rcommand->DrawIndexed(mesh.ib.count);
 		});
 	}
 

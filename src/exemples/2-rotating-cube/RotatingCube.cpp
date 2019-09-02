@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "RotatingCube.h"
 
-#include "factories/PrimitiveFactory.h"
+#include "factories/components/MeshPrimitiveFactory.h"
 #include "components/graphics/Mesh.h"
 #include "systems/RenderSystem.h"
 
@@ -17,7 +17,7 @@ namespace exemple {
 
 	RotatingCube::RotatingCube(Context& context) : m_ctx(context) {
 		// Init
-		PrimitiveFactory primFactory(context);
+		MeshPrimitiveFactory primFactory(context);
 
 		// Vertex Shader
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"RotatingCubeVS.cso");

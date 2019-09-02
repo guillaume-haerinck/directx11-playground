@@ -4,8 +4,6 @@
 #include "core/StepTimer.h"
 #include "core/Context.h"
 #include "systems/ISystem.h"
-#include "factories/PrimitiveFactory.h"
-#include "components/graphics/Shader.h"
 
 namespace exemple {
 	class RotatingCube : public IExemple {

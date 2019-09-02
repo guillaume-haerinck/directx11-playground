@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "PrimitiveFactory.h"
+#include "MeshPrimitiveFactory.h"
 
 #include "components/graphics/Mesh.h"
 
-PrimitiveFactory::PrimitiveFactory(Context& context) : m_ctx(context) {
+MeshPrimitiveFactory::MeshPrimitiveFactory(Context& context) : m_ctx(context) {
 	m_ied.at(0) = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	m_ied.at(1) = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	m_ied.at(2) = { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 }
 
-PrimitiveFactory::~PrimitiveFactory()
+MeshPrimitiveFactory::~MeshPrimitiveFactory()
 {
 }
 
-comp::Mesh PrimitiveFactory::CreateUVSphere(float radius, float sectorCount, float stackCount) {
+comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount, float stackCount) {
 	float x, y, z, xy;								// vertex position
 	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
 	float s, t;                                     // vertex texCoord
@@ -84,12 +84,12 @@ comp::Mesh PrimitiveFactory::CreateUVSphere(float radius, float sectorCount, flo
 	return mesh;
 }
 
-comp::Mesh PrimitiveFactory::CreateIcoSphere(float radius, unsigned int subdivisionCount) {
+comp::Mesh MeshPrimitiveFactory::CreateIcoSphere(float radius, unsigned int subdivisionCount) {
 	comp::Mesh mesh = {};
 	return mesh;
 }
 
-comp::Mesh PrimitiveFactory::CreateBox(float width, float height) {
+comp::Mesh MeshPrimitiveFactory::CreateBox(float width, float height) {
 	//    v6----- v5
 	//   /|      /|
 	//  v1------v0|
@@ -155,7 +155,7 @@ comp::Mesh PrimitiveFactory::CreateBox(float width, float height) {
 	return mesh;
 }
 
-comp::Mesh PrimitiveFactory::CreateIcosahedron(float radius) {
+comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 	const float X = radius;
 	float t = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
 	t *= radius;

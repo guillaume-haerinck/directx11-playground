@@ -20,7 +20,7 @@ public:
 	 */
 	void Update(float dt);
 
-	ID3D11Debug* GetDebugDevice() { return m_debugDevice; }
+	std::shared_ptr<ID3D11Debug> GetDebugDevice() { return m_debugDevice; }
 
 private:
 	void initWindow(HINSTANCE& hInstance);
@@ -33,6 +33,6 @@ private:
 
 	DXObjects m_dxo;
 	Context m_ctx;
-	ID3D11Debug* m_debugDevice;
+	std::shared_ptr<ID3D11Debug> m_debugDevice;
 	std::unique_ptr<IExemple> m_activeExemple;
 };

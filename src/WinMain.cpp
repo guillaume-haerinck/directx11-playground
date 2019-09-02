@@ -1,9 +1,5 @@
 #include "pch.h"
 
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #include "App.h"
 #include "graphics/DXException.h"
 
@@ -27,16 +23,14 @@ int CALLBACK WinMain(
 			app->Update(0.0f);
 		}
 
-		ID3D11Debug* debug = app->GetDebugDevice();
+		auto debug = app->GetDebugDevice();
 		delete app;
 
-		if (debug != nullptr) {
+		if (debug.get() != nullptr) {
 			// All refCount must be 0, IntRef is not important
 			debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
-			// delete debug;
 		}
 
-		_CrtDumpMemoryLeaks();
 		return static_cast<int>(msg.wParam);
 
 	} catch (const DXException& e) {
