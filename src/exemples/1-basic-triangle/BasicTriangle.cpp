@@ -11,8 +11,8 @@ namespace exemple {
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		auto [VShader, inputLayout] = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
-		auto PShader = m_ctx.rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
 
 		// Vertex buffer
 		XMFLOAT2 vertices[] = {
@@ -25,7 +25,7 @@ namespace exemple {
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
 		m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer);
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout);
+		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 	}
 

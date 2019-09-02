@@ -31,7 +31,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initImGui();
 
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_ctx);
+	m_activeExemple = std::make_unique<exemple::RotatingCube>(m_ctx);
 }
 
 App::~App() {

@@ -18,16 +18,16 @@ namespace exemple {
 		auto entity = m_ctx.registry.create();
 
 		// Shader
-		auto [VShader, inputLayout] = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"TexturedPrimitivesVS.cso");
-		auto PShader = m_ctx.rcommand->CreatePixelShader(L"TexturedPrimitivesPS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"TexturedPrimitivesVS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"TexturedPrimitivesPS.cso");
 		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout, &m_VSCB0, 1);
+		VShader.constantBuffers.push_back(m_VSCB0);
+		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 
 		// Material
 		comp::PhongMaterial material = {};
-		auto texture = m_ctx.rcommand->CreateTexture(L"res/textures/test.jpg");
-		texture.slot = comp::PhongTexSlot::DIFFUSE;
+		auto texture = m_ctx.rcommand->CreateTexture(comp::PhongTexSlot::DIFFUSE, L"res/textures/test.jpg");
 		material.textures.push_back(texture);
 		m_ctx.registry.assign<comp::PhongMaterial>(entity, material);
 
@@ -62,9 +62,8 @@ namespace exemple {
 			m_ctx.rcommand->BindPixelShader(PShader);
 			m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 
+			// TODO bind all at once
 			for (auto texture : material.textures) {
-				// TODO handle texture slots
-				// TODO handle layering to draw the objects with the same textures at the same time
 				m_ctx.rcommand->BindTexture(texture);
 			}
 

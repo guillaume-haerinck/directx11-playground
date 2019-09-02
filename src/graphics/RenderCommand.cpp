@@ -87,7 +87,7 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsi
 	return cb;
 }
 
-comp::Texture RenderCommand::CreateTexture(LPCWSTR filepath) const {
+comp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath) const {
 	// Create resource
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
 	Microsoft::WRL::ComPtr<ID3D11Resource> res;
@@ -110,10 +110,11 @@ comp::Texture RenderCommand::CreateTexture(LPCWSTR filepath) const {
 	comp::Texture texture = {};
 	texture.sampler = sampler;
 	texture.srv = srv;
+	texture.slot = slot;
 	return texture;
 }
 
-std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const {
+comp::VertexShader RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const {
 	ID3D11VertexShader* vertexShader;
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
 	DX::ThrowIfFailed(CALL_INFO,
@@ -136,10 +137,13 @@ std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> RenderCommand::CreateVertexS
 		)
 	);
 
-	return { vertexShader, inputLayout };
+	comp::VertexShader shader = {};
+	shader.layout = inputLayout;
+	shader.shader = vertexShader;
+	return shader;
 }
 
-ID3D11PixelShader* RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
+comp::PixelShader RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 	ID3D11PixelShader* pixelShader;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
@@ -153,7 +157,9 @@ ID3D11PixelShader* RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 		)
 	);
 
-	return pixelShader;
+	comp::PixelShader shader = {};
+	shader.shader = pixelShader;
+	return shader;
 }
 
 void RenderCommand::BindVertexBuffer(comp::VertexBuffer vb) const {

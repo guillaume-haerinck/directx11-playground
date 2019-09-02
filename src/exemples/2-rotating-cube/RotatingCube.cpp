@@ -19,11 +19,15 @@ namespace exemple {
 		// Init
 		PrimitiveFactory primFactory(context);
 
-		// Shader
-		auto [VShader, inputLayout] = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"RotatingCubeVS.cso");
-		auto PShader = m_ctx.rcommand->CreatePixelShader(L"RotatingCubePS.cso");
+		// Vertex Shader
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"RotatingCubeVS.cso");
 		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
+		VShader.constantBuffers.push_back(m_VSCB0);
+
+		// Pixel shader
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"RotatingCubePS.cso");
 		comp::ConstantBuffer PSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(PSConstantBuffer0)));
+		PShader.constantBuffers.push_back(PSCB0);
 
 		// Update PSconstant buffer as it will not change
 		PSConstantBuffer0 PSCB0data = {
@@ -39,8 +43,8 @@ namespace exemple {
 		// Save data to entity
 		auto entity = m_ctx.registry.create();
 		comp::Mesh mesh = primFactory.CreateBox();
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader, inputLayout, &m_VSCB0, 1);
-		m_ctx.registry.assign<comp::PixelShader>(entity, PShader, &PSCB0, 1);
+		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
+		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 	}
 

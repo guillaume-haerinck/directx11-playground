@@ -52,25 +52,22 @@ public:
 	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
 
 	/**
+	 * @param slot - The texture slot the ressource will be bound to. Use enums PBRTexSlot or PhongTextSlot
 	 * @param filepath - The relative path from the .exe to the image (.png or .jpg)
 	 */
-	comp::Texture CreateTexture(LPCWSTR filepath) const;
+	comp::Texture CreateTexture(unsigned int slot, LPCWSTR filepath) const;
 
 	/**
 	 * @param iedArray - Input layout of the shader
 	 * @param iedElementCount - Number of elements inside of the iedArray
 	 * @param filepath - The relative path from the .exe to the .cso containing the shader
-	 *
-	 * @exemple auto [VShader, layout] = CreateVertexShader(ied, ARRAYSIZE(ied), L"myshader.cso")
 	 */
-	std::tuple<ID3D11VertexShader*, ID3D11InputLayout*> CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const;
+	comp::VertexShader CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const;
 
 	/**
 	 * @param filePath - The relative path from the .exe to the .cso containing the shader
-	 *
-	 * @exemple CreatePixelShader(L"myShader.cso")
 	 */
-	ID3D11PixelShader* CreatePixelShader(LPCWSTR filePath) const;
+	comp::PixelShader CreatePixelShader(LPCWSTR filePath) const;
 
 	///////////////////////////////////////////////////////////////////////////
 	////////////////////////////////// BINDING ////////////////////////////////

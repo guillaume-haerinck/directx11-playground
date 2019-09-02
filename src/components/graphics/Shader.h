@@ -15,17 +15,6 @@ namespace comp {
 	 * @brief
 	 */
 	struct VertexShader {
-		VertexShader(ID3D11VertexShader* shader, ID3D11InputLayout* layout, ConstantBuffer* CBufferArray = nullptr, unsigned int CBufferCount = 0) 
-			: shader(shader), layout(layout)
-		{
-			if (CBufferArray != nullptr && CBufferCount > 0) {
-				constantBuffers.resize(CBufferCount);
-				for (int i = 0; i < CBufferCount; i++) {
-					constantBuffers.at(i) = CBufferArray[i];
-				}
-			}
-		}
-
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> shader;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> layout;
 		std::vector<ConstantBuffer> constantBuffers;
@@ -35,17 +24,6 @@ namespace comp {
 	 * @brief
 	 */
 	struct PixelShader {
-		PixelShader(ID3D11PixelShader* shader, ConstantBuffer* CBufferArray = nullptr, unsigned int CBufferCount = 0)
-			: shader(shader)
-		{
-			if (CBufferArray != nullptr && CBufferCount > 0) {
-				constantBuffers.resize(CBufferCount);
-				for (int i = 0; i < CBufferCount; i++) {
-					constantBuffers.at(i) = CBufferArray[i];
-				}
-			}
-		}
-
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> shader;
 		std::vector<ConstantBuffer> constantBuffers;
 	};
