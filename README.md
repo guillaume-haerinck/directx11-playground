@@ -18,6 +18,7 @@ Small DirectX renderer with an Entity Component System architecture.
 
 - [DirectX SDK samples](https://github.com/walbourn/directx-sdk-samples/tree/master/Direct3D11Tutorials)
 - [gltf DXViewer](https://github.com/microsoft/glTF-DXViewer)
+- [fx gltf Viewer](https://github.com/jessey-git/fx-gltf/blob/master/examples/viewer/)
 
 ### Books
 

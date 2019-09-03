@@ -313,6 +313,12 @@
     <ClInclude Include="src\factories\components\ModelFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lib\fx\gltf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\nlohmann\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="lib\imgui\misc\natvis\imgui.natvis" />

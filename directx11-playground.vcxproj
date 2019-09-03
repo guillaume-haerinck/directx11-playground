@@ -294,6 +294,7 @@
     <ClInclude Include="lib\entt\signal\emitter.hpp" />
     <ClInclude Include="lib\entt\signal\fwd.hpp" />
     <ClInclude Include="lib\entt\signal\sigh.hpp" />
+    <ClInclude Include="lib\fx\gltf.h" />
     <ClInclude Include="lib\imgui\imconfig.h" />
     <ClInclude Include="lib\imgui\imgui.h" />
     <ClInclude Include="lib\imgui\imgui_impl_dx11.h" />
@@ -305,6 +306,7 @@
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="lib\microsoft-dds-texture-loader\DDSTextureLoader.h" />
     <ClInclude Include="lib\microsoft-wic-texture-loader\WICTextureLoader.h" />
+    <ClInclude Include="lib\nlohmann\json.hpp" />
     <ClInclude Include="src\components\graphics\Layer.h" />
     <ClInclude Include="src\components\graphics\Material.h" />
     <ClInclude Include="src\components\graphics\Mesh.h" />
