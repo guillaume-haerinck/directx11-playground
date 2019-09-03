@@ -45,8 +45,12 @@ comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	// Create data to directX
 	// TODO handle when a buffer is missing
 	comp::VertexBuffer vb = m_ctx.rcommand->CreateVertexBuffer((void*) vertexBuffer.data, vertexBuffer.vertexCount, vertexBuffer.dataStride);
-	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*) indexBuffer.data, indexBuffer.vertexCount);
+	//comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*) indexBuffer.data, indexBuffer.vertexCount);
 
+	// TEMP fix welding order
+	WORD indices[] = { 0, 2, 1 };
+	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
+		
 	comp::Model model = {};
 	model.ib = ib;
 	model.vb = vb;
