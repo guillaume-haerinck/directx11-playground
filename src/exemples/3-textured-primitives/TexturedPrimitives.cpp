@@ -32,7 +32,7 @@ namespace exemple {
 		m_ctx.registry.assign<comp::PhongMaterial>(entity, material);
 
 		// Mesh
-		auto mesh = primFactory.CreateIcosahedron();
+		auto mesh = primFactory.CreateUVSphere();
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 	}
 

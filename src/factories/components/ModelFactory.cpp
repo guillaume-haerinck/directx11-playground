@@ -6,11 +6,11 @@
 ///////////////////////////////////////////////////////////////////////////
 
 ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
-	m_ied.at(0) = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(1) = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(2) = { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(3) = { "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(4) = { "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(0) = { "POSITION",  0, DXGI_FORMAT_R32G32B32_FLOAT,	0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(1) = { "NORMAL",	 0, DXGI_FORMAT_R32G32B32_FLOAT,	1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(2) = { "TEXCOORD",  0, DXGI_FORMAT_R32G32_FLOAT,		2, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(3) = { "TANGENT",	 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 3, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(4) = { "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 4, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 }
 
 ModelFactory::~ModelFactory() {
@@ -49,24 +49,25 @@ comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	if (primitive.material >= 0) {
 		// TODO get material data
 	}
-
 	// TODO Handle occlusion and emissive maps
 
-	// Create data to directX
-	// TODO fill with vertex buffer with every other buffer (if noexistent set data to 0)
+	// Create attribut buffers
 	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*)positionBufferInfo.data, positionBufferInfo.vertexCount, positionBufferInfo.dataStride);
+
 	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*)indexBufferInfo.data, indexBufferInfo.vertexCount);
 
 	// Create vertex buffer
 	comp::VertexBuffer vb = {};
-	vb.buffers = { positionBuffer.buffer };
+	vb.buffers =	{ positionBuffer.buffer };
 	vb.byteWidths = { positionBuffer.byteWidth };
-	vb.counts = { positionBuffer.count };
-	vb.strides = { positionBuffer.stride };
-	vb.offsets = { 0 };
-	vb.names = { "position" };
+	vb.counts =		{ positionBuffer.count };
+	vb.strides =	{ positionBuffer.stride };
+	vb.offsets =	{ 0 };
+	vb.names =		{ "position" };
 
-	comp::Model model(vb, ib);
+	comp::Model model = {};
+	model.vb = vb;
+	model.ib = ib;
 	return model;
 }
 

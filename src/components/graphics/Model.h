@@ -6,8 +6,6 @@
 
 namespace comp {
 	struct Model {
-		Model(VertexBuffer vb, IndexBuffer ib) : vb(vb), ib(ib) {}
-
 		VertexBuffer vb;
 		IndexBuffer ib;
 	};
