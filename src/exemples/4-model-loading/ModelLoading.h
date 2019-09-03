@@ -1,7 +1,9 @@
 #pragma once
 
 #include "exemples/IExemple.h"
+#include "components/graphics/Shader.h"
 #include "core/Context.h"
+#include "core/StepTimer.h"
 
 namespace exemple {
 	class ModelLoading : public IExemple {
@@ -14,5 +16,7 @@ namespace exemple {
 
 	private:
 		Context& m_ctx;
+		DX::StepTimer m_timer;
+		comp::ConstantBuffer m_VSCB0;
 	};
 }

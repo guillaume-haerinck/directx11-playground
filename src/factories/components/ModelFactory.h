@@ -14,6 +14,14 @@ public:
 	ModelFactory(Context& context);
 	~ModelFactory();
 
+	struct Vertex {
+		XMFLOAT3 position;
+		XMFLOAT3 normal;
+		XMFLOAT2 texCoord;
+		XMFLOAT4 tangent;
+		XMFLOAT4 bitangent;
+	};
+
 	struct GltfBufferInfo {
 		fx::gltf::Accessor const* accessor;
 		uint8_t const* data;
@@ -33,11 +41,16 @@ public:
 	 */
 	comp::Model CreateModel(const char* gltfFilePath);
 
+	D3D11_INPUT_ELEMENT_DESC* GetIed() { return m_ied.data(); }
+	unsigned int GetIedElementCount() { return m_ied.size(); }
+	unsigned int GetIedByteWidth() { return sizeof(m_ied.data()); }
+
 private:
-	GltfBufferInfo GetData(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor);
+	GltfBufferInfo GetGltfBufferInfo(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor);
 
 	uint32_t CalculateDataTypeSize(fx::gltf::Accessor const& accessor);
 
 private:
+	std::array<D3D11_INPUT_ELEMENT_DESC, 5> m_ied;
 	Context& m_ctx;
 };

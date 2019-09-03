@@ -4,6 +4,11 @@
 #include "factories/components/ModelFactory.h"
 
 namespace exemple {
+	struct VSConstantBuffer0 {
+		XMFLOAT4X4 matVP;
+		XMFLOAT4X4 matGeo;
+	};
+
 	ModelLoading::ModelLoading(Context& context) : m_ctx(context) {
 		ModelFactory modelFactory(context);
 
@@ -13,9 +18,11 @@ namespace exemple {
 		};
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"ModelLoadingVS.cso");
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"ModelLoadingPS.cso");
+		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
+		VShader.constantBuffers.push_back(m_VSCB0);
 
 		// VertexBuffer
-		comp::Model model = modelFactory.CreateModel("res/models/triangle/Triangle.gltf");
+		comp::Model model = modelFactory.CreateModel("res/models/cube/Cube.gltf");
 
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
@@ -28,6 +35,21 @@ namespace exemple {
 	}
 
 	void ModelLoading::Update() {
+		m_timer.Tick([&]() {});
+
+		XMMATRIX view = XMMatrixTranspose(
+			XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
+			XMMatrixRotationX(m_timer.GetFrameCount() * 0.01) *
+			XMMatrixTranslation(0.0f, 0.0f, 6.0f) *
+			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
+		);
+
+		// Update VSconstant buffer
+		VSConstantBuffer0 VSCB0data;
+		XMStoreFloat4x4(&VSCB0data.matVP, view);
+		XMStoreFloat4x4(&VSCB0data.matGeo, XMMatrixIdentity());
+		m_ctx.rcommand->UpdateConstantBuffer(m_VSCB0, &VSCB0data);
+
 		m_ctx.registry.view<comp::Model, comp::VertexShader, comp::PixelShader>()
 			.each([&](comp::Model& model, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			m_ctx.rcommand->BindVertexShader(VShader);

@@ -6,7 +6,11 @@
 ///////////////////////////////////////////////////////////////////////////
 
 ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
-	
+	m_ied.at(0) = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(1) = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(2) = { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(3) = { "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(4) = { "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 }
 
 ModelFactory::~ModelFactory() {
@@ -19,32 +23,35 @@ comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	fx::gltf::Mesh const& mesh = doc.meshes[0];
 	fx::gltf::Primitive const& primitive = mesh.primitives[0];
 	
-	GltfBufferInfo vertexBuffer = {};
+	GltfBufferInfo positionBuffer = {};
 	GltfBufferInfo normalBuffer = {};
 	GltfBufferInfo tangentBuffer = {};
 	GltfBufferInfo texCoord0Buffer = {};
 	GltfBufferInfo indexBuffer = {};
 
+	// https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#meshes
 	for (auto const& attrib : primitive.attributes) {
-		if (attrib.first == "POSITION") {
-			vertexBuffer = GetData(doc, doc.accessors[attrib.second]);
-		} else if (attrib.first == "NORMAL") {
-			normalBuffer = GetData(doc, doc.accessors[attrib.second]);
-		} else if (attrib.first == "TANGENT") {
-			tangentBuffer = GetData(doc, doc.accessors[attrib.second]);
-		} else if (attrib.first == "TEXCOORD_0") {
-			texCoord0Buffer = GetData(doc, doc.accessors[attrib.second]);
+		if (attrib.first == "POSITION") { // FLOAT3
+			positionBuffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+		} else if (attrib.first == "NORMAL") { // FLOAT3
+			normalBuffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+		} else if (attrib.first == "TANGENT") { // FLOAT4
+			tangentBuffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+		} else if (attrib.first == "TEXCOORD_0") { // FLOAT2
+			texCoord0Buffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
 		}
 	}
-	indexBuffer = GetData(doc, doc.accessors[primitive.indices]);
+	indexBuffer = GetGltfBufferInfo(doc, doc.accessors[primitive.indices]);
 
 	if (primitive.material >= 0) {
 		// TODO get material data
 	}
 
+	// TODO Handle occlusion and emissive maps
+
 	// Create data to directX
-	// TODO handle when a buffer is missing
-	comp::VertexBuffer vb = m_ctx.rcommand->CreateVertexBuffer((void*) vertexBuffer.data, vertexBuffer.vertexCount, vertexBuffer.dataStride);
+	// TODO fill with vertex buffer with every other buffer (if noexistent set data to 0)
+	comp::VertexBuffer vb = m_ctx.rcommand->CreateVertexBuffer((void*) positionBuffer.data, positionBuffer.vertexCount, positionBuffer.dataStride);
 	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*) indexBuffer.data, indexBuffer.vertexCount);
 
 	comp::Model model = {};
@@ -53,7 +60,7 @@ comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	return model;
 }
 
-ModelFactory::GltfBufferInfo ModelFactory::GetData(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor) {
+ModelFactory::GltfBufferInfo ModelFactory::GetGltfBufferInfo(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor) {
 	fx::gltf::BufferView const& bufferView = doc.bufferViews[accessor.bufferView];
 	fx::gltf::Buffer const& buffer = doc.buffers[bufferView.buffer];
 
