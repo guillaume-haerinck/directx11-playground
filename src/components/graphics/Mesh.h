@@ -5,7 +5,7 @@ namespace comp {
 	 * @brief Vertex attribute buffer
 	 */
 	struct AttributeBuffer {
-		ID3D11Buffer* buffer; // TODO use comptr
+		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
 		unsigned int stride;
 		unsigned int count;
 		unsigned int byteWidth;
@@ -17,7 +17,7 @@ namespace comp {
 	 *		 This instead of interleaved (PTNPTNPTN) or packed (PPPTTTNNN).
 	 */
 	struct VertexBuffer {
-		std::vector<ID3D11Buffer*> buffers; // TODO use comptr
+		std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> buffers;
 		std::vector<unsigned int> strides;
 		std::vector<unsigned int> counts;
 		std::vector<unsigned int> byteWidths;
