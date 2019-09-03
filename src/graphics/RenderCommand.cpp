@@ -163,8 +163,7 @@ comp::PixelShader RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 }
 
 void RenderCommand::BindVertexBuffer(comp::VertexBuffer vb) const {
-	UINT offset = 0;
-	m_dxo.context->IASetVertexBuffers(0u, vb.buffers.size(), vb.buffers.data(), vb.strides.data(), &offset);
+	m_dxo.context->IASetVertexBuffers(0u, vb.buffers.size(), vb.buffers.data(), vb.strides.data(), vb.offsets.data());
 }
 
 void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {

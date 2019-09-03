@@ -91,6 +91,7 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 	vb.byteWidths = { positionBuffer.byteWidth, normalBuffer.byteWidth, texCoordBuffer.byteWidth };
 	vb.counts = { positionBuffer.count, normalBuffer.count, texCoordBuffer.count };
 	vb.strides = { positionBuffer.stride, normalBuffer.stride, texCoordBuffer.stride };
+	vb.offsets = { 0, positionBuffer.byteWidth,  positionBuffer.byteWidth + normalBuffer.byteWidth };
 	vb.names = { "position", "normal", "texture coordinates" };
 
 	// Send result
@@ -167,6 +168,7 @@ comp::Mesh MeshPrimitiveFactory::CreateBox(float width, float height) {
 	vb.byteWidths = { positionBuffer.byteWidth, normalBuffer.byteWidth, texCoordBuffer.byteWidth };
 	vb.counts = { positionBuffer.count, normalBuffer.count, texCoordBuffer.count };
 	vb.strides = { positionBuffer.stride, normalBuffer.stride, texCoordBuffer.stride };
+	vb.offsets = { 0, positionBuffer.byteWidth,  positionBuffer.byteWidth + normalBuffer.byteWidth };
 	vb.names = { "position", "normal", "texture coordinates" };
 
 	// Send result
@@ -231,6 +233,7 @@ comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 	vb.byteWidths = { positionBuffer.byteWidth, normalBuffer.byteWidth, texCoordBuffer.byteWidth };
 	vb.counts = { positionBuffer.count, normalBuffer.count, texCoordBuffer.count };
 	vb.strides = { positionBuffer.stride, normalBuffer.stride, texCoordBuffer.stride };
+	vb.offsets = { 0, positionBuffer.byteWidth, positionBuffer.byteWidth + normalBuffer.byteWidth };
 	vb.names = { "position", "normal", "texture coordinates" };
 
 	// Send result

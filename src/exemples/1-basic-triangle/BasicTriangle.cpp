@@ -14,17 +14,26 @@ namespace exemple {
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
 
-		// Vertex buffer
-		XMFLOAT2 vertices[] = {
+		// Position buffer
+		XMFLOAT2 positions[] = {
 			{ XMFLOAT2(0.0f,  0.5f) },
 			{ XMFLOAT2 (-0.5f, -0.5f) },
 			{ XMFLOAT2(0.5f, -0.5f) }
 		};
-		comp::AttributeBuffer vertexBuffer = m_ctx.rcommand->CreateAttributeBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
+		comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, sizeof(positions), sizeof(XMFLOAT2));
+
+		// Vertex buffer
+		comp::VertexBuffer vb = {};
+		vb.buffers = { positionBuffer.buffer };
+		vb.byteWidths = { positionBuffer.byteWidth };
+		vb.counts = { positionBuffer.count };
+		vb.strides = { positionBuffer.stride };
+		vb.offsets = { 0 };
+		vb.names = { "position" };
 
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
-		//m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer);
+		m_ctx.registry.assign<comp::Mesh>(entity, vb);
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 	}
@@ -33,7 +42,6 @@ namespace exemple {
 	}
 
 	void BasicTriangle::Update() {
-		/*
 		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			 m_ctx.rcommand->BindVertexShader(VShader);
@@ -41,7 +49,6 @@ namespace exemple {
 			 m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 			 m_ctx.rcommand->Draw(mesh.vb.counts.at(0));
 		});
-		*/
 	}
 
 	void BasicTriangle::ImGuiUpdate() {

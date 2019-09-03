@@ -21,6 +21,7 @@ namespace comp {
 		std::vector<unsigned int> strides;
 		std::vector<unsigned int> counts;
 		std::vector<unsigned int> byteWidths;
+		std::vector<unsigned int> offsets;
 		std::vector<std::string> names;
 	};
 

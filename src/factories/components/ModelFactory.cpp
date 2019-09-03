@@ -63,6 +63,7 @@ comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	vb.byteWidths = { positionBuffer.byteWidth };
 	vb.counts = { positionBuffer.count };
 	vb.strides = { positionBuffer.stride };
+	vb.offsets = { 0 };
 	vb.names = { "position" };
 
 	comp::Model model(vb, ib);
