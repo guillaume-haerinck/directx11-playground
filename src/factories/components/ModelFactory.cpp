@@ -12,7 +12,7 @@ ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
 ModelFactory::~ModelFactory() {
 }
 
-comp::VertexBuffer ModelFactory::CreateModel(const char* gltfFilePath) {
+comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
 	
 	// TODO do it for all and not only index 0
@@ -45,9 +45,12 @@ comp::VertexBuffer ModelFactory::CreateModel(const char* gltfFilePath) {
 	// Create data to directX
 	// TODO handle when a buffer is missing
 	comp::VertexBuffer vb = m_ctx.rcommand->CreateVertexBuffer((void*) vertexBuffer.data, vertexBuffer.vertexCount, vertexBuffer.dataStride);
-	//comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*) indexBuffer.data, indexBuffer.vertexCount);
+	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*) indexBuffer.data, indexBuffer.vertexCount);
 
-	return vb;
+	comp::Model model = {};
+	model.ib = ib;
+	model.vb = vb;
+	return model;
 }
 
 ModelFactory::GltfBufferInfo ModelFactory::GetData(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor) {

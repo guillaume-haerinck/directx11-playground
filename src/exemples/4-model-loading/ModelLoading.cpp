@@ -15,11 +15,11 @@ namespace exemple {
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"ModelLoadingPS.cso");
 
 		// VertexBuffer
-		comp::VertexBuffer vertexBuffer = modelFactory.CreateModel("res/models/triangle/Triangle.gltf");
+		comp::Model model = modelFactory.CreateModel("res/models/triangle/Triangle.gltf");
 
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer);
+		m_ctx.registry.assign<comp::Model>(entity, model);
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 	}
@@ -28,12 +28,13 @@ namespace exemple {
 	}
 
 	void ModelLoading::Update() {
-		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
-			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+		m_ctx.registry.view<comp::Model, comp::VertexShader, comp::PixelShader>()
+			.each([&](comp::Model& model, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			m_ctx.rcommand->BindVertexShader(VShader);
 			m_ctx.rcommand->BindPixelShader(PShader);
-			m_ctx.rcommand->BindVertexBuffer(mesh.vb);
-			m_ctx.rcommand->Draw(mesh.vb.count);
+			m_ctx.rcommand->BindVertexBuffer(model.vb);
+			m_ctx.rcommand->BindIndexBuffer(model.ib);
+			m_ctx.rcommand->DrawIndexed(model.ib.count);
 		});
 	}
 

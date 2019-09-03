@@ -6,6 +6,7 @@
 
 namespace comp {
 	struct Model {
-
+		VertexBuffer vb;
+		IndexBuffer ib;
 	};
 };

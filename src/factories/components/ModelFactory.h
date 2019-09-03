@@ -31,7 +31,7 @@ public:
 	/**
 	 * @brief
 	 */
-	comp::VertexBuffer CreateModel(const char* gltfFilePath);
+	comp::Model CreateModel(const char* gltfFilePath);
 
 private:
 	GltfBufferInfo GetData(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor);
