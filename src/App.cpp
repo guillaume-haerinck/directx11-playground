@@ -212,6 +212,24 @@ void App::initDirectX11() {
 		m_dxo.device->CreateDepthStencilView(depthStencil.Get(), &descDSV, &m_dxo.depthStencilView)
 	);
 
+	// Change default rasterizer to have Counter Clock-Wise Winding order (to support gltf models)
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer;
+	D3D11_RASTERIZER_DESC rd = {};
+	rd.FillMode = D3D11_FILL_SOLID;
+	rd.CullMode = D3D11_CULL_BACK;
+	rd.FrontCounterClockwise = true;
+	rd.DepthBias = 0;
+	rd.SlopeScaledDepthBias = 0.0f;
+	rd.DepthBiasClamp = 0.0f;
+	rd.DepthClipEnable = true;
+	rd.ScissorEnable = false;
+	rd.MultisampleEnable = false;
+	rd.AntialiasedLineEnable = false;
+	DX::ThrowIfFailed(CALL_INFO,
+		m_dxo.device->CreateRasterizerState(&rd, &rasterizer)
+	);
+	m_dxo.context->RSSetState(rasterizer.Get());
+
 	// Setup the viewport
 	D3D11_VIEWPORT vp;
 	vp.Width = (float)width;
