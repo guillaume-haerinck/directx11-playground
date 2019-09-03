@@ -19,8 +19,8 @@ void RenderCommand::Swap() const {
 	m_dxo.swapChain->Present(1u, 0u);
 }
 
-comp::VertexBuffer RenderCommand::CreateVertexBuffer(void* vertices, unsigned int count, unsigned int stride) const {
-	ID3D11Buffer* vertexBuffer;
+comp::AttributeBuffer RenderCommand::CreateAttributeBuffer(void* vertices, unsigned int count, unsigned int stride) const {
+	ID3D11Buffer* attributeBuffer;
 
 	D3D11_BUFFER_DESC bd = {};
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -34,15 +34,15 @@ comp::VertexBuffer RenderCommand::CreateVertexBuffer(void* vertices, unsigned in
 	sd.pSysMem = vertices;
 
 	DX::ThrowIfFailed(CALL_INFO,
-		m_dxo.device->CreateBuffer(&bd, &sd, &vertexBuffer)
+		m_dxo.device->CreateBuffer(&bd, &sd, &attributeBuffer)
 	);
 
-	comp::VertexBuffer vb = {};
-	vb.buffer = vertexBuffer;
-	vb.stride = stride;
-	vb.count = count;
-	vb.byteWidth = count * stride;
-	return vb;
+	comp::AttributeBuffer ab = {};
+	ab.buffer = attributeBuffer;
+	ab.stride = stride;
+	ab.count = count;
+	ab.byteWidth = count * stride;
+	return ab;
 }
 
 comp::IndexBuffer RenderCommand::CreateIndexBuffer(WORD* indices, unsigned int count) const {
@@ -164,7 +164,7 @@ comp::PixelShader RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 
 void RenderCommand::BindVertexBuffer(comp::VertexBuffer vb) const {
 	UINT offset = 0;
-	m_dxo.context->IASetVertexBuffers(0u, 1u, vb.buffer.GetAddressOf(), &vb.stride, &offset);
+	m_dxo.context->IASetVertexBuffers(0u, vb.buffers.size(), vb.buffers.data(), vb.strides.data(), &offset);
 }
 
 void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {

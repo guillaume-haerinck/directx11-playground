@@ -37,7 +37,7 @@ public:
 	 * @param count - The number of elements in the array
 	 * @param stride - Size in bytes of one element of the array
 	 */
-	comp::VertexBuffer CreateVertexBuffer(void* vertices, unsigned int count, unsigned int stride) const;
+	comp::AttributeBuffer CreateAttributeBuffer(void* vertices, unsigned int count, unsigned int stride) const;
 
 	/**
 	 * @param indices - Array of data

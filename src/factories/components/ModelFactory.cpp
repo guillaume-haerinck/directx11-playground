@@ -18,30 +18,33 @@ ModelFactory::~ModelFactory() {
 
 comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
-	
+
 	// TODO do it for all and not only index 0
 	fx::gltf::Mesh const& mesh = doc.meshes[0];
 	fx::gltf::Primitive const& primitive = mesh.primitives[0];
-	
-	GltfBufferInfo positionBuffer = {};
-	GltfBufferInfo normalBuffer = {};
-	GltfBufferInfo tangentBuffer = {};
-	GltfBufferInfo texCoord0Buffer = {};
-	GltfBufferInfo indexBuffer = {};
+
+	GltfBufferInfo positionBufferInfo = {};
+	GltfBufferInfo normalBufferInfo = {};
+	GltfBufferInfo tangentBufferInfo = {};
+	GltfBufferInfo texCoord0BufferInfo = {};
+	GltfBufferInfo indexBufferInfo = {};
 
 	// https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#meshes
 	for (auto const& attrib : primitive.attributes) {
 		if (attrib.first == "POSITION") { // FLOAT3
-			positionBuffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
-		} else if (attrib.first == "NORMAL") { // FLOAT3
-			normalBuffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
-		} else if (attrib.first == "TANGENT") { // FLOAT4
-			tangentBuffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
-		} else if (attrib.first == "TEXCOORD_0") { // FLOAT2
-			texCoord0Buffer = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+			positionBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+		}
+		else if (attrib.first == "NORMAL") { // FLOAT3
+			normalBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+		}
+		else if (attrib.first == "TANGENT") { // FLOAT4
+			tangentBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+		}
+		else if (attrib.first == "TEXCOORD_0") { // FLOAT2
+			texCoord0BufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
 		}
 	}
-	indexBuffer = GetGltfBufferInfo(doc, doc.accessors[primitive.indices]);
+	indexBufferInfo = GetGltfBufferInfo(doc, doc.accessors[primitive.indices]);
 
 	if (primitive.material >= 0) {
 		// TODO get material data
@@ -51,12 +54,18 @@ comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 
 	// Create data to directX
 	// TODO fill with vertex buffer with every other buffer (if noexistent set data to 0)
-	comp::VertexBuffer vb = m_ctx.rcommand->CreateVertexBuffer((void*) positionBuffer.data, positionBuffer.vertexCount, positionBuffer.dataStride);
-	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*) indexBuffer.data, indexBuffer.vertexCount);
+	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*)positionBufferInfo.data, positionBufferInfo.vertexCount, positionBufferInfo.dataStride);
+	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*)indexBufferInfo.data, indexBufferInfo.vertexCount);
 
-	comp::Model model = {};
-	model.ib = ib;
-	model.vb = vb;
+	// Create vertex buffer
+	comp::VertexBuffer vb = {};
+	vb.buffers = { positionBuffer.buffer };
+	vb.byteWidths = { positionBuffer.byteWidth };
+	vb.counts = { positionBuffer.count };
+	vb.strides = { positionBuffer.stride };
+	vb.names = { "position" };
+
+	comp::Model model(vb, ib);
 	return model;
 }
 

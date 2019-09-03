@@ -4,9 +4,9 @@
 #include "components/graphics/Mesh.h"
 
 MeshPrimitiveFactory::MeshPrimitiveFactory(Context& context) : m_ctx(context) {
-	m_ied.at(0) = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(1) = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(2) = { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(0) = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(1) = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	m_ied.at(2) = { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 }
 
 MeshPrimitiveFactory::~MeshPrimitiveFactory()
@@ -22,8 +22,11 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 	float stackStep = XM_PI / stackCount;
 	float sectorAngle, stackAngle;
 
-	// Vertices
-	std::vector<Vertex> vertices;
+	// Vertex attributes
+	std::vector<XMFLOAT3> positions;
+	std::vector<XMFLOAT3> normals;
+	std::vector<XMFLOAT2> texCoords;
+
 	for (int i = 0; i <= stackCount; ++i) {
 		stackAngle = XM_PIDIV2 - i * stackStep;     // starting from pi/2 to -pi/2
 		xy = radius * cosf(stackAngle);             // r * cos(u)
@@ -46,7 +49,10 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 			s = (float)j / sectorCount;
 			t = (float)i / stackCount;
 
-			vertices.push_back({ XMFLOAT3(x, y, z), XMFLOAT3(nx, ny, nz), XMFLOAT2(s, t) });
+			// Add to buffers
+			positions.push_back(XMFLOAT3(x, y, z));
+			normals.push_back(XMFLOAT3(nx, ny, nz));
+			texCoords.push_back(XMFLOAT2(s, t));
 		}
 	}
 
@@ -73,14 +79,24 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 		}
 	}
 
-	// Create UV sphere
-	comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices.data(), vertices.size(), sizeof(Vertex));
-	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices.data(), indices.size());
+	// Create buffers
+	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions.data(), positions.size(), sizeof(XMFLOAT3));
+	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals.data(), normals.size(), sizeof(XMFLOAT3));
+	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords.data(), texCoords.size(), sizeof(XMFLOAT2));
+	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices.data(), indices.size());
 
-	// Store data
+	// Store buffers
+	comp::VertexBuffer vb = {};
+	vb.buffers = { positionBuffer.buffer, normalBuffer.buffer, texCoordBuffer.buffer };
+	vb.byteWidths = { positionBuffer.byteWidth, normalBuffer.byteWidth, texCoordBuffer.byteWidth };
+	vb.counts = { positionBuffer.count, normalBuffer.count, texCoordBuffer.count };
+	vb.strides = { positionBuffer.stride, normalBuffer.stride, texCoordBuffer.stride };
+	vb.names = { "position", "normal", "texture coordinates" };
+
+	// Send result
 	comp::Mesh mesh = {};
-	mesh.ib = indexBuffer;
-	mesh.vb = vertexBuffer;
+	mesh.ib = ib;
+	mesh.vb = vb;
 	return mesh;
 }
 
@@ -97,42 +113,37 @@ comp::Mesh MeshPrimitiveFactory::CreateBox(float width, float height) {
 	//  | |v7---|-|v4
 	//  |/      |/
 	//  v2------v3
-	Vertex vertices[] = {
+	XMFLOAT3 positions[] = {
 		// Front v0,v1,v2,v3
-		{ XMFLOAT3(1, 1, 1),   XMFLOAT3(0, 0, 1), XMFLOAT2(1, 0) },
-		{ XMFLOAT3(-1, 1, 1),  XMFLOAT3(0, 0, 1), XMFLOAT2(0, 0) },
-		{ XMFLOAT3(-1, -1, 1), XMFLOAT3(0, 0, 1), XMFLOAT2(0, 1) },
-		{ XMFLOAT3(1, -1, 1),  XMFLOAT3(0, 0, 1), XMFLOAT2(1, 1) },
-
+		XMFLOAT3(1, 1, 1), XMFLOAT3(-1, 1, 1), XMFLOAT3(-1, -1, 1), XMFLOAT3(1, -1, 1),
 		// Right v0,v3,v4,v5
-		{ XMFLOAT3(1, 1, 1),    XMFLOAT3(1, 0, 0), XMFLOAT2(0, 0) },
-		{ XMFLOAT3(1, -1, 1),   XMFLOAT3(1, 0, 0), XMFLOAT2(0, 1) },
-		{ XMFLOAT3(1, -1, -1),  XMFLOAT3(1, 0, 0), XMFLOAT2(1, 1) },
-		{ XMFLOAT3(1, 1, -1),   XMFLOAT3(1, 0, 0), XMFLOAT2(1, 0) },
+		XMFLOAT3(1, 1, 1), XMFLOAT3(1, -1, 1), XMFLOAT3(1, -1, -1), XMFLOAT3(1, 1, -1),
+		// Top v0,v5,v6,v1	
+		XMFLOAT3(1, 1, 1), XMFLOAT3(1, 1, -1), XMFLOAT3(-1, 1, -1), XMFLOAT3(-1, 1, 1), 
+		// Left v1,v6,v7,v2	
+		XMFLOAT3(-1, 1, 1), XMFLOAT3(-1, 1, -1), XMFLOAT3(-1, -1, -1), XMFLOAT3(-1, -1, 1),  
+		// Bottom v7,v4,v3,v2
+		XMFLOAT3(-1, -1, -1), XMFLOAT3(1, -1, -1), XMFLOAT3(1, -1, 1), XMFLOAT3(-1, -1, 1), 
+		// Back v4,v7,v6,v5	
+		XMFLOAT3(1, -1, -1), XMFLOAT3(-1, -1, -1), XMFLOAT3(-1, 1, -1), XMFLOAT3(1, 1, -1)
+	};
+	
+	XMFLOAT3 normals[] = {
+		XMFLOAT3(0, 0, 1), XMFLOAT3(0, 0, 1), XMFLOAT3(0, 0, 1), XMFLOAT3(0, 0, 1),
+		XMFLOAT3(1, 0, 0), XMFLOAT3(1, 0, 0), XMFLOAT3(1, 0, 0), XMFLOAT3(1, 0, 0),
+		XMFLOAT3(0, 1, 0), XMFLOAT3(0, 1, 0), XMFLOAT3(0, 1, 0), XMFLOAT3(0, 1, 0),
+		XMFLOAT3(-1, 0, 0), XMFLOAT3(-1, 0, 0), XMFLOAT3(-1, 0, 0), XMFLOAT3(-1, 0, 0),
+		XMFLOAT3(0,-1, 0), XMFLOAT3(0,-1, 0), XMFLOAT3(0,-1, 0), XMFLOAT3(0,-1, 0),
+		XMFLOAT3(0, 0,-1), XMFLOAT3(0, 0,-1), XMFLOAT3(0, 0,-1), XMFLOAT3(0, 0,-1)
+	};
 
-		// Top v0,v5,v6,v1								 
-		{ XMFLOAT3(1, 1, 1),    XMFLOAT3(0, 1, 0), XMFLOAT2(1, 1) },
-		{ XMFLOAT3(1, 1, -1),   XMFLOAT3(0, 1, 0), XMFLOAT2(1, 0) },
-		{ XMFLOAT3(-1, 1, -1),  XMFLOAT3(0, 1, 0), XMFLOAT2(0, 0) },
-		{ XMFLOAT3(-1, 1, 1),   XMFLOAT3(0, 1, 0), XMFLOAT2(0, 1) },
-
-		// Left v1,v6,v7,v2						 
-		{ XMFLOAT3(-1, 1, 1),   XMFLOAT3(-1, 0, 0), XMFLOAT2(1, 0) },
-		{ XMFLOAT3(-1, 1, -1),  XMFLOAT3(-1, 0, 0), XMFLOAT2(0, 0) },
-		{ XMFLOAT3(-1, -1, -1), XMFLOAT3(-1, 0, 0), XMFLOAT2(0, 1) },
-		{ XMFLOAT3(-1, -1, 1),  XMFLOAT3(-1, 0, 0), XMFLOAT2(1, 1) },
-
-		// Bottom v7,v4,v3,v2						 
-		{ XMFLOAT3(-1, -1, -1), XMFLOAT3(0,-1, 0), XMFLOAT2(0, 1) },
-		{ XMFLOAT3(1, -1, -1),  XMFLOAT3(0,-1, 0), XMFLOAT2(1, 1) },
-		{ XMFLOAT3(1, -1, 1),   XMFLOAT3(0,-1, 0), XMFLOAT2(1, 0) },
-		{ XMFLOAT3(-1, -1, 1),  XMFLOAT3(0,-1, 0), XMFLOAT2(0, 0) },
-
-		// Back v4,v7,v6,v5					
-		{ XMFLOAT3(1, -1, -1),  XMFLOAT3(0, 0,-1), XMFLOAT2(0, 1) },
-		{ XMFLOAT3(-1, -1, -1), XMFLOAT3(0, 0,-1), XMFLOAT2(1, 1) },
-		{ XMFLOAT3(-1, 1, -1),  XMFLOAT3(0, 0,-1), XMFLOAT2(1, 0) },
-		{ XMFLOAT3(1, 1, -1),   XMFLOAT3(0, 0,-1), XMFLOAT2(0, 0) },
+	XMFLOAT2 texCoords[] = {
+		XMFLOAT2(1, 0), XMFLOAT2(0, 0), XMFLOAT2(0, 1), XMFLOAT2(1, 1),
+		XMFLOAT2(0, 0), XMFLOAT2(0, 1), XMFLOAT2(1, 1), XMFLOAT2(1, 0),
+		XMFLOAT2(1, 1), XMFLOAT2(1, 0), XMFLOAT2(0, 0), XMFLOAT2(0, 1),
+		XMFLOAT2(1, 0), XMFLOAT2(0, 0), XMFLOAT2(0, 1), XMFLOAT2(1, 1),
+		XMFLOAT2(0, 1), XMFLOAT2(1, 1), XMFLOAT2(1, 0), XMFLOAT2(0, 0),
+		XMFLOAT2(0, 1), XMFLOAT2(1, 1), XMFLOAT2(1, 0), XMFLOAT2(0, 0)
 	};
 
 	WORD indices[] = {
@@ -144,14 +155,24 @@ comp::Mesh MeshPrimitiveFactory::CreateBox(float width, float height) {
 		20,22,21,  22,20,23		  // back
 	};
 
-	// Create Box
-	comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, ARRAYSIZE(vertices), sizeof(Vertex));
-	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
+	// Create buffers
+	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, ARRAYSIZE(positions), sizeof(XMFLOAT3));
+	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals, ARRAYSIZE(normals), sizeof(XMFLOAT3));
+	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords, ARRAYSIZE(texCoords), sizeof(XMFLOAT2));
+	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
-	// Store data
+	// Store buffers
+	comp::VertexBuffer vb = {};
+	vb.buffers = { positionBuffer.buffer, normalBuffer.buffer, texCoordBuffer.buffer };
+	vb.byteWidths = { positionBuffer.byteWidth, normalBuffer.byteWidth, texCoordBuffer.byteWidth };
+	vb.counts = { positionBuffer.count, normalBuffer.count, texCoordBuffer.count };
+	vb.strides = { positionBuffer.stride, normalBuffer.stride, texCoordBuffer.stride };
+	vb.names = { "position", "normal", "texture coordinates" };
+
+	// Send result
 	comp::Mesh mesh = {};
-	mesh.ib = indexBuffer;
-	mesh.vb = vertexBuffer;
+	mesh.ib = ib;
+	mesh.vb = vb;
 	return mesh;
 }
 
@@ -160,22 +181,19 @@ comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 	float t = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
 	t *= radius;
 
-	Vertex vertices[] = {
+	XMFLOAT3 positions[] = {
 		// Z Plane orthogonal rectangles (Vertical)
-		{ XMFLOAT3(-X, t, 0), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(X, t, 0), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(-X,-t, 0), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(X,-t, 0), XMFLOAT3(), XMFLOAT2() },
+		XMFLOAT3(-X, t, 0), XMFLOAT3(X, t, 0), XMFLOAT3(-X,-t, 0), XMFLOAT3(X,-t, 0),
 		// X Plane orthogonal rectangles
-		{ XMFLOAT3(0,-X, t), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(0, X, t), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(0,-X,-t), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(0, X,-t), XMFLOAT3(), XMFLOAT2() },
+		XMFLOAT3(0,-X, t), XMFLOAT3(0, X, t), XMFLOAT3(0,-X,-t), XMFLOAT3(0, X,-t),
 		// Y Plane orthogonal rectangles
-		{ XMFLOAT3(t, 0, -X), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(t, 0,  X), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(-t, 0, -X), XMFLOAT3(), XMFLOAT2() },
-		{ XMFLOAT3(-t, 0,  X), XMFLOAT3(), XMFLOAT2() }
+		XMFLOAT3(t, 0, -X), XMFLOAT3(t, 0,  X), XMFLOAT3(-t, 0, -X), XMFLOAT3(-t, 0,  X),
+	};
+
+	XMFLOAT3 normals[] = {
+		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3(),
+		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3(),
+		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3()
 	};
 
 	WORD indices[] = {
@@ -192,20 +210,32 @@ comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 	// Compute TextCoord
 	const float invHalfPI = 1 / XM_PI * 0.5;
 	const float invPI = 1 / XM_PI;
-	for (int i = 0; i < ARRAYSIZE(vertices); i++) {
-		XMFLOAT3 pos = vertices[i].position;
+	std::vector<XMFLOAT2> texCoords;
+	for (int i = 0; i < ARRAYSIZE(positions); i++) {
+		XMFLOAT3 pos = positions[i];
 		XMVECTOR posNorm = XMVector3Normalize((XMVectorSet(pos.x, pos.y, pos.z, 1.0f)));
-		vertices[i].texCoord.x = (atan2(XMVectorGetX(posNorm), XMVectorGetZ(posNorm)) + XM_PI) * invHalfPI;
-		vertices[i].texCoord.y = (acos(XMVectorGetY(posNorm)) + XM_PI) * invPI;
+		float x = (atan2(XMVectorGetX(posNorm), XMVectorGetZ(posNorm)) + XM_PI) * invHalfPI;
+		float y = (acos(XMVectorGetY(posNorm)) + XM_PI) * invPI;
+		texCoords.push_back(XMFLOAT2(x, y));
 	}
 
-	// Create Icosahedron
-	comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, ARRAYSIZE(vertices), sizeof(Vertex));
-	comp::IndexBuffer indexBuffer = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
+	// Create buffers
+	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, ARRAYSIZE(positions), sizeof(XMFLOAT3));
+	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals, ARRAYSIZE(normals), sizeof(XMFLOAT3));
+	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords.data(), texCoords.size(), sizeof(XMFLOAT2));
+	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
-	// Store data
+	// Store buffers
+	comp::VertexBuffer vb = {};
+	vb.buffers = { positionBuffer.buffer, normalBuffer.buffer, texCoordBuffer.buffer };
+	vb.byteWidths = { positionBuffer.byteWidth, normalBuffer.byteWidth, texCoordBuffer.byteWidth };
+	vb.counts = { positionBuffer.count, normalBuffer.count, texCoordBuffer.count };
+	vb.strides = { positionBuffer.stride, normalBuffer.stride, texCoordBuffer.stride };
+	vb.names = { "position", "normal", "texture coordinates" };
+
+	// Send result
 	comp::Mesh mesh = {};
-	mesh.ib = indexBuffer;
-	mesh.vb = vertexBuffer;
+	mesh.ib = ib;
+	mesh.vb = vb;
 	return mesh;
 }

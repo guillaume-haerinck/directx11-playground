@@ -20,11 +20,11 @@ namespace exemple {
 			{ XMFLOAT2 (-0.5f, -0.5f) },
 			{ XMFLOAT2(0.5f, -0.5f) }
 		};
-		comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
+		comp::AttributeBuffer vertexBuffer = m_ctx.rcommand->CreateAttributeBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
 
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer);
+		//m_ctx.registry.assign<comp::Mesh>(entity, vertexBuffer);
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 	}
@@ -33,13 +33,15 @@ namespace exemple {
 	}
 
 	void BasicTriangle::Update() {
+		/*
 		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			 m_ctx.rcommand->BindVertexShader(VShader);
 			 m_ctx.rcommand->BindPixelShader(PShader);
 			 m_ctx.rcommand->BindVertexBuffer(mesh.vb);
-			 m_ctx.rcommand->Draw(mesh.vb.count);
+			 m_ctx.rcommand->Draw(mesh.vb.counts.at(0));
 		});
+		*/
 	}
 
 	void BasicTriangle::ImGuiUpdate() {

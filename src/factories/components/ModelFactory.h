@@ -14,14 +14,6 @@ public:
 	ModelFactory(Context& context);
 	~ModelFactory();
 
-	struct Vertex {
-		XMFLOAT3 position;
-		XMFLOAT3 normal;
-		XMFLOAT2 texCoord;
-		XMFLOAT4 tangent;
-		XMFLOAT4 bitangent;
-	};
-
 	struct GltfBufferInfo {
 		fx::gltf::Accessor const* accessor;
 		uint8_t const* data;

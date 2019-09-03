@@ -10,12 +10,6 @@ public:
 	MeshPrimitiveFactory(Context& context);
 	~MeshPrimitiveFactory();
 
-	struct Vertex {
-		XMFLOAT3 position;
-		XMFLOAT3 normal;
-		XMFLOAT2 texCoord;
-	};
-
 	/**
 	 * @brief Creates UV Sphere Mesh component
 	 * @link http://www.songho.ca/opengl/gl_sphere.html
