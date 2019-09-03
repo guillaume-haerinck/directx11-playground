@@ -330,5 +330,7 @@
     <FxCompile Include="res\shaders\2-rotating-cube\RotatingCubeVS.hlsl" />
     <FxCompile Include="res\shaders\3-textured-primitives\TexturedPrimitivesPS.hlsl" />
     <FxCompile Include="res\shaders\3-textured-primitives\TexturedPrimitivesVS.hlsl" />
+    <FxCompile Include="res\shaders\4-model-loading\ModelLoadingVS.hlsl" />
+    <FxCompile Include="res\shaders\4-model-loading\ModelLoadingPS.hlsl" />
   </ItemGroup>
 </Project>

@@ -5,15 +5,15 @@
 ////////////////////////////// MODEL FACTORY //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-ModelFactory::ModelFactory() {
+ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
 	
 }
 
 ModelFactory::~ModelFactory() {
 }
 
-comp::Model ModelFactory::CreateModel(std::filesystem::path gltfFilePath) {
-	fx::gltf::Document doc = fx::gltf::LoadFromText("res/models/cube/Cube.gltf");
+comp::VertexBuffer ModelFactory::CreateModel(const char* gltfFilePath) {
+	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
 	
 	// TODO do it for all and not only index 0
 	fx::gltf::Mesh const& mesh = doc.meshes[0];
@@ -42,9 +42,12 @@ comp::Model ModelFactory::CreateModel(std::filesystem::path gltfFilePath) {
 		// TODO get material data
 	}
 
-	// TODO create buffer to directX
+	// Create data to directX
+	// TODO handle when a buffer is missing
+	comp::VertexBuffer vb = m_ctx.rcommand->CreateVertexBuffer((void*) vertexBuffer.data, vertexBuffer.vertexCount, vertexBuffer.dataStride);
+	//comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*) indexBuffer.data, indexBuffer.vertexCount);
 
-	return comp::Model();
+	return vb;
 }
 
 ModelFactory::GltfBufferInfo ModelFactory::GetData(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor) {
@@ -52,7 +55,7 @@ ModelFactory::GltfBufferInfo ModelFactory::GetData(fx::gltf::Document const& doc
 	fx::gltf::Buffer const& buffer = doc.buffers[bufferView.buffer];
 
 	uint32_t dataTypeSize = CalculateDataTypeSize(accessor);
-	return GltfBufferInfo{ &accessor, &buffer.data[static_cast<uint64_t>(bufferView.byteOffset) + accessor.byteOffset], dataTypeSize, accessor.count * dataTypeSize };
+	return GltfBufferInfo{ &accessor, &buffer.data[static_cast<uint64_t>(bufferView.byteOffset) + accessor.byteOffset], dataTypeSize, accessor.count * dataTypeSize, accessor.count };
 }
 
 uint32_t ModelFactory::CalculateDataTypeSize(fx::gltf::Accessor const& accessor) {
