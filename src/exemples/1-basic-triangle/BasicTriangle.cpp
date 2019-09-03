@@ -17,8 +17,8 @@ namespace exemple {
 		// Vertex buffer
 		XMFLOAT2 vertices[] = {
 			{ XMFLOAT2(0.0f,  0.5f) },
-			{ XMFLOAT2(0.5f, -0.5f) },
-			{ XMFLOAT2 (-0.5f, -0.5f) }
+			{ XMFLOAT2 (-0.5f, -0.5f) },
+			{ XMFLOAT2(0.5f, -0.5f) }
 		};
 		comp::VertexBuffer vertexBuffer = m_ctx.rcommand->CreateVertexBuffer(vertices, sizeof(vertices), sizeof(XMFLOAT2));
 

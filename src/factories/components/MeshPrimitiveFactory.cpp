@@ -61,14 +61,14 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 			// 2 triangles per sector excluding first and last stacks
 			if (i != 0) {
 				indices.push_back(k1);
-				indices.push_back(k1 + 1);
 				indices.push_back(k2);
+				indices.push_back(k1 + 1);
 			}
 
 			if (i != (stackCount - 1)) {
 				indices.push_back(k1 + 1);
-				indices.push_back(k2 + 1);
 				indices.push_back(k2);
+				indices.push_back(k2 + 1);
 			}
 		}
 	}
@@ -136,12 +136,12 @@ comp::Mesh MeshPrimitiveFactory::CreateBox(float width, float height) {
 	};
 
 	WORD indices[] = {
-		0, 1, 2,   2, 3, 0,       // front
-		4, 5, 6,   6, 7, 4,       // right
-		8, 9, 10,  10,11, 8,      // top
-		12,13,14,  14,15,12,      // left
-		16,17,18,  18,19,16,      // bottom
-		20,21,22,  22,23,20		  // back
+		0, 2, 1,   2, 0, 3,       // front
+		4, 6, 5,   6, 4, 7,       // right
+		8, 10,9,   10,8, 11,      // top
+		12,14,13,  14,12,15,      // left
+		16,18,17,  18,16,19,      // bottom
+		20,22,21,  22,20,23		  // back
 	};
 
 	// Create Box
@@ -180,13 +180,13 @@ comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 
 	WORD indices[] = {
 		// 5 faces around point 0
-		0,11,5,	0,5,1,  0,1,7,   0,7,10, 0,10,11,
+		0,5,11, 0,1,5, 0,7,1, 0,10,7, 0,11,10,
 		// 5 adjacent faces
-		1,5,9,  5,11,4, 11,10,2, 10,7,6, 7,1,8,
+		1,9,5, 5,4,11, 11,2,10, 10,6,7, 7,8,1,
 		// 5 faces around point 3
-		3,9,4,  3,4,2,  3,2,6,   3,6,8,  3,8,9,
+		3,4,9, 3,2,4, 3,6,2, 3,8,6, 3,9,8,
 		// 5 adjacent faces
-		4,9,5,  2,4,11, 6,2,10,  8,6,7,  9,8,1
+		4,5,9, 2,11,4, 6,10,2, 8,7,6, 9,1,8
 	};
 
 	// Compute TextCoord
