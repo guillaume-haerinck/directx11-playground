@@ -45,7 +45,7 @@ comp::AttributeBuffer RenderCommand::CreateAttributeBuffer(void* vertices, unsig
 	return ab;
 }
 
-comp::IndexBuffer RenderCommand::CreateIndexBuffer(WORD* indices, unsigned int count) const {
+comp::IndexBuffer RenderCommand::CreateIndexBuffer(void* indices, unsigned int count) const {
 	ID3D11Buffer* indexBuffer;
 
 	D3D11_BUFFER_DESC bd = {};

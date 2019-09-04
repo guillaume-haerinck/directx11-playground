@@ -6,7 +6,6 @@
 
 namespace comp {
 	struct Model {
-		VertexBuffer vb;
-		IndexBuffer ib;
+		std::vector<Mesh> meshes;
 	};
 };

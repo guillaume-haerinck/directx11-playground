@@ -10,7 +10,7 @@ ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
 	m_ied.at(1) = { "NORMAL",	 0, DXGI_FORMAT_R32G32B32_FLOAT,	1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	m_ied.at(2) = { "TEXCOORD",  0, DXGI_FORMAT_R32G32_FLOAT,		2, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	m_ied.at(3) = { "TANGENT",	 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 3, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(4) = { "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 4, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	// m_ied.at(4) = { "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 4, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 }
 
 ModelFactory::~ModelFactory() {
@@ -18,56 +18,63 @@ ModelFactory::~ModelFactory() {
 
 comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
-
-	// TODO do it for all and not only index 0
-	fx::gltf::Mesh const& mesh = doc.meshes[0];
-	fx::gltf::Primitive const& primitive = mesh.primitives[0];
-
-	GltfBufferInfo positionBufferInfo = {};
-	GltfBufferInfo normalBufferInfo = {};
-	GltfBufferInfo tangentBufferInfo = {};
-	GltfBufferInfo texCoord0BufferInfo = {};
-	GltfBufferInfo indexBufferInfo = {};
-
-	// https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#meshes
-	for (auto const& attrib : primitive.attributes) {
-		if (attrib.first == "POSITION") { // FLOAT3
-			positionBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
-		}
-		else if (attrib.first == "NORMAL") { // FLOAT3
-			normalBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
-		}
-		else if (attrib.first == "TANGENT") { // FLOAT4
-			tangentBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
-		}
-		else if (attrib.first == "TEXCOORD_0") { // FLOAT2
-			texCoord0BufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
-		}
-	}
-	indexBufferInfo = GetGltfBufferInfo(doc, doc.accessors[primitive.indices]);
-
-	if (primitive.material >= 0) {
-		// TODO get material data
-	}
-	// TODO Handle occlusion and emissive maps
-
-	// Create attribut buffers
-	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*)positionBufferInfo.data, positionBufferInfo.vertexCount, positionBufferInfo.dataStride);
-
-	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((WORD*)indexBufferInfo.data, indexBufferInfo.vertexCount);
-
-	// Create vertex buffer
-	comp::VertexBuffer vb = {};
-	vb.buffers =	{ positionBuffer.buffer };
-	vb.byteWidths = { positionBuffer.byteWidth };
-	vb.counts =		{ positionBuffer.count };
-	vb.strides =	{ positionBuffer.stride };
-	vb.offsets =	{ 0 };
-	vb.names =		{ "position" };
-
 	comp::Model model = {};
-	model.vb = vb;
-	model.ib = ib;
+
+	for (auto meshInfo : doc.meshes) {
+		for (auto primitive : meshInfo.primitives) {
+			GltfBufferInfo positionBufferInfo = {};
+			GltfBufferInfo normalBufferInfo = {};
+			GltfBufferInfo texCoord0BufferInfo = {};
+			GltfBufferInfo tangentBufferInfo = {};
+
+			// Get attribute buffers
+			// https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#meshes
+			for (auto const& attrib : primitive.attributes) {
+				if (attrib.first == "POSITION") { // FLOAT3
+					positionBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+				} else if (attrib.first == "NORMAL") { // FLOAT3
+					normalBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+				} else if (attrib.first == "TEXCOORD_0") { // FLOAT2
+					texCoord0BufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+				} else if (attrib.first == "TANGENT") { // FLOAT4
+					tangentBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
+				} 
+			}
+
+			// Get material
+			if (primitive.material >= 0) {
+				// TODO get material data
+			}
+
+			// Create attribute buffers
+			// TODO handle when one buffer is missing
+			comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) positionBufferInfo.data,	positionBufferInfo.vertexCount,		positionBufferInfo.dataStride);
+			comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) normalBufferInfo.data,		normalBufferInfo.vertexCount,		normalBufferInfo.dataStride);
+			comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) texCoord0BufferInfo.data,	texCoord0BufferInfo.vertexCount,	texCoord0BufferInfo.dataStride);
+			comp::AttributeBuffer tangentBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) tangentBufferInfo.data,		tangentBufferInfo.vertexCount,		tangentBufferInfo.dataStride);
+
+			// Create vertex buffer
+			comp::VertexBuffer vb = {};
+			vb.buffers =	{ positionBuffer.buffer,	normalBuffer.buffer,	texCoordBuffer.buffer,		tangentBuffer.buffer };
+			vb.byteWidths = { positionBuffer.byteWidth,	normalBuffer.byteWidth, texCoordBuffer.byteWidth,	tangentBuffer.byteWidth };
+			vb.counts =		{ positionBuffer.count,		normalBuffer.count,		texCoordBuffer.count,		tangentBuffer.count };
+			vb.strides =	{ positionBuffer.stride,	normalBuffer.stride,	texCoordBuffer.stride,		tangentBuffer.stride };
+			vb.offsets =	{ 0,						0,						0,							0 };
+			vb.names =		{ "position",				"normal",				"texture coordinates",		"tangent" };
+
+			// Get and create index buffer
+			GltfBufferInfo indexBufferInfo = {};
+			indexBufferInfo = GetGltfBufferInfo(doc, doc.accessors[primitive.indices]);
+			comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer((void*) indexBufferInfo.data, indexBufferInfo.vertexCount);
+
+			// Add the mesh to the model
+			comp::Mesh mesh = {};
+			mesh.vb = vb;
+			mesh.ib = ib;
+			model.meshes.push_back(mesh);
+		}
+	}
+
 	return model;
 }
 

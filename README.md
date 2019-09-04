@@ -26,11 +26,11 @@ Loads a GLTF model with its texture.
 
 ### Advanced
 
-### Blinn-Phong Lighting
+### Blinn-Phong shading
 
-### Toon Lighting
+### Toon shading
 
-### PBR Lighting
+### PBR shading
 
 ## Based on
 

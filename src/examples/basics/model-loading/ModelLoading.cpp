@@ -54,9 +54,12 @@ namespace exemple {
 			.each([&](comp::Model& model, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			m_ctx.rcommand->BindVertexShader(VShader);
 			m_ctx.rcommand->BindPixelShader(PShader);
-			m_ctx.rcommand->BindVertexBuffer(model.vb);
-			m_ctx.rcommand->BindIndexBuffer(model.ib);
-			m_ctx.rcommand->DrawIndexed(model.ib.count);
+
+			for (auto mesh : model.meshes) {
+				m_ctx.rcommand->BindVertexBuffer(mesh.vb);
+				m_ctx.rcommand->BindIndexBuffer(mesh.ib);
+				m_ctx.rcommand->DrawIndexed(mesh.ib.count);
+			}
 		});
 	}
 

@@ -40,11 +40,4 @@ namespace comp {
 		VertexBuffer vb;
 		IndexBuffer ib;
 	};
-
-	/**
-	 * @brief
-	 */
-	struct Meshes {
-		std::vector<Mesh> meshes;
-	};
 }

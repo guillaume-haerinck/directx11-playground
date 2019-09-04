@@ -43,7 +43,7 @@ public:
 	 * @param indices - Array of data
 	 * @param count - The number of elements in the array
 	 */
-	comp::IndexBuffer CreateIndexBuffer(WORD* indices, unsigned int count) const;
+	comp::IndexBuffer CreateIndexBuffer(void* indices, unsigned int count) const;
 
 	/**
 	 * @param slot - The register in the shader that the buffer will be bound to (c0 or c1; etc)
