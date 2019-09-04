@@ -3,9 +3,9 @@
 /**
  * @brief Interface used by each exemples. Shows DirectX render capabilities
  */
-class IExemple {
+class IExample {
 public:
-	virtual ~IExemple() {};
+	virtual ~IExample() {};
 
 	/**
 	 * @brief Update the geometry and sends it to the render queue

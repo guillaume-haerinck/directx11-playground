@@ -227,10 +227,10 @@
     </ClCompile>
     <ClCompile Include="src\components\graphics\GraphicsComponents.cpp" />
     <ClCompile Include="src\core\Context.cpp" />
-    <ClCompile Include="src\exemples\basics\basic-triangle\BasicTriangle.cpp" />
-    <ClCompile Include="src\exemples\basics\model-loading\ModelLoading.cpp" />
-    <ClCompile Include="src\exemples\basics\rotating-cube\RotatingCube.cpp" />
-    <ClCompile Include="src\exemples\basics\textured-primitives\TexturedPrimitives.cpp" />
+    <ClCompile Include="src\examples\basics\basic-triangle\BasicTriangle.cpp" />
+    <ClCompile Include="src\examples\basics\model-loading\ModelLoading.cpp" />
+    <ClCompile Include="src\examples\basics\rotating-cube\RotatingCube.cpp" />
+    <ClCompile Include="src\examples\basics\textured-primitives\TexturedPrimitives.cpp" />
     <ClCompile Include="src\factories\components\MeshPrimitiveFactory.cpp" />
     <ClCompile Include="src\factories\components\ModelFactory.cpp" />
     <ClCompile Include="src\graphics\DXObjects.cpp" />
@@ -313,11 +313,11 @@
     <ClInclude Include="src\components\graphics\Model.h" />
     <ClInclude Include="src\components\graphics\Shader.h" />
     <ClInclude Include="src\core\Context.h" />
-    <ClInclude Include="src\exemples\basics\basic-triangle\BasicTriangle.h" />
-    <ClInclude Include="src\exemples\basics\model-loading\ModelLoading.h" />
-    <ClInclude Include="src\exemples\basics\rotating-cube\RotatingCube.h" />
-    <ClInclude Include="src\exemples\basics\textured-primitives\TexturedPrimitives.h" />
-    <ClInclude Include="src\exemples\IExemple.h" />
+    <ClInclude Include="src\examples\basics\basic-triangle\BasicTriangle.h" />
+    <ClInclude Include="src\examples\basics\model-loading\ModelLoading.h" />
+    <ClInclude Include="src\examples\basics\rotating-cube\RotatingCube.h" />
+    <ClInclude Include="src\examples\basics\textured-primitives\TexturedPrimitives.h" />
+    <ClInclude Include="src\examples\IExample.h" />
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h" />
     <ClInclude Include="src\factories\components\ModelFactory.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />

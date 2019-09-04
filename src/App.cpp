@@ -5,10 +5,10 @@
 
 #include "graphics/DXException.h"
 
-#include "exemples/basics/basic-triangle/BasicTriangle.h"
-#include "exemples/basics/rotating-cube/RotatingCube.h"
-#include "exemples/basics/textured-primitives/TexturedPrimitives.h"
-#include "exemples/basics/model-loading/ModelLoading.h"
+#include "examples/basics/basic-triangle/BasicTriangle.h"
+#include "examples/basics/rotating-cube/RotatingCube.h"
+#include "examples/basics/textured-primitives/TexturedPrimitives.h"
+#include "examples/basics/model-loading/ModelLoading.h"
 
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {

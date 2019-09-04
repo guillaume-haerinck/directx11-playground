@@ -1,6 +1,6 @@
 #pragma once
 
-#include "exemples/IExemple.h"
+#include "examples/IExample.h"
 #include "core/Context.h"
 #include "graphics/RenderCommand.h"
 
@@ -8,7 +8,7 @@ namespace exemple {
 	/**
 	 * @brief The most simple exemple. Render a triangle on screen
 	 */
-	class BasicTriangle : public IExemple {
+	class BasicTriangle : public IExample {
 	public:
 		BasicTriangle(Context& context);
 		virtual ~BasicTriangle();

@@ -89,16 +89,16 @@
     <ClCompile Include="src\factories\components\ModelFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\basics\basic-triangle\BasicTriangle.cpp">
+    <ClCompile Include="src\examples\basics\basic-triangle\BasicTriangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\basics\model-loading\ModelLoading.cpp">
+    <ClCompile Include="src\examples\basics\model-loading\ModelLoading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\basics\rotating-cube\RotatingCube.cpp">
+    <ClCompile Include="src\examples\basics\rotating-cube\RotatingCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\basics\textured-primitives\TexturedPrimitives.cpp">
+    <ClCompile Include="src\examples\basics\textured-primitives\TexturedPrimitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,9 +149,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\imstb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exemples\IExemple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\microsoft-dds-texture-loader\DDSTextureLoader.h">
@@ -307,16 +304,19 @@
     <ClInclude Include="lib\nlohmann\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\exemples\basics\basic-triangle\BasicTriangle.h">
+    <ClInclude Include="src\examples\basics\basic-triangle\BasicTriangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\exemples\basics\model-loading\ModelLoading.h">
+    <ClInclude Include="src\examples\basics\model-loading\ModelLoading.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\exemples\basics\rotating-cube\RotatingCube.h">
+    <ClInclude Include="src\examples\basics\rotating-cube\RotatingCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\exemples\basics\textured-primitives\TexturedPrimitives.h">
+    <ClInclude Include="src\examples\basics\textured-primitives\TexturedPrimitives.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\IExample.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

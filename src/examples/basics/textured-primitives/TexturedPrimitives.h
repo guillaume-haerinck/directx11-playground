@@ -1,22 +1,22 @@
 #pragma once
 
-#include "exemples/IExemple.h"
-#include "components/graphics/Shader.h"
-#include "core/Context.h"
+#include "examples/IExample.h"
 #include "core/StepTimer.h"
+#include "core/Context.h"
 
 namespace exemple {
-	class ModelLoading : public IExemple {
+	class TexturedPrimitives : public IExample {
 	public:
-		ModelLoading(Context& context);
-		virtual ~ModelLoading();
+		TexturedPrimitives(Context& context);
+		virtual ~TexturedPrimitives();
 
 		virtual void Update() override;
 		virtual void ImGuiUpdate() override;
 
 	private:
-		Context& m_ctx;
 		DX::StepTimer m_timer;
+		Context& m_ctx;
 		comp::ConstantBuffer m_VSCB0;
 	};
-}
+};
+

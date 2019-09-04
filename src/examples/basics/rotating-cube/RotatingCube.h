@@ -1,12 +1,12 @@
 #pragma once
 
-#include "exemples/IExemple.h"
+#include "examples/IExample.h"
 #include "core/StepTimer.h"
 #include "core/Context.h"
 #include "systems/ISystem.h"
 
 namespace exemple {
-	class RotatingCube : public IExemple {
+	class RotatingCube : public IExample {
 	public:
 		RotatingCube(Context& context);
 		virtual ~RotatingCube();

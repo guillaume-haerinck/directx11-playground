@@ -4,7 +4,7 @@
 #include "graphics/DXObjects.h"
 #include "graphics/Renderer.h"
 #include "graphics/RenderCommand.h"
-#include "exemples/IExemple.h"
+#include "examples/IExample.h"
 
 /**
  * @brief Base singleton class to create the application and run it
@@ -34,5 +34,5 @@ private:
 	DXObjects m_dxo;
 	Context m_ctx;
 	std::shared_ptr<ID3D11Debug> m_debugDevice;
-	std::unique_ptr<IExemple> m_activeExemple;
+	std::unique_ptr<IExample> m_activeExemple;
 };
