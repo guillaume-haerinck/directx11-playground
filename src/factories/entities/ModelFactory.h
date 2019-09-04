@@ -42,6 +42,6 @@ private:
 	uint32_t CalculateDataTypeSize(fx::gltf::Accessor const& accessor);
 
 private:
-	std::array<D3D11_INPUT_ELEMENT_DESC, 5> m_ied;
+	std::array<D3D11_INPUT_ELEMENT_DESC, 4> m_ied;
 	Context& m_ctx;
 };

@@ -5,8 +5,21 @@ cbuffer cbPerFrame : register(b0) {
 
 struct VSInput {
 	float3 Position : POSITION;
+	float3 Normal : NORMAL;
+	float2 TexCoord : TEXCOORD;
+	float4 Tangent : TANGENT;
 };
 
-float4 main(VSInput vin) : SV_POSITION {
-	return mul(mul(float4(vin.Position, 1.0f), matGeo), matVP);
+struct VSOutput {
+	float4 Position : SV_POSITION;
+	float2 TexCoord : TEXCOORD;
+};
+
+VSOutput main(VSInput vin) {
+	VSOutput vout = (VSOutput)0;
+
+	vout.Position = mul(mul(float4(vin.Position, 1.0f), matGeo), matVP);
+	vout.TexCoord = vin.TexCoord;
+	
+	return vout;
 }
