@@ -2,6 +2,26 @@
 
 Small DirectX renderer with an Entity Component System architecture.
 
+## Exemples
+
+### Basics
+
+#### [Triangle](src/examples/basics/basic-triangle/)
+
+A simple triangle. It is the only exemple that does not use indexed drawing.
+
+#### [Rotating cube](src/examples/basics/rotating-cube/)
+
+A rotating colored cube. Each face is independant so that the colors can be applied without smearing.
+
+#### [Textured primitives](src/examples/basics/textured-primitives/)
+
+Show some procedurally-generated primitives with their UV maps.
+
+#### [Model loading](src/examples/basics/model-loading/)
+
+Loads a GLTF model with its texture.
+
 ## Based on
 
 ### Youtube tutorials
