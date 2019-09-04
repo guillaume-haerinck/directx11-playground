@@ -1,6 +1,5 @@
 #pragma once
 
-#include "components/graphics/Model.h"
 #include "components/graphics/Mesh.h"
 #include "core/Context.h"
 
@@ -31,7 +30,7 @@ public:
 	/**
 	 * @brief
 	 */
-	comp::Model CreateModel(const char* gltfFilePath);
+	unsigned int CreateEntityFromGltf(const char* gltfFilePath);
 
 	D3D11_INPUT_ELEMENT_DESC* GetIed() { return m_ied.data(); }
 	unsigned int GetIedElementCount() { return m_ied.size(); }

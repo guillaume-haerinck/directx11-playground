@@ -232,7 +232,7 @@
     <ClCompile Include="src\examples\basics\rotating-cube\RotatingCube.cpp" />
     <ClCompile Include="src\examples\basics\textured-primitives\TexturedPrimitives.cpp" />
     <ClCompile Include="src\factories\components\MeshPrimitiveFactory.cpp" />
-    <ClCompile Include="src\factories\components\ModelFactory.cpp" />
+    <ClCompile Include="src\factories\entities\ModelFactory.cpp" />
     <ClCompile Include="src\graphics\DXObjects.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
     <ClCompile Include="src\App.cpp" />
@@ -319,7 +319,7 @@
     <ClInclude Include="src\examples\basics\textured-primitives\TexturedPrimitives.h" />
     <ClInclude Include="src\examples\IExample.h" />
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h" />
-    <ClInclude Include="src\factories\components\ModelFactory.h" />
+    <ClInclude Include="src\factories\entities\ModelFactory.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />
     <ClInclude Include="src\App.h" />

@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "ModelFactory.h"
 
+#include "components/graphics/Material.h"
+#include "components/graphics/Mesh.h"
+
 ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////// MODEL FACTORY //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -16,12 +19,13 @@ ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
 ModelFactory::~ModelFactory() {
 }
 
-comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
+unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
-	comp::Model model = {};
+	comp::Meshes meshes = {};
+	comp::PBRMaterials materials = {};
 
-	for (auto meshInfo : doc.meshes) {
-		for (auto primitive : meshInfo.primitives) {
+	for (auto const& meshInfo : doc.meshes) {
+		for (auto const& primitive : meshInfo.primitives) {
 			GltfBufferInfo positionBufferInfo = {};
 			GltfBufferInfo normalBufferInfo = {};
 			GltfBufferInfo texCoord0BufferInfo = {};
@@ -71,11 +75,16 @@ comp::Model ModelFactory::CreateModel(const char* gltfFilePath) {
 			comp::Mesh mesh = {};
 			mesh.vb = vb;
 			mesh.ib = ib;
-			model.meshes.push_back(mesh);
+			meshes.meshes.push_back(mesh);
 		}
 	}
 
-	return model;
+	// Assign components
+	auto entity = m_ctx.registry.create();
+	m_ctx.registry.assign<comp::Meshes>(entity, meshes);
+	m_ctx.registry.assign<comp::PBRMaterials>(entity, materials);
+
+	return entity;
 }
 
 ModelFactory::GltfBufferInfo ModelFactory::GetGltfBufferInfo(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor) {

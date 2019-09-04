@@ -24,6 +24,13 @@ namespace comp {
 		float roughness;
 	};
 
+	/**
+	 * @brief
+	 */
+	struct PBRMaterials {
+		std::vector<PBRMaterial> materials;
+	};
+
 	enum PhongTexSlot {
 		DIFFUSE = 0
 	};
@@ -33,5 +40,12 @@ namespace comp {
 	 */
 	struct PhongMaterial {
 		std::vector<Texture> textures;
+	};
+
+	/**
+	 * @brief
+	 */
+	struct PhongMaterials {
+		std::vector<PhongMaterial> materials;
 	};
 }

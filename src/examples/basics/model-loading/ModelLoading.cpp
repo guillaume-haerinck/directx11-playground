@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ModelLoading.h"
 
-#include "factories/components/ModelFactory.h"
+#include "factories/entities/ModelFactory.h"
 
 namespace exemple {
 	struct VSConstantBuffer0 {
@@ -21,12 +21,8 @@ namespace exemple {
 		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
 		VShader.constantBuffers.push_back(m_VSCB0);
 
-		// VertexBuffer
-		comp::Model model = modelFactory.CreateModel("res/models/cube/Cube.gltf");
-
 		// Assign data to an entity
-		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::Model>(entity, model);
+		auto entity = modelFactory.CreateEntityFromGltf("res/models/cube/Cube.gltf");
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 	}
@@ -50,12 +46,12 @@ namespace exemple {
 		XMStoreFloat4x4(&VSCB0data.matGeo, XMMatrixIdentity());
 		m_ctx.rcommand->UpdateConstantBuffer(m_VSCB0, &VSCB0data);
 
-		m_ctx.registry.view<comp::Model, comp::VertexShader, comp::PixelShader>()
-			.each([&](comp::Model& model, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+		m_ctx.registry.view<comp::Meshes, comp::VertexShader, comp::PixelShader>()
+			.each([&](comp::Meshes& meshes, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			m_ctx.rcommand->BindVertexShader(VShader);
 			m_ctx.rcommand->BindPixelShader(PShader);
 
-			for (auto mesh : model.meshes) {
+			for (auto mesh : meshes.meshes) {
 				m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 				m_ctx.rcommand->BindIndexBuffer(mesh.ib);
 				m_ctx.rcommand->DrawIndexed(mesh.ib.count);

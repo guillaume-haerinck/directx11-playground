@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Material.h"
+
 namespace comp {
 	/**
 	 * @brief Vertex attribute buffer
@@ -35,9 +37,21 @@ namespace comp {
 
 	/**
 	 * @brief
+	 *
+	 * @param materialIndex - The index in the std::vector of Materials component (0 if default material).
+	 *						  The material can be of any type (pbr, phong, toon, etc...).
+	 *						  The same material can be shared by multiple mesh.
 	 */
 	struct Mesh {
 		VertexBuffer vb;
 		IndexBuffer ib;
+		unsigned int materialIndex;
+	};
+
+	/**
+	 * @brief
+	 */
+	struct Meshes {
+		std::vector<Mesh> meshes;
 	};
 }
