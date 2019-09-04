@@ -22,6 +22,16 @@ Show some procedurally-generated primitives with their UV maps.
 
 Loads a GLTF model with its texture.
 
+### Intermediate
+
+### Advanced
+
+### Blinn-Phong Lighting
+
+### Toon Lighting
+
+### PBR Lighting
+
 ## Based on
 
 ### Youtube tutorials
