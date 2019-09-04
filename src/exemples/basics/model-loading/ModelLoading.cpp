@@ -16,8 +16,8 @@ namespace exemple {
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"ModelLoadingVS.cso");
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"ModelLoadingPS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"res/built-shaders/ModelLoading_VS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/ModelLoading_PS.cso");
 		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
 		VShader.constantBuffers.push_back(m_VSCB0);
 

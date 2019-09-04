@@ -65,9 +65,6 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\1-basic-triangle\BasicTriangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\DXObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -83,22 +80,25 @@
     <ClCompile Include="src\core\Context.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\2-rotating-cube\RotatingCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\exemples\3-textured-primitives\TexturedPrimitives.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\components\graphics\GraphicsComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\factories\components\MeshPrimitiveFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\exemples\4-model-loading\ModelLoading.cpp">
+    <ClCompile Include="src\factories\components\ModelFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\factories\components\ModelFactory.cpp">
+    <ClCompile Include="src\exemples\basics\basic-triangle\BasicTriangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\exemples\basics\model-loading\ModelLoading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\exemples\basics\rotating-cube\RotatingCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\exemples\basics\textured-primitives\TexturedPrimitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,9 +152,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\exemples\IExemple.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exemples\1-basic-triangle\BasicTriangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\microsoft-dds-texture-loader\DDSTextureLoader.h">
@@ -295,19 +292,10 @@
     <ClInclude Include="src\core\Context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\exemples\2-rotating-cube\RotatingCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exemples\3-textured-primitives\TexturedPrimitives.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\graphics\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exemples\4-model-loading\ModelLoading.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\factories\components\ModelFactory.h">
@@ -319,18 +307,30 @@
     <ClInclude Include="lib\nlohmann\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\exemples\basics\basic-triangle\BasicTriangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exemples\basics\model-loading\ModelLoading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exemples\basics\rotating-cube\RotatingCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exemples\basics\textured-primitives\TexturedPrimitives.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="lib\imgui\misc\natvis\imgui.natvis" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="res\shaders\1-basic-triangle\BasicTrianglePS.hlsl" />
-    <FxCompile Include="res\shaders\1-basic-triangle\BasicTriangleVS.hlsl" />
-    <FxCompile Include="res\shaders\2-rotating-cube\RotatingCubePS.hlsl" />
-    <FxCompile Include="res\shaders\2-rotating-cube\RotatingCubeVS.hlsl" />
-    <FxCompile Include="res\shaders\3-textured-primitives\TexturedPrimitivesPS.hlsl" />
-    <FxCompile Include="res\shaders\3-textured-primitives\TexturedPrimitivesVS.hlsl" />
-    <FxCompile Include="res\shaders\4-model-loading\ModelLoadingVS.hlsl" />
-    <FxCompile Include="res\shaders\4-model-loading\ModelLoadingPS.hlsl" />
+    <FxCompile Include="res\shaders\basics\basic-triangle\BasicTriangle_PS.hlsl" />
+    <FxCompile Include="res\shaders\basics\basic-triangle\BasicTriangle_VS.hlsl" />
+    <FxCompile Include="res\shaders\basics\model-loading\ModelLoading_PS.hlsl" />
+    <FxCompile Include="res\shaders\basics\model-loading\ModelLoading_VS.hlsl" />
+    <FxCompile Include="res\shaders\basics\rotating-cube\RotatingCube_PS.hlsl" />
+    <FxCompile Include="res\shaders\basics\rotating-cube\RotatingCube_VS.hlsl" />
+    <FxCompile Include="res\shaders\basics\textured-primitives\TexturedPrimitives_PS.hlsl" />
+    <FxCompile Include="res\shaders\basics\textured-primitives\TexturedPrimitives_VS.hlsl" />
   </ItemGroup>
 </Project>

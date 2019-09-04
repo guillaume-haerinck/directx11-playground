@@ -11,8 +11,8 @@ namespace exemple {
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"BasicTriangleVS.cso");
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"BasicTrianglePS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"res/built-shaders/BasicTriangle_VS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BasicTriangle_PS.cso");
 
 		// Position buffer
 		XMFLOAT2 positions[] = {

@@ -18,8 +18,8 @@ namespace exemple {
 		auto entity = m_ctx.registry.create();
 
 		// Shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"TexturedPrimitivesVS.cso");
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"TexturedPrimitivesPS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/TexturedPrimitives_VS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/TexturedPrimitives_PS.cso");
 		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
 		VShader.constantBuffers.push_back(m_VSCB0);
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);

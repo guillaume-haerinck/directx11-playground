@@ -20,12 +20,12 @@ namespace exemple {
 		MeshPrimitiveFactory primFactory(context);
 
 		// Vertex Shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"RotatingCubeVS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/RotatingCube_VS.cso");
 		m_VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(VSConstantBuffer0)));
 		VShader.constantBuffers.push_back(m_VSCB0);
 
 		// Pixel shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"RotatingCubePS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
 		comp::ConstantBuffer PSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(PSConstantBuffer0)));
 		PShader.constantBuffers.push_back(PSCB0);
 
