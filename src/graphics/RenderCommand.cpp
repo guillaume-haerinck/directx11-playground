@@ -104,7 +104,7 @@ comp::Sampler RenderCommand::CreateSampler(comp::SamplerSlot slot) const {
 	return sampler;
 }
 
-comp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath, unsigned int samplerSlot) const {
+comp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath, comp::SamplerSlot samplerSlot) const {
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
 	Microsoft::WRL::ComPtr<ID3D11Resource> res;
 	DX::ThrowIfFailed(CALL_INFO,

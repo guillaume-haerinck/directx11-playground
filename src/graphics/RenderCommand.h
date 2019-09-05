@@ -61,7 +61,7 @@ public:
 	 * @param slot - The texture slot the ressource will be bound to
 	 * @param filepath - The relative path from the .exe to the image (.png or .jpg)
 	 */
-	comp::Texture CreateTexture(unsigned int slot, LPCWSTR filepath, unsigned int samplerSlot = 0) const;
+	comp::Texture CreateTexture(unsigned int slot, LPCWSTR filepath, comp::SamplerSlot samplerSlot = comp::SamplerSlot::ANISOTROPIC_WRAP) const;
 
 	/**
 	 * @param iedArray - Input layout of the shader

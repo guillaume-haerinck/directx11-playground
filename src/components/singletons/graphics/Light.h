@@ -25,6 +25,7 @@ namespace comp {
 	/**
 	 * @brief
 	 */
+	// TODO create and handle update of constant buffer for light arrays
 	struct Lights {
 		std::vector<PointLight> pointLights;
 		std::vector<DirectionalLight> directionalLights;
