@@ -31,6 +31,8 @@ namespace exemple {
 		material.textures.push_back(texture);
 		m_ctx.registry.assign<comp::PhongMaterial>(entity, material);
 
+		// TODO use singleton entity to create and bind the sampler
+
 		// Mesh
 		auto mesh = primFactory.CreateUVSphere();
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);

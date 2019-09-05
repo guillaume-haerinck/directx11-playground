@@ -1,36 +1,23 @@
 #pragma once
 
 namespace comp {
+
 	/**
 	 * @brief
 	 */
 	struct Texture {
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
-		Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
+		unsigned int samplerSlot;
 		unsigned int slot;
 	};
 
-	enum PBRTexSlot {
-		BASIC_COLOR = 0
-	};
+	///////////////////////////////////////////////////////////////////////////
+	//////////////////////////////// BLINN-PHONG //////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @brief
 	 */
-	struct PBRMaterial {
-		std::vector<Texture> textures;
-		XMFLOAT3 baseColor;
-		float metalicness;
-		float roughness;
-	};
-
-	/**
-	 * @brief
-	 */
-	struct PBRMaterials {
-		std::vector<PBRMaterial> materials;
-	};
-
 	enum PhongTexSlot {
 		DIFFUSE = 0
 	};
@@ -47,5 +34,21 @@ namespace comp {
 	 */
 	struct PhongMaterials {
 		std::vector<PhongMaterial> materials;
+	};
+
+	///////////////////////////////////////////////////////////////////////////
+	////////////////////////////// COOK-TORRANCE //////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * @brief
+	 */
+	using CookTorranceMaterial = fx::gltf::Material;
+
+	/**
+	 * @brief
+	 */
+	struct CookTorranceMaterials {
+		std::vector<CookTorranceMaterial> materials;
 	};
 }

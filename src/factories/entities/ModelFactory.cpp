@@ -22,7 +22,10 @@ ModelFactory::~ModelFactory() {
 unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
 	comp::Meshes meshes = {};
-	comp::PBRMaterials materials = {};
+	comp::CookTorranceMaterials materials = {};
+
+	// TODO handle scene transform and nodes
+	// TODO create default material
 
 	for (auto const& meshInfo : doc.meshes) {
 		for (auto const& primitive : meshInfo.primitives) {
@@ -43,11 +46,6 @@ unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 				} else if (attrib.first == "TANGENT") { // FLOAT4
 					tangentBufferInfo = GetGltfBufferInfo(doc, doc.accessors[attrib.second]);
 				} 
-			}
-
-			// Get material
-			if (primitive.material >= 0) {
-				// TODO get material data
 			}
 
 			// Create attribute buffers
@@ -75,6 +73,20 @@ unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 			comp::Mesh mesh = {};
 			mesh.vb = vb;
 			mesh.ib = ib;
+
+			// Get material
+			// TODO use a hashmap to check if material already created, if it is use the index
+			if (primitive.material >= 0) {
+				// TODO create texture (see how to store them)
+
+				fx::gltf::Material material = doc.materials[primitive.material];
+				materials.materials.push_back(material);
+				mesh.materialIndex = materials.materials.size() - 1;
+
+			} else {
+				mesh.materialIndex = 0;
+			}
+
 			meshes.meshes.push_back(mesh);
 		}
 	}
@@ -82,7 +94,7 @@ unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 	// Assign components
 	auto entity = m_ctx.registry.create();
 	m_ctx.registry.assign<comp::Meshes>(entity, meshes);
-	m_ctx.registry.assign<comp::PBRMaterials>(entity, materials);
+	m_ctx.registry.assign<comp::CookTorranceMaterials>(entity, materials);
 
 	return entity;
 }

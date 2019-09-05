@@ -226,6 +226,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\components\graphics\GraphicsComponents.cpp" />
+    <ClCompile Include="src\components\singletons\graphics\SingletonGraphicsComponents.cpp" />
     <ClCompile Include="src\core\Context.cpp" />
     <ClCompile Include="src\examples\basics\basic-triangle\BasicTriangle.cpp" />
     <ClCompile Include="src\examples\basics\model-loading\ModelLoading.cpp" />
@@ -308,10 +309,13 @@
     <ClInclude Include="lib\microsoft-wic-texture-loader\WICTextureLoader.h" />
     <ClInclude Include="lib\nlohmann\json.hpp" />
     <ClInclude Include="src\components\graphics\Layer.h" />
+    <ClInclude Include="src\components\graphics\Light.h" />
     <ClInclude Include="src\components\graphics\Material.h" />
     <ClInclude Include="src\components\graphics\Mesh.h" />
     <ClInclude Include="src\components\graphics\Model.h" />
+    <ClInclude Include="src\components\graphics\Scene.h" />
     <ClInclude Include="src\components\graphics\Shader.h" />
+    <ClInclude Include="src\components\singletons\graphics\Sampler.h" />
     <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\examples\basics\basic-triangle\BasicTriangle.h" />
     <ClInclude Include="src\examples\basics\model-loading\ModelLoading.h" />

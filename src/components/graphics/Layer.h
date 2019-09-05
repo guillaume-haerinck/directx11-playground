@@ -1,8 +1,10 @@
 #pragma once
 
 namespace comp {
-	struct Layer
-	{
+	/**
+	 * @brief Uses bitmasking to order drawcalls. The goal is to reduce state changes to improve performance
+	 */
+	struct Layer {
 
 	};
 }

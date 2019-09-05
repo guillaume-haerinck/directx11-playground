@@ -50,3 +50,4 @@ using namespace DirectX;
 #include "imgui/imgui_impl_dx11.h"
 #include "imgui/imgui_impl_win32.h"
 #include "entt/entt.hpp"
+#include "fx/gltf.h"

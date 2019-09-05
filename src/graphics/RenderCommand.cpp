@@ -87,30 +87,34 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsi
 	return cb;
 }
 
-comp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath) const {
-	// Create resource
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
-	Microsoft::WRL::ComPtr<ID3D11Resource> res;
-	DX::ThrowIfFailed(CALL_INFO,
-		CreateWICTextureFromFile(m_dxo.device.Get(), m_dxo.context.Get(), filepath, res.GetAddressOf(), srv.GetAddressOf())
-	);
-
-	// Set sampler state
-	Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
+comp::Sampler RenderCommand::CreateSampler(comp::SamplerSlot slot) const {
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> splr;
 	D3D11_SAMPLER_DESC sdesc = {};
 	sdesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sdesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	DX::ThrowIfFailed(CALL_INFO,
-		m_dxo.device->CreateSamplerState(&sdesc, &sampler)
+		m_dxo.device->CreateSamplerState(&sdesc, &splr)
 	);
 
-	// Return result
+	comp::Sampler sampler = {};
+	sampler.sampler = splr;
+	sampler.slot = slot;
+	return sampler;
+}
+
+comp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath, unsigned int samplerSlot) const {
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
+	Microsoft::WRL::ComPtr<ID3D11Resource> res;
+	DX::ThrowIfFailed(CALL_INFO,
+		CreateWICTextureFromFile(m_dxo.device.Get(), m_dxo.context.Get(), filepath, res.GetAddressOf(), srv.GetAddressOf())
+	);
+
 	comp::Texture texture = {};
-	texture.sampler = sampler;
 	texture.srv = srv;
 	texture.slot = slot;
+	texture.samplerSlot = samplerSlot;
 	return texture;
 }
 
@@ -170,9 +174,12 @@ void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {
 	m_dxo.context->IASetIndexBuffer(ib.buffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 }
 
+void RenderCommand::BindSampler(comp::Sampler sampler) const {
+	m_dxo.context->PSSetSamplers(sampler.slot, 1, sampler.sampler.GetAddressOf());
+}
+
 void RenderCommand::BindTexture(comp::Texture texture) const {
 	m_dxo.context->PSSetShaderResources(texture.slot, 1u, texture.srv.GetAddressOf());
-	m_dxo.context->PSSetSamplers(texture.slot, 1, texture.sampler.GetAddressOf());
 }
 
 void RenderCommand::BindVertexShader(comp::VertexShader vs) {
@@ -181,6 +188,8 @@ void RenderCommand::BindVertexShader(comp::VertexShader vs) {
 		m_dxo.context->IASetInputLayout(vs.layout.Get());
 		m_dxo.context->VSSetShader(vs.shader.Get(), nullptr, 0u);
 
+		// TODO bind all at once (see how to ensure that index is unique and in the right order)
+		// maybe use the index of the vector as start
 		for (auto cb : vs.constantBuffers) {
 			m_dxo.context->VSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
 		}

@@ -3,8 +3,6 @@
 #include "components/graphics/Mesh.h"
 #include "core/Context.h"
 
-#include <fx/gltf.h>
-
 /**
  * @brief
  */

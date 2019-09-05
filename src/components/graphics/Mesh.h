@@ -4,7 +4,7 @@
 
 namespace comp {
 	/**
-	 * @brief Vertex attribute buffer
+	 * @brief Vertex attribute buffer (points, uv mapping, normals, etc...)
 	 */
 	struct AttributeBuffer {
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
@@ -14,7 +14,8 @@ namespace comp {
 	};
 
 	/**
-	 * @brief 
+	 * @brief Keep references to vertex attributes sent to GPU
+	 *
 	 * @note Attributes are stored in separate buffers (PPP)(TTT)(NNN).
 	 *		 This instead of interleaved (PTNPTNPTN) or packed (PPPTTTNNN).
 	 */
@@ -28,7 +29,7 @@ namespace comp {
 	};
 
 	/**
-	 * @brief
+	 * @brief Data used to prevent vertex duplication
 	 */
 	struct IndexBuffer {
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
@@ -36,7 +37,7 @@ namespace comp {
 	};
 
 	/**
-	 * @brief
+	 * @brief Geometry data used for simple entities
 	 *
 	 * @param materialIndex - The index in the std::vector of Materials component (0 if default material).
 	 *						  The material can be of any type (pbr, phong, toon, etc...).
@@ -49,7 +50,7 @@ namespace comp {
 	};
 
 	/**
-	 * @brief
+	 * @brief Geometry data used for entities with complex models
 	 */
 	struct Meshes {
 		std::vector<Mesh> meshes;

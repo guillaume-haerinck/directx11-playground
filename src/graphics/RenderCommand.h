@@ -4,6 +4,7 @@
 #include "components/graphics/Mesh.h"
 #include "components/graphics/Shader.h"
 #include "components/graphics/Material.h"
+#include "components/singletons/graphics/Sampler.h"
 
 // TODO keep track of already created shaders
 
@@ -52,10 +53,15 @@ public:
 	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
 
 	/**
-	 * @param slot - The texture slot the ressource will be bound to. Use enums PBRTexSlot or PhongTextSlot
+	 * @param slot - The texture slot the ressource will be bound to
+	 */
+	comp::Sampler CreateSampler(comp::SamplerSlot slot) const;
+
+	/**
+	 * @param slot - The texture slot the ressource will be bound to
 	 * @param filepath - The relative path from the .exe to the image (.png or .jpg)
 	 */
-	comp::Texture CreateTexture(unsigned int slot, LPCWSTR filepath) const;
+	comp::Texture CreateTexture(unsigned int slot, LPCWSTR filepath, unsigned int samplerSlot = 0) const;
 
 	/**
 	 * @param iedArray - Input layout of the shader
@@ -76,7 +82,10 @@ public:
 	void BindVertexBuffer(comp::VertexBuffer vb) const;
 	void BindIndexBuffer(comp::IndexBuffer ib) const;
 
+	void BindSampler(comp::Sampler sampler) const;
 	void BindTexture(comp::Texture texture) const;
+
+	// TODO BindTextures
 
 	void BindVertexShader(comp::VertexShader vs);
 	void BindPixelShader(comp::PixelShader ps);
