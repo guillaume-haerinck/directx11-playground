@@ -26,6 +26,7 @@ private:
 	void initWindow(HINSTANCE& hInstance);
 	void initDirectX11();
 	void initImGui();
+	void initGraphicSingletonEntity();
 
 private:
 	HWND m_hwnd;

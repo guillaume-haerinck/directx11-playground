@@ -33,7 +33,9 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initImGui();
 
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
-	m_activeExemple = std::make_unique<exemple::ModelLoading>(m_ctx);
+	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_ctx);
+
+	initGraphicSingletonEntity();
 }
 
 App::~App() {
@@ -252,4 +254,20 @@ void App::initImGui() {
 	ImGui_ImplWin32_Init(m_hwnd);
 	ImGui_ImplDX11_Init(m_dxo.device.Get(), m_dxo.context.Get());
 	ImGui::StyleColorsDark();
+}
+
+void App::initGraphicSingletonEntity() {
+	auto entity = m_ctx.registry.create();
+	m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC) = entity;
+
+	// Init texture samplers
+	comp::Sampler sampler0 = m_ctx.rcommand->CreateSampler(comp::SamplerSlot::ANISOTROPIC_WRAP);
+	comp::Sampler sampler1 = m_ctx.rcommand->CreateSampler(comp::SamplerSlot::LINEAR_CLAMP);
+	comp::Samplers samplers = {};
+	samplers.samplers = { sampler0, sampler1 };
+	m_ctx.registry.assign<comp::Samplers>(entity, samplers);
+
+	// Bind texture samplers
+	m_ctx.rcommand->BindSampler(sampler0);
+	m_ctx.rcommand->BindSampler(sampler1);
 }

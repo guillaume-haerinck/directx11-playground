@@ -14,4 +14,11 @@ namespace comp {
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
 		unsigned int slot;
 	};
+
+	/**
+	 * @brief
+	 */
+	struct Samplers {
+		std::vector<Sampler> samplers;
+	};
 }
