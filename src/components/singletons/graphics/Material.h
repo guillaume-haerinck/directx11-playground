@@ -1,9 +1,16 @@
 #pragma once
 
-namespace comp {
+#include "components/graphics/Shader.h"
+
+/**
+ * @brief CPU-side data for Materials.
+ *		  Will be transformed to corresponding constant buffer structure (array of materials)
+ *		  and sent over to GPU any time there is a change.
+ */
+namespace scomp {
 
 	/**
-	 * @brief
+	 * @brief An image accessible by shaders
 	 */
 	struct Texture {
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
@@ -16,24 +23,28 @@ namespace comp {
 	///////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * @brief
+	 * @brief Texture slot used in shaders for phong materials
 	 */
 	enum PhongTexSlot {
 		DIFFUSE = 0
 	};
 
 	/**
-	 * @brief
+	 * @brief Structure of data for one Phong material
 	 */
 	struct PhongMaterial {
 		std::vector<Texture> textures;
 	};
 
 	/**
-	 * @brief
+	 * @brief Unique array of Phong materials used for every objects of the scene
+	 *
+	 * @note Get the constant buffer corresponding to Materials from the shader component.
+	 *		 It will be updated in the render system.
 	 */
 	struct PhongMaterials {
 		std::vector<PhongMaterial> materials;
+		comp::ConstantBuffer constantBuffer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////
@@ -41,14 +52,18 @@ namespace comp {
 	///////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * @brief
+	 * @brief Stucture of data for one PBR material
 	 */
 	using CookTorranceMaterial = fx::gltf::Material;
 
 	/**
-	 * @brief
+	 * @brief Unique array of PBR materials used for every objects of the scene
+	 *
+	 * @note Get the constant buffer corresponding to Materials from the shader component.
+	 *		 It will be updated in the render system.
 	 */
 	struct CookTorranceMaterials {
 		std::vector<CookTorranceMaterial> materials;
+		comp::ConstantBuffer constantBuffer;
 	};
 }

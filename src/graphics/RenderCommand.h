@@ -3,7 +3,7 @@
 #include "DXObjects.h"
 #include "components/graphics/Mesh.h"
 #include "components/graphics/Shader.h"
-#include "components/graphics/Material.h"
+#include "components/singletons/graphics/Material.h"
 #include "components/singletons/graphics/Sampler.h"
 
 // TODO keep track of already created shaders
@@ -49,19 +49,22 @@ public:
 	/**
 	 * @param slot - The register in the shader that the buffer will be bound to (c0 or c1; etc)
 	 * @param byteWidth - The total size in bytes of the buffer
+	 *
+	 * @note - You have to store it within a shader component, and it will be bound with it
+	 * TODO remove slot, use the index in the vector
 	 */
 	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
 
 	/**
 	 * @param slot - The texture slot the ressource will be bound to
 	 */
-	comp::Sampler CreateSampler(comp::SamplerSlot slot) const;
+	scomp::Sampler CreateSampler(scomp::SamplerSlot slot) const;
 
 	/**
 	 * @param slot - The texture slot the ressource will be bound to
 	 * @param filepath - The relative path from the .exe to the image (.png or .jpg)
 	 */
-	comp::Texture CreateTexture(unsigned int slot, LPCWSTR filepath, comp::SamplerSlot samplerSlot = comp::SamplerSlot::ANISOTROPIC_WRAP) const;
+	scomp::Texture CreateTexture(unsigned int slot, LPCWSTR filepath, scomp::SamplerSlot samplerSlot = scomp::SamplerSlot::ANISOTROPIC_WRAP) const;
 
 	/**
 	 * @param iedArray - Input layout of the shader
@@ -82,8 +85,8 @@ public:
 	void BindVertexBuffer(comp::VertexBuffer vb) const;
 	void BindIndexBuffer(comp::IndexBuffer ib) const;
 
-	void BindSampler(comp::Sampler sampler) const;
-	void BindTexture(comp::Texture texture) const;
+	void BindSampler(scomp::Sampler sampler) const;
+	void BindTexture(scomp::Texture texture) const;
 
 	// TODO BindTextures
 

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ModelFactory.h"
 
-#include "components/graphics/Material.h"
+#include "components/singletons/graphics/Material.h"
 #include "components/graphics/Mesh.h"
 
 ///////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,6 @@ ModelFactory::~ModelFactory() {
 unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
 	comp::Meshes meshes = {};
-	comp::CookTorranceMaterials materials = {};
 
 	// TODO handle scene transform and nodes
 	// TODO create default material
@@ -80,8 +79,6 @@ unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 				// TODO create texture (see how to store them)
 
 				fx::gltf::Material material = doc.materials[primitive.material];
-				materials.materials.push_back(material);
-				mesh.materialIndex = materials.materials.size() - 1;
 
 			} else {
 				mesh.materialIndex = 0;
@@ -94,7 +91,6 @@ unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 	// Assign components
 	auto entity = m_ctx.registry.create();
 	m_ctx.registry.assign<comp::Meshes>(entity, meshes);
-	m_ctx.registry.assign<comp::CookTorranceMaterials>(entity, materials);
 
 	return entity;
 }

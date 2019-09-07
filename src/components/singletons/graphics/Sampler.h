@@ -1,6 +1,6 @@
 #pragma once
 
-namespace comp {
+namespace scomp {
 
 	enum SamplerSlot {
 		ANISOTROPIC_WRAP = 0,
@@ -16,7 +16,7 @@ namespace comp {
 	};
 
 	/**
-	 * @brief
+	 * @brief Unique array of samplers for the whole app
 	 */
 	struct Samplers {
 		std::vector<Sampler> samplers;

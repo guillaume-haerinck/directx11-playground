@@ -13,6 +13,8 @@ namespace comp {
 
 	/**
 	 * @brief
+	 *
+	 * @note Constant buffers will be bound but not updated by this component
 	 */
 	struct VertexShader {
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> shader;
@@ -22,6 +24,8 @@ namespace comp {
 
 	/**
 	 * @brief
+	 *
+	 * @note Constant buffers will be bound but not updated by this component
 	 */
 	struct PixelShader {
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> shader;

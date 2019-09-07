@@ -87,7 +87,7 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsi
 	return cb;
 }
 
-comp::Sampler RenderCommand::CreateSampler(comp::SamplerSlot slot) const {
+scomp::Sampler RenderCommand::CreateSampler(scomp::SamplerSlot slot) const {
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> splr;
 	D3D11_SAMPLER_DESC sdesc = {};
 	sdesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -98,20 +98,20 @@ comp::Sampler RenderCommand::CreateSampler(comp::SamplerSlot slot) const {
 		m_dxo.device->CreateSamplerState(&sdesc, &splr)
 	);
 
-	comp::Sampler sampler = {};
+	scomp::Sampler sampler = {};
 	sampler.sampler = splr;
 	sampler.slot = slot;
 	return sampler;
 }
 
-comp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath, comp::SamplerSlot samplerSlot) const {
+scomp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath, scomp::SamplerSlot samplerSlot) const {
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
 	Microsoft::WRL::ComPtr<ID3D11Resource> res;
 	DX::ThrowIfFailed(CALL_INFO,
 		CreateWICTextureFromFile(m_dxo.device.Get(), m_dxo.context.Get(), filepath, res.GetAddressOf(), srv.GetAddressOf())
 	);
 
-	comp::Texture texture = {};
+	scomp::Texture texture = {};
 	texture.srv = srv;
 	texture.slot = slot;
 	texture.samplerSlot = samplerSlot;
@@ -174,11 +174,11 @@ void RenderCommand::BindIndexBuffer(comp::IndexBuffer ib) const {
 	m_dxo.context->IASetIndexBuffer(ib.buffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 }
 
-void RenderCommand::BindSampler(comp::Sampler sampler) const {
+void RenderCommand::BindSampler(scomp::Sampler sampler) const {
 	m_dxo.context->PSSetSamplers(sampler.slot, 1, sampler.sampler.GetAddressOf());
 }
 
-void RenderCommand::BindTexture(comp::Texture texture) const {
+void RenderCommand::BindTexture(scomp::Texture texture) const {
 	m_dxo.context->PSSetShaderResources(texture.slot, 1u, texture.srv.GetAddressOf());
 }
 

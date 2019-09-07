@@ -261,11 +261,11 @@ void App::initGraphicSingletonEntity() {
 	m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC) = entity;
 
 	// Init texture samplers
-	comp::Sampler sampler0 = m_ctx.rcommand->CreateSampler(comp::SamplerSlot::ANISOTROPIC_WRAP);
-	comp::Sampler sampler1 = m_ctx.rcommand->CreateSampler(comp::SamplerSlot::LINEAR_CLAMP);
-	comp::Samplers samplers = {};
+	scomp::Sampler sampler0 = m_ctx.rcommand->CreateSampler(scomp::SamplerSlot::ANISOTROPIC_WRAP);
+	scomp::Sampler sampler1 = m_ctx.rcommand->CreateSampler(scomp::SamplerSlot::LINEAR_CLAMP);
+	scomp::Samplers samplers = {};
 	samplers.samplers = { sampler0, sampler1 };
-	m_ctx.registry.assign<comp::Samplers>(entity, samplers);
+	m_ctx.registry.assign<scomp::Samplers>(entity, samplers);
 
 	// Bind texture samplers
 	m_ctx.rcommand->BindSampler(sampler0);

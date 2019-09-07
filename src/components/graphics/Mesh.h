@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Material.h"
-
 namespace comp {
 	/**
 	 * @brief Vertex attribute buffer (points, uv mapping, normals, etc...)

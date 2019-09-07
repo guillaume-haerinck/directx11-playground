@@ -235,7 +235,7 @@
     <ClCompile Include="src\examples\basics\textured-primitives\TexturedPrimitives.cpp" />
     <ClCompile Include="src\factories\components\MeshPrimitiveFactory.cpp" />
     <ClCompile Include="src\factories\entities\ModelFactory.cpp" />
-    <ClCompile Include="src\graphics\DXObjects.cpp" />
+    <ClCompile Include="src\graphics\Graphics.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\graphics\DXException.cpp" />
@@ -310,13 +310,14 @@
     <ClInclude Include="lib\microsoft-wic-texture-loader\WICTextureLoader.h" />
     <ClInclude Include="lib\nlohmann\json.hpp" />
     <ClInclude Include="src\components\graphics\Layer.h" />
-    <ClInclude Include="src\components\graphics\Material.h" />
     <ClInclude Include="src\components\graphics\Mesh.h" />
     <ClInclude Include="src\components\graphics\Model.h" />
     <ClInclude Include="src\components\graphics\Shader.h" />
     <ClInclude Include="src\components\physics\Child.h" />
     <ClInclude Include="src\components\physics\Transform.h" />
+    <ClInclude Include="src\components\singletons\graphics\Camera.h" />
     <ClInclude Include="src\components\singletons\graphics\Light.h" />
+    <ClInclude Include="src\components\singletons\graphics\Material.h" />
     <ClInclude Include="src\components\singletons\graphics\Sampler.h" />
     <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\examples\basics\basic-triangle\BasicTriangle.h" />
@@ -326,6 +327,7 @@
     <ClInclude Include="src\examples\IExample.h" />
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h" />
     <ClInclude Include="src\factories\entities\ModelFactory.h" />
+    <ClInclude Include="src\graphics\ConstantBuffers.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />
     <ClInclude Include="src\App.h" />

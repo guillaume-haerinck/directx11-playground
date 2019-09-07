@@ -1,6 +1,8 @@
 #pragma once
 
-namespace comp {
+#include "components/graphics/Shader.h"
+
+namespace scomp {
 
 	/**
 	 * @brief
@@ -23,12 +25,12 @@ namespace comp {
 	};
 
 	/**
-	 * @brief
+	 * @brief Unique array of Lights for the scene
 	 */
-	// TODO create and handle update of constant buffer for light arrays
 	struct Lights {
 		std::vector<PointLight> pointLights;
 		std::vector<DirectionalLight> directionalLights;
 		std::vector<SpotLight> spotLights;
+		comp::ConstantBuffer constantBuffer;
 	};
 }

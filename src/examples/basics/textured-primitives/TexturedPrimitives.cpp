@@ -4,7 +4,7 @@
 #include "graphics/DXException.h"
 #include "factories/components/MeshPrimitiveFactory.h"
 #include "systems/RenderSystem.h"
-#include "components/graphics/Material.h"
+#include "components/singletons/graphics/Material.h"
 
 namespace exemple {
 	struct VSConstantBuffer0 {
@@ -26,15 +26,13 @@ namespace exemple {
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 
 		// Material
-		comp::PhongMaterial material = {};
-		auto texture = m_ctx.rcommand->CreateTexture(comp::PhongTexSlot::DIFFUSE, L"res/textures/test.jpg");
+		scomp::PhongMaterial material = {};
+		auto texture = m_ctx.rcommand->CreateTexture(scomp::PhongTexSlot::DIFFUSE, L"res/textures/test.jpg");
 		material.textures.push_back(texture);
-		m_ctx.registry.assign<comp::PhongMaterial>(entity, material);
-
-		// TODO use singleton entity to create and bind the sampler
+		m_ctx.registry.assign<scomp::PhongMaterial>(entity, material);
 
 		// Mesh
-		auto mesh = primFactory.CreateUVSphere();
+		auto mesh = primFactory.CreateIcosahedron();
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 	}
 
@@ -58,8 +56,8 @@ namespace exemple {
 		m_ctx.rcommand->UpdateConstantBuffer(m_VSCB0, &VSCB0data);
 
 		// Update systems
-		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader, comp::PhongMaterial>()
-			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader, comp::PhongMaterial& material) {
+		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader, scomp::PhongMaterial>()
+			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader, scomp::PhongMaterial& material) {
 			m_ctx.rcommand->BindVertexShader(VShader);
 			m_ctx.rcommand->BindPixelShader(PShader);
 			m_ctx.rcommand->BindVertexBuffer(mesh.vb);
