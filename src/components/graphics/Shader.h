@@ -2,19 +2,19 @@
 
 namespace comp {
 	/**
-	 * @brief
+	 * @brief Constant buffers used by shader. This structure is used to update constant buffers.
 	 */
 	struct ConstantBuffer {
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-		unsigned int slot;
 		unsigned int byteWidth;
 		// TODO keep track of the layout
 	};
 
 	/**
-	 * @brief
+	 * @brief A vertex shader. The first stage in the graphic pipeline.
 	 *
-	 * @note Constant buffers will be bound but not updated by this component
+	 * @note Constant buffers will be bound but not updated by this component.
+	 *		 The slot will correspond to the index of the vector the constant buffer is in.
 	 */
 	struct VertexShader {
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> shader;
@@ -23,9 +23,10 @@ namespace comp {
 	};
 
 	/**
-	 * @brief
+	 * @brief A pixel shader. The last stage in the graphic pipeline.
 	 *
-	 * @note Constant buffers will be bound but not updated by this component
+	 * @note Constant buffers will be bound but not updated by this component.
+	 *		 The slot will correspond to the index of the vector the constant buffer is in.
 	 */
 	struct PixelShader {
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> shader;

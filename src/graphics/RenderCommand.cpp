@@ -68,7 +68,7 @@ comp::IndexBuffer RenderCommand::CreateIndexBuffer(void* indices, unsigned int c
 	return ib;
 }
 
-comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const {
+comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int byteWidth) const {
 	ID3D11Buffer* constantBuffer = nullptr;
 
 	D3D11_BUFFER_DESC bd = {};
@@ -82,7 +82,6 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int slot, unsi
 
 	comp::ConstantBuffer cb = {};
 	cb.buffer = constantBuffer;
-	cb.slot = slot;
 	cb.byteWidth = byteWidth;
 	return cb;
 }

@@ -14,8 +14,8 @@ namespace exemple {
 
 		// Vertex shader
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/ModelLoading_VS.cso");
-		comp::ConstantBuffer cameraCB = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(cb::Camera)));
-		comp::ConstantBuffer meshVarCB = m_ctx.rcommand->CreateConstantBuffer(1, (sizeof(cb::MeshVariable) * 1));
+		comp::ConstantBuffer cameraCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::Camera));
+		comp::ConstantBuffer meshVarCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::MeshVariable) * 1);
 		VShader.constantBuffers.push_back(cameraCB.buffer);
 		VShader.constantBuffers.push_back(meshVarCB.buffer);
 

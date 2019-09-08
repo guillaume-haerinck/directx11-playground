@@ -15,14 +15,14 @@ namespace exemple {
 
 		// Vertex Shader
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/RotatingCube_VS.cso");
-		comp::ConstantBuffer cameraCB = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(cb::Camera)));
-		comp::ConstantBuffer meshVarCB = m_ctx.rcommand->CreateConstantBuffer(1, (sizeof(cb::MeshVariable) * 1));
+		comp::ConstantBuffer cameraCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::Camera));
+		comp::ConstantBuffer meshVarCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::MeshVariable) * 1);
 		VShader.constantBuffers.push_back(cameraCB.buffer);
 		VShader.constantBuffers.push_back(meshVarCB.buffer);
 
 		// Pixel shader
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
-		comp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(XMFLOAT4) * 6));
+		comp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(XMFLOAT4) * 6);
 		PShader.constantBuffers.push_back(colorCB.buffer);
 
 		// Update PSconstant buffer once as it will not change

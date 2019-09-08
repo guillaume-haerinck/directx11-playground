@@ -47,13 +47,12 @@ public:
 	comp::IndexBuffer CreateIndexBuffer(void* indices, unsigned int count) const;
 
 	/**
-	 * @param slot - The register in the shader that the buffer will be bound to (c0 or c1; etc)
 	 * @param byteWidth - The total size in bytes of the buffer (must be a multiple of 16)
 	 *
-	 * @note - You have to store it within a shader component, and it will be bound with it
-	 * TODO remove slot, use the index in the vector
+	 * @note - You have to store it within a shader component, and it will be bound with it.
+	 *		   The slot will correspond to the index of the vector in the shader.
 	 */
-	comp::ConstantBuffer CreateConstantBuffer(unsigned int slot, unsigned int byteWidth) const;
+	comp::ConstantBuffer CreateConstantBuffer(unsigned int byteWidth) const;
 
 	/**
 	 * @param slot - The texture slot the ressource will be bound to
