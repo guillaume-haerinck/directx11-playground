@@ -35,15 +35,18 @@ namespace comp {
 	};
 
 	/**
-	 * @brief Geometry data used for simple entities
-	 *
 	 * @param materialIndex - The index in the std::vector of Materials component (0 if default material).
 	 *						  The material can be of any type (pbr, phong, toon, etc...).
 	 *						  The same material can be shared by multiple mesh.
+	 *
+	 * @param textures - An array of textures that will be bound with the mesh.
+	 *                   The texture slot will correspond to the index in the vector.
+	 *                   The meaning of the texture slot depends on the material.
 	 */
 	struct Mesh {
 		VertexBuffer vb;
 		IndexBuffer ib;
 		unsigned int materialIndex;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> textures;
 	};
 }

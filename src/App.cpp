@@ -4,6 +4,7 @@
 #include "graphics/DXException.h"
 #include "components/singletons/graphics/Samplers.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
+#include "components/singletons/graphics/Materials.h"
 
 #include "examples/basics/basic-triangle/BasicTriangle.h"
 #include "examples/basics/rotating-cube/RotatingCube.h"
@@ -33,7 +34,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initImGui();
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
 	initGraphicSingletonEntity();
-	m_activeExemple = std::make_unique<exemple::RotatingCube>(m_ctx);
+	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_ctx);
 }
 
 App::~App() {
@@ -261,6 +262,12 @@ void App::initGraphicSingletonEntity() {
 	// Init constant buffers
 	scomp::ConstantBuffers cbs = {};
 	m_ctx.registry.assign<scomp::ConstantBuffers>(entity, cbs);
+
+	// Init materials
+	scomp::PhongMaterials phongMaterials = {};
+	m_ctx.registry.assign<scomp::PhongMaterials>(entity, phongMaterials);
+	scomp::CookTorranceMaterials cookMaterials = {};
+	m_ctx.registry.assign<scomp::CookTorranceMaterials>(entity, cookMaterials);
 
 	// Init texture samplers
 	scomp::Sampler sampler0 = m_ctx.rcommand->CreateSampler(scomp::SamplerSlot::ANISOTROPIC_WRAP);

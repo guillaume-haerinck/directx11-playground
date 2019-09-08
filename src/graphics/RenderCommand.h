@@ -84,10 +84,8 @@ public:
 	void BindVertexBuffer(comp::VertexBuffer vb) const;
 	void BindIndexBuffer(comp::IndexBuffer ib) const;
 
-	void BindSampler(scomp::Sampler sampler) const;
-	void BindTexture(scomp::Texture texture) const;
-
-	// TODO BindTextures
+	void BindSampler(scomp::Sampler sampler) const; // TODO BindSamplers
+	void BindTextures(std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textures) const;
 
 	void BindVertexShader(comp::VertexShader vs);
 	void BindPixelShader(comp::PixelShader ps);

@@ -177,8 +177,8 @@ void RenderCommand::BindSampler(scomp::Sampler sampler) const {
 	m_dxo.context->PSSetSamplers(sampler.slot, 1, sampler.sampler.GetAddressOf());
 }
 
-void RenderCommand::BindTexture(scomp::Texture texture) const {
-	m_dxo.context->PSSetShaderResources(texture.slot, 1u, texture.srv.GetAddressOf());
+void RenderCommand::BindTextures(std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textures) const {
+	m_dxo.context->PSSetShaderResources(0, textures.size(), textures.data()->GetAddressOf());
 }
 
 void RenderCommand::BindVertexShader(comp::VertexShader vs) {

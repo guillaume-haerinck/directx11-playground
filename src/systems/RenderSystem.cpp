@@ -49,18 +49,30 @@ void RenderSystem::Update() {
 		// TODO
 	}
 
-	// Update materials constant buffer
+	// Update phong materials constant buffer
+	// TODO update only when there is a change
+	/*
 	{
-		// TODO
+		scomp::PhongMaterials& materials = m_ctx.registry.get<scomp::PhongMaterials>(graphEntity);
+
+		comp::ConstantBuffer& meshVarCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+			.constantBuffers.at(scomp::ConstantBufferIndex::PHONG_MATERIALS);
+
+		m_ctx.rcommand->UpdateConstantBuffer(meshVarCB, &materials.materials.data());
 	}
+	*/
 
 	// Render
+	// TODO bind textures for each mesh
 	m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 		.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 		m_ctx.rcommand->BindVertexShader(VShader);
 		m_ctx.rcommand->BindPixelShader(PShader);
 		m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 		m_ctx.rcommand->BindIndexBuffer(mesh.ib);
+		if (mesh.textures.size() > 0) {
+			m_ctx.rcommand->BindTextures(mesh.textures);
+		}
 		m_ctx.rcommand->DrawIndexed(mesh.ib.count);
 	});
 }
