@@ -14,7 +14,7 @@ namespace exemple {
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"res/built-shaders/BasicTriangle_VS.cso");
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BasicTriangle_PS.cso");
 
-		// Position buffer
+		// Position attribute buffer
 		XMFLOAT2 positions[] = {
 			XMFLOAT2(0.0f,  0.5f),
 			XMFLOAT2 (-0.5f, -0.5f),
@@ -42,6 +42,7 @@ namespace exemple {
 	}
 
 	void BasicTriangle::Update() {
+		// Non-indexed draw
 		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 			 m_ctx.rcommand->BindVertexShader(VShader);

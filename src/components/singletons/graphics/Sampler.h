@@ -2,6 +2,9 @@
 
 namespace scomp {
 
+	/**
+	 * @brief Slot used by shader to identify the sampler
+	 */
 	enum SamplerSlot {
 		ANISOTROPIC_WRAP = 0,
 		LINEAR_CLAMP

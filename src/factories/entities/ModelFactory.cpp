@@ -19,10 +19,9 @@ ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
 ModelFactory::~ModelFactory() {
 }
 
-unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
+std::vector<unsigned int> ModelFactory::CreateEntitiesFromGltf(const char* gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
-	comp::Meshes meshes = {};
-
+	std::vector<unsigned int> entities;
 	// TODO handle scene transform and nodes
 	// TODO create default material
 
@@ -73,6 +72,13 @@ unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 			mesh.vb = vb;
 			mesh.ib = ib;
 
+			// Create new entity
+			auto entity = m_ctx.registry.create();
+			entities.push_back(entity);
+			m_ctx.registry.assign<comp::Mesh>(entity, mesh);
+
+			// TODO use child component for transforms
+
 			// Get material
 			// TODO use a hashmap to check if material already created, if it is use the index
 			if (primitive.material >= 0) {
@@ -83,16 +89,10 @@ unsigned int ModelFactory::CreateEntityFromGltf(const char* gltfFilePath) {
 			} else {
 				mesh.materialIndex = 0;
 			}
-
-			meshes.meshes.push_back(mesh);
 		}
 	}
 
-	// Assign components
-	auto entity = m_ctx.registry.create();
-	m_ctx.registry.assign<comp::Meshes>(entity, meshes);
-
-	return entity;
+	return entities;
 }
 
 ModelFactory::GltfBufferInfo ModelFactory::GetGltfBufferInfo(fx::gltf::Document const& doc, fx::gltf::Accessor const& accessor) {

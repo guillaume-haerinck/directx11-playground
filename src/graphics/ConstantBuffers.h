@@ -4,21 +4,38 @@
  * @brief Structure for constant buffers used by shaders and updated on CPU side in render system
  */
 namespace cb {
-	struct Camera {
-		XMFLOAT4X4 matViewProj;
+
+	struct TEMP
+	{
+		XMFLOAT4X4 matVP;
 		XMFLOAT4X4 matGeo;
 	};
 
-	struct Lights {
-		XMFLOAT3 strength;
-		float falloffStart;		// point and spot light only
-		XMFLOAT3 direction;		// directional and spot light only
-		float falloffEnd;		// point and spot light only
-		XMFLOAT3 position;		// point light only
-		float spotPower;		// spot light only
+	/**
+	 * @brief
+	 *
+	 * @note Updated once by frame
+	 */
+	struct Camera {
+		XMFLOAT4X4 matViewProj;
 	};
 
-	struct CookTorranceMaterials {
+	/**
+	 * @brief
+	 *
+	 * @note Is sent as an array. Updated once by frame
+	 */
+	struct MeshVariable {
+		unsigned int materialIndex;
+		XMFLOAT4X4 matModel;
+	};
+
+	/**
+	 * @brief
+	 *
+	 * @note Is sent as an array. Updated when there is a change
+	 */
+	struct CookTorranceMaterial {
 		XMFLOAT3 meshAutoColor;
 
 		int baseColorIndex;
@@ -36,5 +53,28 @@ namespace cb {
 
 		int emissiveIndex;
 		XMFLOAT3 emissiveFactor;
+	};
+
+	/**
+	 * @brief
+	 *
+	 * @note Is sent as an array. Updated when there is a change
+	 */
+	struct PhongMaterial {
+
+	};
+
+	/**
+	 * @brief
+	 *
+	 * @note Is sent as an array. Updated when there is a change
+	 */
+	struct Light {
+		XMFLOAT3 strength;
+		float falloffStart;		// point and spot light only
+		XMFLOAT3 direction;		// directional and spot light only
+		float falloffEnd;		// point and spot light only
+		XMFLOAT3 position;		// point light only
+		float spotPower;		// spot light only
 	};
 }

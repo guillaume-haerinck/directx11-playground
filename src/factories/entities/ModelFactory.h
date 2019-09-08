@@ -28,7 +28,7 @@ public:
 	/**
 	 * @brief
 	 */
-	unsigned int CreateEntityFromGltf(const char* gltfFilePath);
+	std::vector<unsigned int> CreateEntitiesFromGltf(const char* gltfFilePath);
 
 	D3D11_INPUT_ELEMENT_DESC* GetIed() { return m_ied.data(); }
 	unsigned int GetIedElementCount() { return m_ied.size(); }

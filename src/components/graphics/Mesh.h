@@ -46,11 +46,4 @@ namespace comp {
 		IndexBuffer ib;
 		unsigned int materialIndex;
 	};
-
-	/**
-	 * @brief Geometry data used for entities with complex models
-	 */
-	struct Meshes {
-		std::vector<Mesh> meshes;
-	};
 }
