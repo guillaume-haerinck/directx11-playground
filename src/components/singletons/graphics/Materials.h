@@ -44,6 +44,7 @@ namespace scomp {
 	 */
 	struct PhongMaterials {
 		std::vector<PhongMaterial> materials;
+		bool hasToBeUpdated;
 	};
 
 	///////////////////////////////////////////////////////////////////////////
@@ -63,5 +64,6 @@ namespace scomp {
 	 */
 	struct CookTorranceMaterials {
 		std::vector<CookTorranceMaterial> materials;
+		bool hasToBeUpdated;
 	};
 }

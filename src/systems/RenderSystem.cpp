@@ -34,7 +34,6 @@ void RenderSystem::Update() {
 	// Update mesh variable constant buffer
 	{
 		// TODO is an array, size corresponding to the maximum number of mesh in the scene
-		// OR update for each object between each draw call
 		cb::MeshVariable meshVarData = {};
 		// meshVarData.materialIndex = 0;
 		XMStoreFloat4x4(&meshVarData.matModel, XMMatrixIdentity());
@@ -50,20 +49,36 @@ void RenderSystem::Update() {
 	}
 
 	// Update phong materials constant buffer
-	// TODO update only when there is a change
-	/*
 	{
 		scomp::PhongMaterials& materials = m_ctx.registry.get<scomp::PhongMaterials>(graphEntity);
+		if (materials.materials.size() > 0 && materials.hasToBeUpdated) {
+			comp::ConstantBuffer& materialCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+				.constantBuffers.at(scomp::ConstantBufferIndex::PHONG_MATERIALS);
 
-		comp::ConstantBuffer& meshVarCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
-			.constantBuffers.at(scomp::ConstantBufferIndex::PHONG_MATERIALS);
+			cb::PhongMaterial materialData = {}; // TODO is an array
+			// TODO assert bytewidth of cb is same size of data
 
-		m_ctx.rcommand->UpdateConstantBuffer(meshVarCB, &materials.materials.data());
+			m_ctx.rcommand->UpdateConstantBuffer(materialCB, &materialData);
+			materials.hasToBeUpdated = false;
+		}
 	}
-	*/
+
+	// Update cook torrance constant buffer
+	{
+		scomp::CookTorranceMaterials& materials = m_ctx.registry.get<scomp::CookTorranceMaterials>(graphEntity);
+		if (materials.materials.size() > 0 && materials.hasToBeUpdated) {
+			comp::ConstantBuffer& materialCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+				.constantBuffers.at(scomp::ConstantBufferIndex::COOK_TORRANCE_MATERIALS);
+
+			cb::CookTorranceMaterial materialData = {}; // TODO is an array
+			// TODO assert bytewidth of cb is same size of data
+
+			m_ctx.rcommand->UpdateConstantBuffer(materialCB, &materialData);
+			materials.hasToBeUpdated = false;
+		}
+	}
 
 	// Render
-	// TODO bind textures for each mesh
 	m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 		.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 		m_ctx.rcommand->BindVertexShader(VShader);
