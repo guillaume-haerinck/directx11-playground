@@ -187,12 +187,7 @@ void RenderCommand::BindVertexShader(comp::VertexShader vs) {
 		m_lastVShaderBound = vs.shader.Get();
 		m_dxo.context->IASetInputLayout(vs.layout.Get());
 		m_dxo.context->VSSetShader(vs.shader.Get(), nullptr, 0u);
-
-		// TODO bind all at once (see how to ensure that index is unique and in the right order)
-		// maybe use the index of the vector as start
-		for (auto cb : vs.constantBuffers) {
-			m_dxo.context->VSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
-		}
+		m_dxo.context->VSSetConstantBuffers(0, vs.constantBuffers.size(), vs.constantBuffers.data()->GetAddressOf());
 	}
 }
 
@@ -200,10 +195,7 @@ void RenderCommand::BindPixelShader(comp::PixelShader ps) {
 	if (m_lastPShaderBound != ps.shader.Get()) {
 		m_lastPShaderBound = ps.shader.Get();
 		m_dxo.context->PSSetShader(ps.shader.Get(), nullptr, 0u);
-
-		for (auto cb : ps.constantBuffers) {
-			m_dxo.context->PSSetConstantBuffers(cb.slot, 1, cb.buffer.GetAddressOf());
-		}
+		m_dxo.context->VSSetConstantBuffers(0, ps.constantBuffers.size(), ps.constantBuffers.data()->GetAddressOf());
 	}
 }
 

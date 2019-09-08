@@ -19,7 +19,7 @@ namespace comp {
 	struct VertexShader {
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> shader;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> layout;
-		std::vector<ConstantBuffer> constantBuffers;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> constantBuffers;
 	};
 
 	/**
@@ -29,6 +29,6 @@ namespace comp {
 	 */
 	struct PixelShader {
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> shader;
-		std::vector<ConstantBuffer> constantBuffers;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> constantBuffers;
 	};
 }
