@@ -194,7 +194,7 @@ void RenderCommand::BindPixelShader(comp::PixelShader ps) {
 	if (m_lastPShaderBound != ps.shader.Get()) {
 		m_lastPShaderBound = ps.shader.Get();
 		m_dxo.context->PSSetShader(ps.shader.Get(), nullptr, 0u);
-		m_dxo.context->VSSetConstantBuffers(0, ps.constantBuffers.size(), ps.constantBuffers.data()->GetAddressOf());
+		m_dxo.context->PSSetConstantBuffers(0, ps.constantBuffers.size(), ps.constantBuffers.data()->GetAddressOf());
 	}
 }
 
