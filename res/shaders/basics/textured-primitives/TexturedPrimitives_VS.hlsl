@@ -1,10 +1,10 @@
-cbuffer cbCamera : register(b0) {
-	float4x4 matViewProj;
-};
-
-cbuffer cbMeshVariable : register(b1) {
+cbuffer perMesh : register(b0) {
 	float4x4 matModel;
 }
+
+cbuffer perFrame : register(b1) {
+	float4x4 matViewProj;
+};
 
 struct VSInput {
 	float3 Position : POSITION;

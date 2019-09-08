@@ -13,12 +13,14 @@ namespace exemple {
 		MeshPrimitiveFactory primFactory(context);
 		m_systems.push_back(std::make_unique<RenderSystem>(context));
 
+		// Get constant buffers
+		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
+
 		// Vertex Shader
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/RotatingCube_VS.cso");
-		comp::ConstantBuffer cameraCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::Camera));
-		comp::ConstantBuffer meshVarCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::MeshVariable) * 1);
-		VShader.constantBuffers.push_back(cameraCB.buffer);
-		VShader.constantBuffers.push_back(meshVarCB.buffer);
+		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
+		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel shader
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
@@ -35,12 +37,6 @@ namespace exemple {
 			XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
 		};
 		m_ctx.rcommand->UpdateConstantBuffer(colorCB, &colorCBdata);
-
-		// Set constant buffers to be updated in render system
-		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
-		scomp::ConstantBuffers& constantBuffers = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
-		constantBuffers.constantBuffers.at(scomp::ConstantBufferIndex::CAMERA) = cameraCB;
-		constantBuffers.constantBuffers.at(scomp::ConstantBufferIndex::MESH_VARIABLES) = meshVarCB;
 
 		// Save data to entity
 		auto entity = m_ctx.registry.create();

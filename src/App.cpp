@@ -2,6 +2,7 @@
 #include "App.h"
 
 #include "graphics/DXException.h"
+#include "graphics/ConstantBuffer.h"
 #include "components/singletons/graphics/Samplers.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
 #include "components/singletons/graphics/Materials.h"
@@ -34,7 +35,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initImGui();
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
 	initGraphicSingletonEntity();
-	m_activeExemple = std::make_unique<exemple::ModelLoading>(m_ctx);
+	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_ctx);
 }
 
 App::~App() {
@@ -261,6 +262,10 @@ void App::initGraphicSingletonEntity() {
 
 	// Init constant buffers
 	scomp::ConstantBuffers cbs = {};
+	comp::ConstantBuffer perFrameCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perFrame));
+	comp::ConstantBuffer perMeshCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perMesh));
+	cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME) = perFrameCB;
+	cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH) = perMeshCB;
 	m_ctx.registry.assign<scomp::ConstantBuffers>(entity, cbs);
 
 	// Init materials

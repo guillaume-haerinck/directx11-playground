@@ -1,11 +1,11 @@
 // Resource binding with constant buffer
-cbuffer cbCamera : register(b0) {
-	float4x4 matViewProj;
-};
-
-cbuffer cbMeshVariable : register(b1) {
+cbuffer perMesh : register(b0) {
 	float4x4 matModel;
 }
+
+cbuffer perFrame : register(b1) {
+	float4x4 matViewProj;
+};
 
 // Expected input for this first stage of the pipeline
 // Set by input layout in the context

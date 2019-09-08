@@ -2,33 +2,31 @@
 
 /**
  * @brief Structure for constant buffers used by shaders and updated on CPU side in render system
+ * @note Sorted and nammed by their frequency of updates.
+ *
+ * @link http://vzout.com/directx12/const-buffer-performance.html
  */
 namespace cb {
 	/**
-	 * @brief
-	 *
-	 * @note Updated once by frame
+	 * @brief Constant buffer updated for each mesh between draw calls (so many times a frame)
 	 */
-	struct Camera {
-		XMFLOAT4X4 matViewProj;
-	};
-
-	/**
-	 * @brief
-	 *
-	 * @note Is sent as an array. Updated once by frame
-	 */
-	struct MeshVariable {
+	struct perMesh {
 		XMFLOAT4X4 matModel;
 		// unsigned int materialIndex;
 	};
 
 	/**
-	 * @brief
-	 *
-	 * @note Is sent as an array. Updated when there is a change
+	 * @brief Constant buffer updated once per frame
 	 */
-	struct CookTorranceMaterial {
+	struct perFrame {
+		XMFLOAT4X4 matViewProj;
+	};
+
+	/**
+	 * @brief Constant buffer updated when a PBR material is changed
+	 * @note Is sent as an array.
+	 */
+	struct perCookTorranceMaterialChange {
 		XMFLOAT3 meshAutoColor;
 
 		int baseColorIndex;
@@ -49,20 +47,18 @@ namespace cb {
 	};
 
 	/**
-	 * @brief
-	 *
-	 * @note Is sent as an array. Updated when there is a change
+	 * @brief Constant buffer updated when a Phong material is changed
+	 * @note Is sent as an array.
 	 */
-	struct PhongMaterial {
+	struct perPhongMaterialChange {
 
 	};
 
 	/**
-	 * @brief
-	 *
-	 * @note Is sent as an array. Updated when there is a change
+	 * @brief Constant buffer updated when a light is changed
+	 * @note Is sent as an array.
 	 */
-	struct Light {
+	struct perLightChange {
 		XMFLOAT3 strength;
 		float falloffStart;		// point and spot light only
 		XMFLOAT3 direction;		// directional and spot light only
