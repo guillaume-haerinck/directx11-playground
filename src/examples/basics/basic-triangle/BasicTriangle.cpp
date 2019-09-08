@@ -31,7 +31,7 @@ namespace exemple {
 		vb.offsets = { 0 };
 		vb.names = { "position" };
 
-		// Assign data to an entity
+		// Create entity
 		auto entity = m_ctx.registry.create();
 		m_ctx.registry.assign<comp::Mesh>(entity, vb);
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);

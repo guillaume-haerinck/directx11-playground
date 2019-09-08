@@ -4,8 +4,8 @@
 #include "factories/components/MeshPrimitiveFactory.h"
 #include "components/graphics/Mesh.h"
 #include "systems/RenderSystem.h"
-#include "graphics/ConstantBuffers.h"
-#include "components/singletons/graphics/Camera.h"
+#include "graphics/ConstantBuffer.h"
+#include "components/singletons/graphics/ConstantBuffers.h"
 
 namespace exemple {
 	RotatingCube::RotatingCube(Context& context) : m_ctx(context) {
@@ -15,16 +15,18 @@ namespace exemple {
 
 		// Vertex Shader
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/RotatingCube_VS.cso");
-		comp::ConstantBuffer VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(cb::TEMP)));
-		VShader.constantBuffers.push_back(VSCB0);
+		comp::ConstantBuffer cameraCB = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(cb::Camera)));
+		comp::ConstantBuffer meshVarCB = m_ctx.rcommand->CreateConstantBuffer(1, (sizeof(cb::MeshVariable) * 1));
+		VShader.constantBuffers.push_back(cameraCB);
+		VShader.constantBuffers.push_back(meshVarCB);
 
 		// Pixel shader
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
-		comp::ConstantBuffer PSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(XMFLOAT4) * 6));
-		PShader.constantBuffers.push_back(PSCB0);
+		comp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(XMFLOAT4) * 6));
+		PShader.constantBuffers.push_back(colorCB);
 
 		// Update PSconstant buffer once as it will not change
-		XMFLOAT4 PSCB0data[6] = {
+		XMFLOAT4 colorCBdata[6] = {
 			XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
 			XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
 			XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
@@ -32,14 +34,13 @@ namespace exemple {
 			XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
 			XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
 		};
-		m_ctx.rcommand->UpdateConstantBuffer(PSCB0, &PSCB0data);
+		m_ctx.rcommand->UpdateConstantBuffer(colorCB, &colorCBdata);
 
-		// TODO find a more global and safer way to init singleton components (use POO instead ?)
-		// Init camera constant buffer
+		// Set constant buffers to be updated in render system
 		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
-		scomp::Camera camera = {};
-		camera.constantBuffer = VSCB0;
-		m_ctx.registry.assign<scomp::Camera>(graphEntity, camera);
+		scomp::ConstantBuffers& constantBuffers = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
+		constantBuffers.constantBuffers.at(scomp::ConstantBufferIndex::CAMERA) = cameraCB;
+		constantBuffers.constantBuffers.at(scomp::ConstantBufferIndex::MESH_VARIABLES) = meshVarCB;
 
 		// Save data to entity
 		auto entity = m_ctx.registry.create();

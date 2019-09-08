@@ -1,6 +1,7 @@
 #include "pch.h"
 
-#include "Sampler.h"
-#include "Light.h"
+#include "Samplers.h"
+#include "Lights.h"
 #include "Camera.h"
-#include "Material.h"
+#include "Materials.h"
+#include "ConstantBuffers.h"

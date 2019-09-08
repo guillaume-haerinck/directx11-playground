@@ -1,9 +1,11 @@
 // Resource binding with constant buffer
-cbuffer cbPerFrame : register(b0)
-{
-	float4x4 matVP;
-	float4x4 matGeo;
+cbuffer cbCamera : register(b0) {
+	float4x4 matViewProj;
 };
+
+cbuffer cbMeshVariable : register(b1) {
+	float4x4 matModel;
+}
 
 // Expected input for this first stage of the pipeline
 // Set by input layout in the context
@@ -23,6 +25,6 @@ struct VSOutput
 VSOutput main(VSInput vin)
 {
 	VSOutput vout = (VSOutput) 0;
-	vout.Position = mul(mul(float4(vin.Position, 1.0f), matGeo), matVP);
+	vout.Position = mul(mul(float4(vin.Position, 1.0f), matModel), matViewProj);
 	return vout;
 }

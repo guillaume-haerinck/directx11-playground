@@ -322,12 +322,6 @@
     <ClInclude Include="src\factories\entities\ModelFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\Sampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\physics\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -337,10 +331,19 @@
     <ClInclude Include="src\components\singletons\graphics\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\ConstantBuffers.h">
+    <ClInclude Include="src\graphics\ConstantBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\Material.h">
+    <ClInclude Include="src\components\singletons\graphics\ConstantBuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\singletons\graphics\Lights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\singletons\graphics\Materials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\singletons\graphics\Samplers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

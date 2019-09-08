@@ -316,9 +316,10 @@
     <ClInclude Include="src\components\physics\Child.h" />
     <ClInclude Include="src\components\physics\Transform.h" />
     <ClInclude Include="src\components\singletons\graphics\Camera.h" />
-    <ClInclude Include="src\components\singletons\graphics\Light.h" />
-    <ClInclude Include="src\components\singletons\graphics\Material.h" />
-    <ClInclude Include="src\components\singletons\graphics\Sampler.h" />
+    <ClInclude Include="src\components\singletons\graphics\ConstantBuffers.h" />
+    <ClInclude Include="src\components\singletons\graphics\Lights.h" />
+    <ClInclude Include="src\components\singletons\graphics\Materials.h" />
+    <ClInclude Include="src\components\singletons\graphics\Samplers.h" />
     <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\examples\basics\basic-triangle\BasicTriangle.h" />
     <ClInclude Include="src\examples\basics\model-loading\ModelLoading.h" />
@@ -327,7 +328,7 @@
     <ClInclude Include="src\examples\IExample.h" />
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h" />
     <ClInclude Include="src\factories\entities\ModelFactory.h" />
-    <ClInclude Include="src\graphics\ConstantBuffers.h" />
+    <ClInclude Include="src\graphics\ConstantBuffer.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />
     <ClInclude Include="src\App.h" />

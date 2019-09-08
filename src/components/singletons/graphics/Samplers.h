@@ -7,7 +7,7 @@ namespace scomp {
 	 */
 	enum SamplerSlot {
 		ANISOTROPIC_WRAP = 0,
-		LINEAR_CLAMP
+		LINEAR_CLAMP = 1
 	};
 
 	/**

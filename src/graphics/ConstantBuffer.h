@@ -4,13 +4,6 @@
  * @brief Structure for constant buffers used by shaders and updated on CPU side in render system
  */
 namespace cb {
-
-	struct TEMP
-	{
-		XMFLOAT4X4 matVP;
-		XMFLOAT4X4 matGeo;
-	};
-
 	/**
 	 * @brief
 	 *
@@ -26,8 +19,8 @@ namespace cb {
 	 * @note Is sent as an array. Updated once by frame
 	 */
 	struct MeshVariable {
-		unsigned int materialIndex;
 		XMFLOAT4X4 matModel;
+		// unsigned int materialIndex;
 	};
 
 	/**

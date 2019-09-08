@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ModelFactory.h"
 
-#include "components/singletons/graphics/Material.h"
+#include "components/singletons/graphics/Materials.h"
 #include "components/graphics/Mesh.h"
 
 ///////////////////////////////////////////////////////////////////////////

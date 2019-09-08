@@ -31,6 +31,5 @@ namespace scomp {
 		std::vector<PointLight> pointLights;
 		std::vector<DirectionalLight> directionalLights;
 		std::vector<SpotLight> spotLights;
-		comp::ConstantBuffer constantBuffer;
 	};
 }

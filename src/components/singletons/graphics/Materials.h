@@ -44,7 +44,6 @@ namespace scomp {
 	 */
 	struct PhongMaterials {
 		std::vector<PhongMaterial> materials;
-		comp::ConstantBuffer constantBuffer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////
@@ -64,6 +63,5 @@ namespace scomp {
 	 */
 	struct CookTorranceMaterials {
 		std::vector<CookTorranceMaterial> materials;
-		comp::ConstantBuffer constantBuffer;
 	};
 }

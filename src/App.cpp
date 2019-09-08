@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "App.h"
 
-#include <dxgidebug.h>
-
 #include "graphics/DXException.h"
+#include "components/singletons/graphics/Samplers.h"
+#include "components/singletons/graphics/ConstantBuffers.h"
 
 #include "examples/basics/basic-triangle/BasicTriangle.h"
 #include "examples/basics/rotating-cube/RotatingCube.h"
@@ -257,6 +257,10 @@ void App::initImGui() {
 void App::initGraphicSingletonEntity() {
 	auto entity = m_ctx.registry.create();
 	m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC) = entity;
+
+	// Init constant buffers
+	scomp::ConstantBuffers cbs = {};
+	m_ctx.registry.assign<scomp::ConstantBuffers>(entity, cbs);
 
 	// Init texture samplers
 	scomp::Sampler sampler0 = m_ctx.rcommand->CreateSampler(scomp::SamplerSlot::ANISOTROPIC_WRAP);

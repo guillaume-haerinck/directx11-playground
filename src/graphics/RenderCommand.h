@@ -3,8 +3,8 @@
 #include "DXObjects.h"
 #include "components/graphics/Mesh.h"
 #include "components/graphics/Shader.h"
-#include "components/singletons/graphics/Material.h"
-#include "components/singletons/graphics/Sampler.h"
+#include "components/singletons/graphics/Materials.h"
+#include "components/singletons/graphics/Samplers.h"
 
 // TODO keep track of already created shaders
 
@@ -48,7 +48,7 @@ public:
 
 	/**
 	 * @param slot - The register in the shader that the buffer will be bound to (c0 or c1; etc)
-	 * @param byteWidth - The total size in bytes of the buffer
+	 * @param byteWidth - The total size in bytes of the buffer (must be a multiple of 16)
 	 *
 	 * @note - You have to store it within a shader component, and it will be bound with it
 	 * TODO remove slot, use the index in the vector

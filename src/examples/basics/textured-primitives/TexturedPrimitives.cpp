@@ -4,41 +4,38 @@
 #include "graphics/DXException.h"
 #include "factories/components/MeshPrimitiveFactory.h"
 #include "systems/RenderSystem.h"
-#include "components/singletons/graphics/Material.h"
-#include "graphics/ConstantBuffers.h"
-#include "components/singletons/graphics/Camera.h"
+#include "graphics/ConstantBuffer.h"
+#include "components/singletons/graphics/ConstantBuffers.h"
 
 namespace exemple {
 	TexturedPrimitives::TexturedPrimitives(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);
 		m_systems.push_back(std::make_unique<RenderSystem>(context));
-		auto entity = m_ctx.registry.create();
 
-		// Shader
+		// Vertex shader
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/TexturedPrimitives_VS.cso");
+		comp::ConstantBuffer cameraCB = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(cb::Camera)));
+		comp::ConstantBuffer meshVarCB = m_ctx.rcommand->CreateConstantBuffer(1, (sizeof(cb::MeshVariable) * 1));
+		VShader.constantBuffers.push_back(cameraCB);
+		VShader.constantBuffers.push_back(meshVarCB);
+
+		// Pixel Shader
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/TexturedPrimitives_PS.cso");
-		comp::ConstantBuffer VSCB0 = m_ctx.rcommand->CreateConstantBuffer(0, (sizeof(cb::TEMP)));
-		VShader.constantBuffers.push_back(VSCB0);
+
+		// TODO set material
+
+		// Set constant buffers to be updated in render system
+		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+		scomp::ConstantBuffers& constantBuffers = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
+		constantBuffers.constantBuffers.at(scomp::ConstantBufferIndex::CAMERA) = cameraCB;
+		constantBuffers.constantBuffers.at(scomp::ConstantBufferIndex::MESH_VARIABLES) = meshVarCB;
+
+		// Assign data to an entity
+		auto entity = m_ctx.registry.create();
+		comp::Mesh mesh = primFactory.CreateIcosahedron();
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
-
-		// TODO find a more global and safer way to init singleton components (use POO instead ?)
-		// Init camera constant buffer
-		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
-		scomp::Camera camera = {};
-		camera.constantBuffer = VSCB0;
-		m_ctx.registry.assign<scomp::Camera>(graphEntity, camera);
-
-		// Material
-		scomp::PhongMaterial material = {};
-		auto texture = m_ctx.rcommand->CreateTexture(scomp::PhongTexSlot::DIFFUSE, L"res/textures/test.jpg");
-		material.textures.push_back(texture);
-		m_ctx.registry.assign<scomp::PhongMaterial>(entity, material);
-		// TODO assign material to singleton entity and use index in component
-
-		// Mesh
-		auto mesh = primFactory.CreateIcosahedron();
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 	}
 
