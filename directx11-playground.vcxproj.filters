@@ -107,6 +107,15 @@
     <ClCompile Include="src\graphics\Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\components\singletons\io\SingletonIOComponents.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\CameraSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\blinn-phong\point-light\PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h">
@@ -344,6 +353,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\components\singletons\graphics\Samplers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\singletons\io\Inputs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\CameraSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\blinn-phong\point-light\PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

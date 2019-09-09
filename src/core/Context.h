@@ -4,11 +4,12 @@
 
 enum SingletonComponents {
 	GRAPHIC = 0,
-	SINGLETON_COMP_MAX
+	IO,
+	_SINGLETON_COMP_MAX
 };
 
 struct Context {
 	std::unique_ptr<RenderCommand> rcommand;
 	entt::registry registry;
-	std::array<unsigned int, SINGLETON_COMP_MAX> singletonComponents;
+	std::array<unsigned int, _SINGLETON_COMP_MAX> singletonComponents;
 };

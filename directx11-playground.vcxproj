@@ -228,11 +228,13 @@
     <ClCompile Include="src\components\graphics\GraphicsComponents.cpp" />
     <ClCompile Include="src\components\physics\PhysicsComponents.cpp" />
     <ClCompile Include="src\components\singletons\graphics\SingletonGraphicsComponents.cpp" />
+    <ClCompile Include="src\components\singletons\io\SingletonIOComponents.cpp" />
     <ClCompile Include="src\core\Context.cpp" />
     <ClCompile Include="src\examples\basics\basic-triangle\BasicTriangle.cpp" />
     <ClCompile Include="src\examples\basics\model-loading\ModelLoading.cpp" />
     <ClCompile Include="src\examples\basics\rotating-cube\RotatingCube.cpp" />
     <ClCompile Include="src\examples\basics\textured-primitives\TexturedPrimitives.cpp" />
+    <ClCompile Include="src\examples\blinn-phong\point-light\PointLight.cpp" />
     <ClCompile Include="src\factories\components\MeshPrimitiveFactory.cpp" />
     <ClCompile Include="src\factories\entities\ModelFactory.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
@@ -254,6 +256,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\systems\CameraSystem.cpp" />
     <ClCompile Include="src\systems\RenderSystem.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
     <ClCompile Include="src\core\StepTimer.cpp" />
@@ -320,11 +323,13 @@
     <ClInclude Include="src\components\singletons\graphics\Lights.h" />
     <ClInclude Include="src\components\singletons\graphics\Materials.h" />
     <ClInclude Include="src\components\singletons\graphics\Samplers.h" />
+    <ClInclude Include="src\components\singletons\io\Inputs.h" />
     <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\examples\basics\basic-triangle\BasicTriangle.h" />
     <ClInclude Include="src\examples\basics\model-loading\ModelLoading.h" />
     <ClInclude Include="src\examples\basics\rotating-cube\RotatingCube.h" />
     <ClInclude Include="src\examples\basics\textured-primitives\TexturedPrimitives.h" />
+    <ClInclude Include="src\examples\blinn-phong\point-light\PointLight.h" />
     <ClInclude Include="src\examples\IExample.h" />
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h" />
     <ClInclude Include="src\factories\entities\ModelFactory.h" />
@@ -336,6 +341,7 @@
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\core\StepTimer.h" />
+    <ClInclude Include="src\systems\CameraSystem.h" />
     <ClInclude Include="src\systems\ISystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
   </ItemGroup>

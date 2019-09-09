@@ -23,20 +23,26 @@ public:
 	std::shared_ptr<ID3D11Debug> GetDebugDevice() { return m_debugDevice; }
 
 private:
+	// Once in a lifetime init
 	void initWindow(HINSTANCE& hInstance);
 	void initDirectX11();
 	void initImGui();
-	void initGraphicSingletonEntity();
 
-	void renderMenu();
+	// Once per exemple change init
+	void initGraphicSingletonEntity();
+	void initIOSingletonEntity();
 
 	template<typename T>
 	void resetAppTo() {
 		m_ctx.registry.reset();
 		initGraphicSingletonEntity();
+		initIOSingletonEntity();
 		m_activeExemple.reset();
 		m_activeExemple = std::make_unique<T>(m_ctx);
 	}
+
+	// Once per frame
+	void renderMenu();
 
 private:
 	HWND m_hwnd;

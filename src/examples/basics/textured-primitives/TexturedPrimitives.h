@@ -4,7 +4,7 @@
 #include "core/Context.h"
 #include "systems/ISystem.h"
 
-namespace exemple {
+namespace basicExample {
 	class TexturedPrimitives : public IExample {
 	public:
 		TexturedPrimitives(Context& context);

@@ -3,16 +3,20 @@
 
 #include "graphics/DXException.h"
 #include "graphics/ConstantBuffer.h"
+
 #include "components/singletons/graphics/Samplers.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
 #include "components/singletons/graphics/Materials.h"
 #include "components/singletons/graphics/Camera.h"
 #include "components/singletons/graphics/Lights.h"
+#include "components/singletons/io/Inputs.h"
 
 #include "examples/basics/basic-triangle/BasicTriangle.h"
 #include "examples/basics/rotating-cube/RotatingCube.h"
 #include "examples/basics/textured-primitives/TexturedPrimitives.h"
 #include "examples/basics/model-loading/ModelLoading.h"
+
+#include "examples/blinn-phong/point-light/PointLight.h"
 
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -36,8 +40,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initDirectX11();
 	initImGui();
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
-	initGraphicSingletonEntity();
-	m_activeExemple = std::make_unique<exemple::ModelLoading>(m_ctx);
+	resetAppTo<basicExample::ModelLoading>();
 }
 
 App::~App() {
@@ -93,10 +96,10 @@ void App::renderMenu() {
 
 	ImGui::Text("Exemples:");
 	if (ImGui::CollapsingHeader("Basic")) {
-		if (ImGui::Button("Basic triangle")) { resetAppTo<exemple::BasicTriangle>(); }
-		if (ImGui::Button("Rotating cube")) { resetAppTo<exemple::RotatingCube>(); }
-		if (ImGui::Button("Textured primitives")) { resetAppTo<exemple::TexturedPrimitives>(); }
-		if (ImGui::Button("Model loading")) { resetAppTo<exemple::ModelLoading>(); }
+		if (ImGui::Button("Basic triangle")) { resetAppTo<basicExample::BasicTriangle>(); }
+		if (ImGui::Button("Rotating cube")) { resetAppTo<basicExample::RotatingCube>(); }
+		if (ImGui::Button("Textured primitives")) { resetAppTo<basicExample::TexturedPrimitives>(); }
+		if (ImGui::Button("Model loading")) { resetAppTo<basicExample::ModelLoading>(); }
 	}
 
 	// if (ImGui::CollapsingHeader("Intermediate")) {}
@@ -104,7 +107,7 @@ void App::renderMenu() {
 	// if (ImGui::CollapsingHeader("Advanced")) {}
 
 	if (ImGui::CollapsingHeader("Blinn Phong shading")) {
-		// TODO
+		if (ImGui::Button("Point light")) { resetAppTo<phongExample::PointLight>(); }
 	}
 
 	// if (ImGui::CollapsingHeader("Toon shading")) {}
@@ -275,8 +278,6 @@ void App::initGraphicSingletonEntity() {
 	auto entity = m_ctx.registry.create();
 	m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC) = entity;
 
-	auto test = sizeof(cb::perMesh);
-
 	// Init non-optional constant buffers
 	scomp::ConstantBuffers cbs = {};
 	comp::ConstantBuffer perFrameCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perFrame));
@@ -309,4 +310,13 @@ void App::initGraphicSingletonEntity() {
 	// Bind texture samplers
 	m_ctx.rcommand->BindSampler(sampler0);
 	m_ctx.rcommand->BindSampler(sampler1);
+}
+
+void App::initIOSingletonEntity() {
+	auto entity = m_ctx.registry.create();
+	m_ctx.singletonComponents.at(SingletonComponents::IO) = entity;
+
+	// Init inputs
+	scomp::Inputs inputs = {};
+	m_ctx.registry.assign<scomp::Inputs>(entity, inputs);
 }

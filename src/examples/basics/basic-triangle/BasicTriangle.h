@@ -3,7 +3,7 @@
 #include "examples/IExample.h"
 #include "core/Context.h"
 
-namespace exemple {
+namespace basicExample {
 	/**
 	 * @brief The most simple exemple. Render a triangle on screen
 	 */

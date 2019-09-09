@@ -8,7 +8,7 @@
 #include "components/physics/Transform.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
 
-namespace exemple {
+namespace basicExample {
 	RotatingCube::RotatingCube(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);

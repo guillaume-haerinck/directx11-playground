@@ -9,5 +9,7 @@ namespace scomp {
 	struct Camera {
 		XMFLOAT4X4 view;
 		XMFLOAT4X4 proj;
+		XMFLOAT3 position;
 	};
 }
+ 

@@ -7,7 +7,7 @@
 #include "components/physics/Transform.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
 
-namespace exemple {
+namespace basicExample {
 	ModelLoading::ModelLoading(Context& context) : m_ctx(context) {
 		// Init
 		ModelFactory modelFactory(context);

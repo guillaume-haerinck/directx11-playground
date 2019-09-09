@@ -4,7 +4,7 @@
 #include "core/Context.h"
 #include "systems/ISystem.h"
 
-namespace exemple {
+namespace basicExample {
 	class RotatingCube : public IExample {
 	public:
 		RotatingCube(Context& context);

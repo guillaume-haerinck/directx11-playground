@@ -5,7 +5,7 @@
 #include "components/graphics/Mesh.h"
 #include "components/graphics/Shader.h"
 
-namespace exemple {
+namespace basicExample {
 	BasicTriangle::BasicTriangle(Context& context) : m_ctx(context) {
 		// Shader
 		D3D11_INPUT_ELEMENT_DESC ied[] = {

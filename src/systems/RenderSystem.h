@@ -7,9 +7,9 @@
 class RenderSystem : public ISystem {
 public:
 	RenderSystem(Context& context);
-	~RenderSystem();
+	virtual ~RenderSystem();
 
-	virtual void Update() override;
+	void Update() override;
 
 private:
 	Context& m_ctx;
