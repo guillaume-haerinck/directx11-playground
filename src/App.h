@@ -28,6 +28,16 @@ private:
 	void initImGui();
 	void initGraphicSingletonEntity();
 
+	void renderMenu();
+
+	template<typename T>
+	void resetAppTo() {
+		m_ctx.registry.reset();
+		initGraphicSingletonEntity();
+		m_activeExemple.reset();
+		m_activeExemple = std::make_unique<T>(m_ctx);
+	}
+
 private:
 	HWND m_hwnd;
 	const char* m_className;

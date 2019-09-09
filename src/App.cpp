@@ -58,9 +58,7 @@ void App::Update(float dt) {
 			ImGui_ImplDX11_NewFrame();
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
-
-			ImGui::Begin("Main debug window");
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			renderMenu();
 			ImGui::End();
 		}
 	}
@@ -82,6 +80,16 @@ void App::Update(float dt) {
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////// PRIVATE METHODS /////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
+
+void App::renderMenu() {
+	ImGui::Begin("Main debug window");
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+	if (ImGui::Button("Basic triangle")) { resetAppTo<exemple::BasicTriangle>(); }
+	if (ImGui::Button("Rotating cube")) { resetAppTo<exemple::RotatingCube>(); }
+	if (ImGui::Button("Textured primitives")) { resetAppTo<exemple::TexturedPrimitives>(); }
+	if (ImGui::Button("Model loading")) { resetAppTo<exemple::ModelLoading>(); }
+}
 
 void App::initWindow(HINSTANCE& hInstance) {
 	// Register window class
