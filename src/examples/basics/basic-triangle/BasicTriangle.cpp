@@ -17,8 +17,8 @@ namespace exemple {
 		// Position attribute buffer
 		XMFLOAT2 positions[] = {
 			XMFLOAT2(0.0f,  0.5f),
-			XMFLOAT2 (-0.5f, -0.5f),
-			XMFLOAT2(0.5f, -0.5f)
+			XMFLOAT2(0.5f, -0.5f),
+			XMFLOAT2(-0.5f, -0.5f)
 		};
 		comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, sizeof(positions), sizeof(XMFLOAT2));
 
