@@ -12,7 +12,8 @@ namespace cb {
 	 */
 	struct perMesh {
 		XMFLOAT4X4 matModel;
-		// unsigned int materialIndex;
+		uint32_t materialIndex;
+		char padding[12];
 	};
 
 	/**
@@ -57,6 +58,8 @@ namespace cb {
 	/**
 	 * @brief Constant buffer updated when a light is changed
 	 * @note Is sent as an array.
+	 *
+	 * @link https://github.com/vilbeyli/VQEngine/blob/master/Source/Shaders/LightingCommon.hlsl
 	 */
 	struct perLightChange {
 		XMFLOAT3 strength;

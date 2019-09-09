@@ -23,7 +23,7 @@
 #include <stdexcept>
 #include <cassert>
 
-// Steams
+// Streams
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
@@ -34,6 +34,7 @@
 #include <string>
 #include <stdint.h>
 #include <tuple>
+#include <stdint.h>
 
 // DirectX
 #include <d3d11_1.h>

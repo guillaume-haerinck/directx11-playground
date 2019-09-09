@@ -5,6 +5,7 @@
 #include "components/graphics/Mesh.h"
 #include "systems/RenderSystem.h"
 #include "graphics/ConstantBuffer.h"
+#include "components/physics/Transform.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
 
 namespace exemple {
@@ -38,12 +39,16 @@ namespace exemple {
 		};
 		m_ctx.rcommand->UpdateConstantBuffer(colorCB, &colorCBdata);
 
+		// Transformm
+		comp::Transform transform = {};
+
 		// Save data to entity
 		auto entity = m_ctx.registry.create();
 		comp::Mesh mesh = primFactory.CreateBox();
 		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
+		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}
 
 	RotatingCube::~RotatingCube() {

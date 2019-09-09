@@ -6,6 +6,8 @@
 #include "components/singletons/graphics/Samplers.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
 #include "components/singletons/graphics/Materials.h"
+#include "components/singletons/graphics/Camera.h"
+#include "components/singletons/graphics/Lights.h"
 
 #include "examples/basics/basic-triangle/BasicTriangle.h"
 #include "examples/basics/rotating-cube/RotatingCube.h"
@@ -35,7 +37,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initImGui();
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
 	initGraphicSingletonEntity();
-	m_activeExemple = std::make_unique<exemple::TexturedPrimitives>(m_ctx);
+	m_activeExemple = std::make_unique<exemple::ModelLoading>(m_ctx);
 }
 
 App::~App() {
@@ -215,24 +217,6 @@ void App::initDirectX11() {
 		m_dxo.device->CreateDepthStencilView(depthStencil.Get(), &descDSV, &m_dxo.depthStencilView)
 	);
 
-	// Change default rasterizer to have Counter Clock-Wise Winding order (to support gltf models)
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer;
-	D3D11_RASTERIZER_DESC rd = {};
-	rd.FillMode = D3D11_FILL_SOLID;
-	rd.CullMode = D3D11_CULL_BACK;
-	rd.FrontCounterClockwise = true;
-	rd.DepthBias = 0;
-	rd.SlopeScaledDepthBias = 0.0f;
-	rd.DepthBiasClamp = 0.0f;
-	rd.DepthClipEnable = true;
-	rd.ScissorEnable = false;
-	rd.MultisampleEnable = false;
-	rd.AntialiasedLineEnable = false;
-	DX::ThrowIfFailed(CALL_INFO,
-		m_dxo.device->CreateRasterizerState(&rd, &rasterizer)
-	);
-	m_dxo.context->RSSetState(rasterizer.Get());
-
 	// Setup the viewport
 	D3D11_VIEWPORT vp;
 	vp.Width = (float)width;
@@ -260,7 +244,9 @@ void App::initGraphicSingletonEntity() {
 	auto entity = m_ctx.registry.create();
 	m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC) = entity;
 
-	// Init constant buffers
+	auto test = sizeof(cb::perMesh);
+
+	// Init non-optional constant buffers
 	scomp::ConstantBuffers cbs = {};
 	comp::ConstantBuffer perFrameCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perFrame));
 	comp::ConstantBuffer perMeshCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perMesh));
@@ -273,6 +259,14 @@ void App::initGraphicSingletonEntity() {
 	m_ctx.registry.assign<scomp::PhongMaterials>(entity, phongMaterials);
 	scomp::CookTorranceMaterials cookMaterials = {};
 	m_ctx.registry.assign<scomp::CookTorranceMaterials>(entity, cookMaterials);
+
+	// Init camera
+	scomp::Camera camera = {};
+	m_ctx.registry.assign<scomp::Camera>(entity, camera);
+
+	// Init lights
+	scomp::Lights lights = {};
+	m_ctx.registry.assign<scomp::Lights>(entity, lights);
 
 	// Init texture samplers
 	scomp::Sampler sampler0 = m_ctx.rcommand->CreateSampler(scomp::SamplerSlot::ANISOTROPIC_WRAP);

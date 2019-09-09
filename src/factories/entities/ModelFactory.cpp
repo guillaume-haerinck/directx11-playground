@@ -12,15 +12,15 @@ ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
 	m_ied.at(0) = { "POSITION",  0, DXGI_FORMAT_R32G32B32_FLOAT,	0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	m_ied.at(1) = { "NORMAL",	 0, DXGI_FORMAT_R32G32B32_FLOAT,	1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	m_ied.at(2) = { "TEXCOORD",  0, DXGI_FORMAT_R32G32_FLOAT,		2, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
-	m_ied.at(3) = { "TANGENT",	 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 3, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+	// m_ied.at(3) = { "TANGENT",	 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 3, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 	// m_ied.at(4) = { "BITANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 4, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 }
 
 ModelFactory::~ModelFactory() {
 }
 
-std::vector<unsigned int> ModelFactory::CreateEntitiesFromGltf(const char* gltfFilePath) {
-	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath);
+std::vector<unsigned int> ModelFactory::CreateEntitiesFromGltf(std::filesystem::path gltfFilePath) {
+	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath.string());
 	std::vector<unsigned int> entities;
 	// TODO handle scene transform and nodes
 	// TODO create default material
@@ -51,16 +51,16 @@ std::vector<unsigned int> ModelFactory::CreateEntitiesFromGltf(const char* gltfF
 			comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) positionBufferInfo.data,	positionBufferInfo.vertexCount,		positionBufferInfo.dataStride);
 			comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) normalBufferInfo.data,		normalBufferInfo.vertexCount,		normalBufferInfo.dataStride);
 			comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) texCoord0BufferInfo.data,	texCoord0BufferInfo.vertexCount,	texCoord0BufferInfo.dataStride);
-			comp::AttributeBuffer tangentBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) tangentBufferInfo.data,		tangentBufferInfo.vertexCount,		tangentBufferInfo.dataStride);
+			// comp::AttributeBuffer tangentBuffer = m_ctx.rcommand->CreateAttributeBuffer((void*) tangentBufferInfo.data,		tangentBufferInfo.vertexCount,		tangentBufferInfo.dataStride);
 
 			// Create vertex buffer
 			comp::VertexBuffer vb = {};
-			vb.buffers =	{ positionBuffer.buffer,	normalBuffer.buffer,	texCoordBuffer.buffer,		tangentBuffer.buffer };
-			vb.byteWidths = { positionBuffer.byteWidth,	normalBuffer.byteWidth, texCoordBuffer.byteWidth,	tangentBuffer.byteWidth };
-			vb.counts =		{ positionBuffer.count,		normalBuffer.count,		texCoordBuffer.count,		tangentBuffer.count };
-			vb.strides =	{ positionBuffer.stride,	normalBuffer.stride,	texCoordBuffer.stride,		tangentBuffer.stride };
-			vb.offsets =	{ 0,						0,						0,							0 };
-			vb.names =		{ "position",				"normal",				"texture coordinates",		"tangent" };
+			vb.buffers =	{ positionBuffer.buffer,	normalBuffer.buffer,	texCoordBuffer.buffer,		};
+			vb.byteWidths = { positionBuffer.byteWidth,	normalBuffer.byteWidth, texCoordBuffer.byteWidth,	};
+			vb.counts =		{ positionBuffer.count,		normalBuffer.count,		texCoordBuffer.count,		};
+			vb.strides =	{ positionBuffer.stride,	normalBuffer.stride,	texCoordBuffer.stride,		};
+			vb.offsets =	{ 0,						0,						0,							};
+			vb.names =		{ "position",				"normal",				"texture coordinates",		};
 
 			// Get and create index buffer
 			GltfBufferInfo indexBufferInfo = {};
@@ -72,23 +72,28 @@ std::vector<unsigned int> ModelFactory::CreateEntitiesFromGltf(const char* gltfF
 			mesh.vb = vb;
 			mesh.ib = ib;
 
-			// Create new entity
-			auto entity = m_ctx.registry.create();
-			entities.push_back(entity);
-			m_ctx.registry.assign<comp::Mesh>(entity, mesh);
-
 			// TODO use child component for transforms
 
 			// Get material
 			// TODO use a hashmap to check if material already created, if it is use the index
 			if (primitive.material >= 0) {
-				// TODO create texture (see how to store them)
-
 				fx::gltf::Material material = doc.materials[primitive.material];
+
+				// Base color texture
+				int32_t baseColorTexIndex = material.pbrMetallicRoughness.baseColorTexture.index;
+				std::string textureName = doc.images.at(baseColorTexIndex).uri;
+				std::filesystem::path texturePath = gltfFilePath.parent_path().append(textureName);
+				scomp::Texture texture = m_ctx.rcommand->CreateTexture(0, texturePath.wstring().c_str());
+				mesh.textures.push_back(texture.srv);
 
 			} else {
 				mesh.materialIndex = 0;
 			}
+
+			// Create new entity
+			auto entity = m_ctx.registry.create();
+			entities.push_back(entity);
+			m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 		}
 	}
 

@@ -4,6 +4,7 @@
 #include "factories/entities/ModelFactory.h"
 #include "systems/RenderSystem.h"
 #include "graphics/ConstantBuffer.h"
+#include "components/physics/Transform.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
 
 namespace exemple {
@@ -24,10 +25,14 @@ namespace exemple {
 		// Pixel Shader
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/ModelLoading_PS.cso");
 
+		// Transformm
+		comp::Transform transform = {};
+
 		// Assign data to an entity
-		auto entities = modelFactory.CreateEntitiesFromGltf("res/models/cube/Cube.gltf");
+		auto entities = modelFactory.CreateEntitiesFromGltf("res/models/damaged-helmet/DamagedHelmet.gltf");
 		m_ctx.registry.assign<comp::VertexShader>(entities.at(0), VShader);
 		m_ctx.registry.assign<comp::PixelShader>(entities.at(0), PShader);
+		m_ctx.registry.assign<comp::Transform>(entities.at(0), transform);
 	}
 
 	ModelLoading::~ModelLoading() {

@@ -28,7 +28,7 @@ public:
 	/**
 	 * @brief
 	 */
-	std::vector<unsigned int> CreateEntitiesFromGltf(const char* gltfFilePath);
+	std::vector<unsigned int> CreateEntitiesFromGltf(std::filesystem::path gltfFilePath);
 
 	D3D11_INPUT_ELEMENT_DESC* GetIed() { return m_ied.data(); }
 	unsigned int GetIedElementCount() { return m_ied.size(); }
@@ -40,6 +40,6 @@ private:
 	uint32_t CalculateDataTypeSize(fx::gltf::Accessor const& accessor);
 
 private:
-	std::array<D3D11_INPUT_ELEMENT_DESC, 4> m_ied;
+	std::array<D3D11_INPUT_ELEMENT_DESC, 3> m_ied;
 	Context& m_ctx;
 };

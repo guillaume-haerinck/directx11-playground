@@ -2,6 +2,9 @@
 #include "RenderSystem.h"
 
 #include "components/singletons/graphics/ConstantBuffers.h"
+#include "components/singletons/graphics/Lights.h"
+#include "components/singletons/graphics/Materials.h"
+#include "components/physics/Transform.h"
 #include "graphics/ConstantBuffer.h"
 
 RenderSystem::RenderSystem(Context& context) : m_ctx(context) {
@@ -14,9 +17,16 @@ void RenderSystem::Update() {
 	m_timer.Tick([](){});
 	auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
 
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////// OPTIONAL ////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	// Update lights constant buffer
 	{
-		// TODO
+		scomp::Lights& lights = m_ctx.registry.get<scomp::Lights>(graphEntity);
+		if (lights.hasToBeUpdated) {
+			// TODO
+		}
 	}
 
 	// Update phong materials constant buffer
@@ -49,11 +59,17 @@ void RenderSystem::Update() {
 		}
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+	/////////////////////////////// NON-OPTIONAL //////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	// Update per frame constant buffer
 	{
 		cb::perFrame cbData = {};
 		comp::ConstantBuffer& perFrameCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 			.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME);
+
+		// TODO use camera component
 
 		XMMATRIX view = XMMatrixTranspose(
 			XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
@@ -70,12 +86,11 @@ void RenderSystem::Update() {
 	comp::ConstantBuffer& perMeshCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 		.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH);
 
-	// TODO use transform component
 	m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
 		.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
 		// Update perMesh constant buffer
 		cb::perMesh cbData = {};
-		XMStoreFloat4x4(&cbData.matModel, XMMatrixIdentity());
+		XMStoreFloat4x4(&cbData.matModel, XMMatrixIdentity()); 	// TODO use transform component
 		m_ctx.rcommand->UpdateConstantBuffer(perMeshCB, &cbData);
 		
 		// Bind

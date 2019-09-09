@@ -10,7 +10,7 @@ struct VSInput {
 	float3 Position : POSITION;
 	float3 Normal : NORMAL;
 	float2 TexCoord : TEXCOORD;
-	float4 Tangent : TANGENT;
+	// float4 Tangent : TANGENT;
 };
 
 struct VSOutput {
