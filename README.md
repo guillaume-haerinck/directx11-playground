@@ -8,17 +8,33 @@ Small DirectX renderer with an Entity Component System architecture.
 
 #### [Triangle](src/examples/basics/basic-triangle/)
 
+<p align="left">
+<img src="doc/img/basic/triangle.png?raw=true" alt="Triangle exemple" height="160px">
+</p>
+
 A simple triangle. It is the only exemple that does not use indexed drawing.
 
 #### [Rotating cube](src/examples/basics/rotating-cube/)
+
+<p align="left">
+<img src="doc/img/basic/cube.png?raw=true" alt="Triangle exemple" height="160px">
+</p>
 
 A rotating colored cube. Each face is independant so that the colors can be applied without smearing.
 
 #### [Textured primitives](src/examples/basics/textured-primitives/)
 
+<p align="left">
+<img src="doc/img/basic/textured-primitives.png?raw=true" alt="Triangle exemple" height="160px">
+</p>
+
 Show some procedurally-generated primitives with their UV maps.
 
 #### [Model loading](src/examples/basics/model-loading/)
+
+<p align="left">
+<img src="doc/img/basic/model.png?raw=true" alt="Triangle exemple" height="160px">
+</p>
 
 Loads a GLTF model with its texture.
 
