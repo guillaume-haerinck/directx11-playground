@@ -61,13 +61,47 @@ LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
 	scomp::Inputs& inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
 
+	// Unset actions that does not have stop messages
+	inputs.actionState.at(scomp::InputAction::CAM_DOLLY) = false;
+	inputs.actionState.at(scomp::InputAction::CAM_RESET) = false;
+
 	switch (msg) {
 	case WM_LBUTTONDOWN:
-		inputs.actionState.at(scomp::InputAction::TILT) = true;
+		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true;
 		break;
 
 	case WM_LBUTTONUP:
-		inputs.actionState.at(scomp::InputAction::TILT) = false;
+		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = false;
+		break;
+
+	case WM_LBUTTONDBLCLK:
+		inputs.actionState.at(scomp::InputAction::CAM_RESET) = true;
+		break;
+
+	case WM_MOUSEWHEEL:
+		inputs.mouseWheel = GET_WHEEL_DELTA_WPARAM(wParam);
+		inputs.actionState.at(scomp::InputAction::CAM_DOLLY) = true;
+		break;
+
+	case WM_MBUTTONDOWN:
+		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true;
+		break;
+
+	case WM_MBUTTONUP:
+		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = false;
+		break;
+
+	case WM_RBUTTONDOWN:
+		inputs.actionState.at(scomp::InputAction::CAM_PAN) = true;
+		break;
+
+	case WM_RBUTTONUP:
+		inputs.actionState.at(scomp::InputAction::CAM_PAN) = false;
+		break;
+
+	case WM_MOUSEMOVE:
+		inputs.mousePos.x = GET_X_LPARAM(lParam);
+		inputs.mousePos.y = GET_Y_LPARAM(lParam);
 		break;
 
 	default:
@@ -119,15 +153,6 @@ void App::renderMenu() {
 
 	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::Spacing();
-
-	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
-	scomp::Inputs inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
-	if (inputs.actionState.at(scomp::InputAction::TILT)) {
-		ImGui::Text("left click On");
-	}
-	else {
-		ImGui::Text("left click Off");
-	}
 
 	ImGui::Text("Exemples:");
 	if (ImGui::CollapsingHeader("Basic")) {
