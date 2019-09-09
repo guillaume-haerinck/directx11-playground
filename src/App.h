@@ -23,6 +23,10 @@ public:
 	std::shared_ptr<ID3D11Debug> GetDebugDevice() { return m_debugDevice; }
 
 private:
+	// Handle inputs
+	static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 	// Once in a lifetime init
 	void initWindow(HINSTANCE& hInstance);
 	void initDirectX11();
@@ -34,17 +38,21 @@ private:
 
 	template<typename T>
 	void resetAppTo() {
+		App::isContexInit = false;
 		m_ctx.registry.reset();
 		initGraphicSingletonEntity();
 		initIOSingletonEntity();
 		m_activeExemple.reset();
 		m_activeExemple = std::make_unique<T>(m_ctx);
+		App::isContexInit = true;
 	}
 
 	// Once per frame
 	void renderMenu();
 
 private:
+	static bool isContexInit;
+
 	HWND m_hwnd;
 	const char* m_className;
 

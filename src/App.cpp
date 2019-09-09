@@ -18,8 +18,25 @@
 
 #include "examples/blinn-phong/point-light/PointLight.h"
 
+bool App::isContexInit = false;
+
+App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr) {
+	initWindow(hInstance);
+	initDirectX11();
+	initImGui();
+	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
+	resetAppTo<basicExample::ModelLoading>();
+}
+
+App::~App() {
+	m_dxo.context->ClearState();
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+}
+
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 		return true;
 
@@ -32,23 +49,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		break;
 	}
 
+	App* me = (App*) (GetWindowLongPtr(hWnd, GWLP_USERDATA));
+	if (me && App::isContexInit) {
+		return me->memberWndProc(hWnd, msg, wParam, lParam);
+	}
+
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr) {
-	initWindow(hInstance);
-	initDirectX11();
-	initImGui();
-	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
-	resetAppTo<basicExample::ModelLoading>();
-}
+LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
+	scomp::Inputs& inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
 
-App::~App() {
-	m_dxo.context->ClearState();
+	switch (msg) {
+	case WM_LBUTTONDOWN:
+		inputs.actionState.at(scomp::InputAction::TILT) = true;
+		break;
 
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
+	case WM_LBUTTONUP:
+		inputs.actionState.at(scomp::InputAction::TILT) = false;
+		break;
+
+	default:
+		break;
+	}
+
+	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
 void App::Update(float dt) {
@@ -93,6 +119,15 @@ void App::renderMenu() {
 
 	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::Spacing();
+
+	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
+	scomp::Inputs inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
+	if (inputs.actionState.at(scomp::InputAction::TILT)) {
+		ImGui::Text("left click On");
+	}
+	else {
+		ImGui::Text("left click Off");
+	}
 
 	ImGui::Text("Exemples:");
 	if (ImGui::CollapsingHeader("Basic")) {
@@ -147,6 +182,9 @@ void App::initWindow(HINSTANCE& hInstance) {
 	if (m_hwnd == nullptr) {
 		throw DX_LAST_ERROR_EXCEPTION;
 	}
+
+	// First step to access windows callback as a member function
+	SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR) this);
 
 	ShowWindow(m_hwnd, SW_SHOW);
 }
