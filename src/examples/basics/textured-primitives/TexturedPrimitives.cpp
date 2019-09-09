@@ -27,7 +27,7 @@ namespace exemple {
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/TexturedPrimitives_PS.cso");
 		
 		// Mesh
-		comp::Mesh mesh = primFactory.CreateUVSphere();
+		comp::Mesh mesh = primFactory.CreateIcosahedron();
 		mesh.materialIndex = 0;
 		scomp::Texture texture = m_ctx.rcommand->CreateTexture(0, L"res/textures/test.jpg");
 		mesh.textures.push_back(texture.srv);
@@ -53,5 +53,8 @@ namespace exemple {
 	}
 
 	void TexturedPrimitives::ImGuiUpdate() {
+		ImGui::Begin("Exemple properties");
+		ImGui::Text("Hello texture !");
+		ImGui::End();
 	}
 }

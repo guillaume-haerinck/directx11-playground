@@ -53,5 +53,9 @@ namespace exemple {
 	}
 
 	void BasicTriangle::ImGuiUpdate() {
+		ImGui::Begin("Exemple properties");
+		ImGui::Text("Hello triangle !");
+		ImGui::Text("Ready ?");
+		ImGui::End();
 	}
 }

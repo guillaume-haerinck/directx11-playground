@@ -53,14 +53,18 @@ void App::Update(float dt) {
 
 	// Update GUI
 	{
+		// Start new frame
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		// Update each window
 		m_activeExemple->ImGuiUpdate();
-		{
-			ImGui_ImplDX11_NewFrame();
-			ImGui_ImplWin32_NewFrame();
-			ImGui::NewFrame();
-			renderMenu();
-			ImGui::End();
-		}
+		renderMenu();
+		ImGui::ShowDemoWindow();
+
+		// End frame
+		ImGui::EndFrame();
 	}
 	
 	// Update Geometry
@@ -83,12 +87,31 @@ void App::Update(float dt) {
 
 void App::renderMenu() {
 	ImGui::Begin("Main debug window");
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-	if (ImGui::Button("Basic triangle")) { resetAppTo<exemple::BasicTriangle>(); }
-	if (ImGui::Button("Rotating cube")) { resetAppTo<exemple::RotatingCube>(); }
-	if (ImGui::Button("Textured primitives")) { resetAppTo<exemple::TexturedPrimitives>(); }
-	if (ImGui::Button("Model loading")) { resetAppTo<exemple::ModelLoading>(); }
+	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Spacing();
+
+	ImGui::Text("Exemples:");
+	if (ImGui::CollapsingHeader("Basic")) {
+		if (ImGui::Button("Basic triangle")) { resetAppTo<exemple::BasicTriangle>(); }
+		if (ImGui::Button("Rotating cube")) { resetAppTo<exemple::RotatingCube>(); }
+		if (ImGui::Button("Textured primitives")) { resetAppTo<exemple::TexturedPrimitives>(); }
+		if (ImGui::Button("Model loading")) { resetAppTo<exemple::ModelLoading>(); }
+	}
+
+	// if (ImGui::CollapsingHeader("Intermediate")) {}
+
+	// if (ImGui::CollapsingHeader("Advanced")) {}
+
+	if (ImGui::CollapsingHeader("Blinn Phong shading")) {
+		// TODO
+	}
+
+	// if (ImGui::CollapsingHeader("Toon shading")) {}
+
+	// if (ImGui::CollapsingHeader("PBR shading")) {}
+
+	ImGui::End();
 }
 
 void App::initWindow(HINSTANCE& hInstance) {

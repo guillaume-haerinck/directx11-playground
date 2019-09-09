@@ -45,5 +45,8 @@ namespace exemple {
 	}
 
 	void ModelLoading::ImGuiUpdate() {
+		ImGui::Begin("Exemple properties");
+		ImGui::Text("Hello model !");
+		ImGui::End();
 	}
 }

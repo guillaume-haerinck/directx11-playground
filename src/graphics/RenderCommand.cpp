@@ -10,7 +10,7 @@ RenderCommand::RenderCommand(DXObjects& dxObjects)
 {}
 
 void RenderCommand::Clear() const {
-	const float color[] = { 0.0f, 0.5f, 1.0f, 1.0f };
+	const float color[] = { 0.35f, 0.35f, 0.35f, 1.0f };
 	m_dxo.context->ClearRenderTargetView(m_dxo.target.Get(), color);
 	m_dxo.context->ClearDepthStencilView(m_dxo.depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }

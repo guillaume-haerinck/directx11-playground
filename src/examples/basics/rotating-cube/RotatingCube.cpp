@@ -61,5 +61,8 @@ namespace exemple {
 	}
 
 	void RotatingCube::ImGuiUpdate() {
+		ImGui::Begin("Exemple properties");
+		ImGui::Text("Hello cube !");
+		ImGui::End();
 	}
 }
