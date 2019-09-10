@@ -184,7 +184,7 @@ void App::initWindow(HINSTANCE& hInstance) {
 	// Register window class
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(wc);
-	wc.style = CS_OWNDC;
+	wc.style = CS_OWNDC | CS_DBLCLKS;
 	wc.lpfnWndProc = WndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
