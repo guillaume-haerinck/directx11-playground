@@ -32,11 +32,13 @@ namespace basicExample {
 		// Transformm
 		comp::Transform transform = {};
 
-		// Assign data to an entity
+		// Assign data to entities
 		auto entities = modelFactory.CreateEntitiesFromGltf("res/models/damaged-helmet/DamagedHelmet.gltf");
-		m_ctx.registry.assign<comp::VertexShader>(entities.at(0), VShader);
-		m_ctx.registry.assign<comp::PixelShader>(entities.at(0), PShader);
-		m_ctx.registry.assign<comp::Transform>(entities.at(0), transform);
+		for (auto entity : entities) {
+			m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
+			m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+			m_ctx.registry.assign<comp::Transform>(entity, transform);
+		}
 	}
 
 	ModelLoading::~ModelLoading() {

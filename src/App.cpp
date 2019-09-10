@@ -50,7 +50,7 @@ LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	}
 
 	App* me = (App*) (GetWindowLongPtr(hWnd, GWLP_USERDATA));
-	if (me && App::isContexInit) {
+	if (me && App::isContexInit && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
 		return me->memberWndProc(hWnd, msg, wParam, lParam);
 	}
 
@@ -60,11 +60,8 @@ LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
 	scomp::Inputs& inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
-
-	inputs.actionState.at(scomp::InputAction::CAM_DOLLY) = false;
-	inputs.actionState.at(scomp::InputAction::CAM_RESET) = false;
-	inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = false;
-	inputs.actionState.at(scomp::InputAction::CAM_PAN) = false;
+	auto graphicEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+	scomp::Camera& camera = m_ctx.registry.get<scomp::Camera>(graphicEntity);
 
 	switch (msg) {
 	case WM_LBUTTONDBLCLK:
@@ -128,6 +125,13 @@ void App::Update(float dt) {
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
 
+	// Reset input states (nescessary as WndProc is not called every frame)
+	{
+		auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
+		scomp::Inputs& inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
+		inputs.actionState.fill(false);
+	}
+
 	m_ctx.rcommand->Swap();
 }
 
@@ -141,10 +145,14 @@ void App::renderMenu() {
 	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	if (ImGui::CollapsingHeader("Help")) {
-		ImGui::Text("TODO");
+		ImGui::Text("Camera controls :");
+		ImGui::BulletText("Orbit - Left mouse button / Middle mouse button");
+		ImGui::BulletText("Pan - Right mouse button");
+		ImGui::BulletText("Zoom - Mousewheel");
+		ImGui::BulletText("Reset - Left mouse double click");
 	}
 
-	if (ImGui::CollapsingHeader("Camera Debug")) {
+	if (ImGui::CollapsingHeader("DEBUG Camera")) {
 		auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
 		scomp::Inputs inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
 
@@ -362,7 +370,7 @@ void App::initGraphicSingletonEntity() {
 	scomp::Camera camera = {};
 	camera.position = XMFLOAT3(0.0f, 0.0f, 6.0f);
 	camera.target = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	XMMATRIX proj = XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 100.0f);
+	XMMATRIX proj = XMMatrixPerspectiveFovLH(XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);
 	XMMATRIX view = XMMatrixTranslation(camera.position.x, camera.position.y, camera.position.z);
 	XMStoreFloat4x4(&camera.proj, proj);
 	XMStoreFloat4x4(&camera.view, view);
