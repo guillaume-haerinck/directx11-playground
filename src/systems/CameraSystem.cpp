@@ -21,7 +21,6 @@ void CameraSystem::Update() {
 
 	// ArcBall rotation
 	if (inputs.actionState.at(scomp::InputAction::CAM_ORBIT)) {
-
 		camera.position.x -= inputs.delta.x * 0.01;
 		camera.position.y -= inputs.delta.y * 0.01;
 
@@ -33,15 +32,32 @@ void CameraSystem::Update() {
 		XMStoreFloat4x4(&camera.view, view);
 	}
 
+	// Move along vertical plane
 	if (inputs.actionState.at(scomp::InputAction::CAM_PAN)) {
-
+		camera.position.x -= inputs.delta.x * 0.01;
+		camera.position.y += inputs.delta.y * 0.01;
+		XMVECTOR translation = XMLoadFloat3(&camera.position);
+		XMMATRIX view = XMMatrixTranslationFromVector(translation);
+		XMStoreFloat4x4(&camera.view, view);
 	}
 
+	// Move along position to target axis
 	if (inputs.actionState.at(scomp::InputAction::CAM_DOLLY)) {
+		if (inputs.mouseWheel > 0) {
+			camera.position.z -= 0.1f;
+		} else {
+			camera.position.z += 0.1f;
+		}
 
+		XMVECTOR translation = XMLoadFloat3(&camera.position);
+		XMMATRIX view = XMMatrixTranslationFromVector(translation);
+		XMStoreFloat4x4(&camera.view, view);
 	}
 
 	if (inputs.actionState.at(scomp::InputAction::CAM_RESET)) {
-
+		camera.position = XMFLOAT3(0.0f, 0.0f, 6.0f);
+		XMVECTOR translation = XMLoadFloat3(&camera.position);
+		XMMATRIX view = XMMatrixTranslationFromVector(translation);
+		XMStoreFloat4x4(&camera.view, view);
 	}
 }

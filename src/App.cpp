@@ -353,7 +353,7 @@ void App::initGraphicSingletonEntity() {
 	// Init camera
 	scomp::Camera camera = {};
 	camera.position = XMFLOAT3(0.0f, 0.0f, 6.0f);
-	XMMATRIX proj = XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f);
+	XMMATRIX proj = XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 100.0f);
 	XMMATRIX view = XMMatrixTranslation(camera.position.x, camera.position.y, camera.position.z);
 	XMStoreFloat4x4(&camera.proj, proj);
 	XMStoreFloat4x4(&camera.view, view);
