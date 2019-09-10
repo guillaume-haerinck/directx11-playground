@@ -2,7 +2,9 @@
 
 /**
  * @brief Structure for constant buffers used by shaders and updated on CPU side in render system
- * @note Sorted and nammed by their frequency of updates.
+ * @note Sorted and named by their frequency of updates. Their bytesize is a multiple of 16.
+ *		 char = 1 / float = 4 / uint32_t = 4 / XMFLOAT3 = 12 / XMFLOAT4X4 = 64
+ *		 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, ...
  *
  * @link http://vzout.com/directx12/const-buffer-performance.html
  */
@@ -30,20 +32,20 @@ namespace cb {
 	struct perCookTorranceMaterialChange {
 		XMFLOAT3 meshAutoColor;
 
-		int baseColorIndex;
+		uint32_t baseColorIndex;
 		XMFLOAT3 baseColorFactor;
 
-		int normalIndex;
+		uint32_t normalIndex;
 		float normalScale;
 
-		int metalRoughIndex;
+		uint32_t metalRoughIndex;
 		float roughnessFactor;
 		float metallicFactor;
 
-		int aoIndex;
+		uint32_t aoIndex;
 		float aoStrength;
 
-		int emissiveIndex;
+		uint32_t emissiveIndex;
 		XMFLOAT3 emissiveFactor;
 	};
 
@@ -52,7 +54,15 @@ namespace cb {
 	 * @note Is sent as an array.
 	 */
 	struct perPhongMaterialChange {
+		XMFLOAT3 ambientFactor;
 
+		XMFLOAT3 diffuseFactor;
+		uint32_t diffuseIndex;
+
+		XMFLOAT3 specularFactor;
+		uint32_t specularIndex;
+
+		float shininess;
 	};
 
 	/**

@@ -386,5 +386,7 @@
     <FxCompile Include="res\shaders\basics\rotating-cube\RotatingCube_VS.hlsl" />
     <FxCompile Include="res\shaders\basics\textured-primitives\TexturedPrimitives_PS.hlsl" />
     <FxCompile Include="res\shaders\basics\textured-primitives\TexturedPrimitives_VS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\point-light\BlinnPointLight_PS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\point-light\BlinnPointLight_VS.hlsl" />
   </ItemGroup>
 </Project>
