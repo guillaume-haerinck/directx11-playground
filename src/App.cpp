@@ -152,17 +152,6 @@ void App::renderMenu() {
 		ImGui::BulletText("Reset - Left mouse double click");
 	}
 
-	if (ImGui::CollapsingHeader("DEBUG Camera")) {
-		auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
-		scomp::Inputs inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
-
-		// Unset actions that does not have stop messages
-		if (inputs.actionState.at(scomp::InputAction::CAM_DOLLY)) { ImGui::Text("Dolly on"); }
-		if (inputs.actionState.at(scomp::InputAction::CAM_ORBIT)) { ImGui::Text("Orbit on"); }
-		if (inputs.actionState.at(scomp::InputAction::CAM_RESET)) { ImGui::Text("Reset on"); }
-		if (inputs.actionState.at(scomp::InputAction::CAM_PAN)) { ImGui::Text("Pan on"); }
-	}
-
 	ImGui::Spacing();
 
 	ImGui::Text("Exemples:");

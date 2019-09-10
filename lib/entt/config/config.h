@@ -12,13 +12,16 @@
 #endif // ENTT_HS_SUFFIX
 
 
+#ifndef ENTT_HWS_SUFFIX
+#define ENTT_HWS_SUFFIX _hws
+#endif // ENTT_HWS_SUFFIX
+
+
 #ifndef ENTT_NO_ATOMIC
 #include <atomic>
-template<typename Type>
-using maybe_atomic_t = std::atomic<Type>;
+#define ENTT_MAYBE_ATOMIC(Type) std::atomic<Type>
 #else // ENTT_NO_ATOMIC
-template<typename Type>
-using maybe_atomic_t = Type;
+#define ENTT_MAYBE_ATOMIC(Type) Type
 #endif // ENTT_NO_ATOMIC
 
 
@@ -30,7 +33,7 @@ using maybe_atomic_t = Type;
 
 #ifndef ENTT_PAGE_SIZE
 #define ENTT_PAGE_SIZE 32768
-#endif
+#endif // ENTT_PAGE_SIZE
 
 
 #ifndef ENTT_DISABLE_ASSERT

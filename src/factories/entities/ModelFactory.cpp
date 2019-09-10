@@ -19,9 +19,9 @@ ModelFactory::ModelFactory(Context& context) : m_ctx(context) {
 ModelFactory::~ModelFactory() {
 }
 
-std::vector<unsigned int> ModelFactory::CreateEntitiesFromGltf(std::filesystem::path gltfFilePath) {
+std::vector<entt::entity> ModelFactory::CreateEntitiesFromGltf(std::filesystem::path gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath.string());
-	std::vector<unsigned int> entities;
+	std::vector<entt::entity> entities;
 	// TODO handle scene transform and nodes
 	// TODO create default material
 

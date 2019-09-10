@@ -2,7 +2,25 @@
 #define ENTT_CORE_UTILITY_HPP
 
 
+#include "../config/config.h"
+
+
 namespace entt {
+
+
+/*! @brief Identity function object (waiting for C++20). */
+struct identity {
+    /**
+     * @brief Returns its argument unchanged.
+     * @tparam Type Type of the argument.
+     * @param value The actual argument.
+     * @return The submitted value as-is.
+     */
+    template<class Type>
+    constexpr Type && operator()(Type &&value) const ENTT_NOEXCEPT {
+        return std::forward<Type>(value);
+    }
+};
 
 
 /**
@@ -13,7 +31,7 @@ namespace entt {
  * @return Pointer to the member function.
  */
 template<typename Type, typename Class>
-constexpr auto overload(Type Class:: *member) { return member; }
+constexpr auto overload(Type Class:: *member) ENTT_NOEXCEPT { return member; }
 
 
 /**
@@ -23,7 +41,7 @@ constexpr auto overload(Type Class:: *member) { return member; }
  * @return Pointer to the function.
  */
 template<typename Type>
-constexpr auto overload(Type *func) { return func; }
+constexpr auto overload(Type *func) ENTT_NOEXCEPT { return func; }
 
 
 }

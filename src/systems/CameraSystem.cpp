@@ -19,7 +19,7 @@ void CameraSystem::Update() {
 	auto graphicEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
 	scomp::Camera& camera = m_ctx.registry.get<scomp::Camera>(graphicEntity);
 
-	// ArcBall rotation
+	// TODO ArcBall rotation
 	if (inputs.actionState.at(scomp::InputAction::CAM_ORBIT)) {
 		camera.position.x -= inputs.delta.x * 0.03;
 		camera.position.y -= inputs.delta.y * 0.03;
@@ -44,7 +44,7 @@ void CameraSystem::Update() {
 		XMStoreFloat4x4(&camera.view, view);
 	}
 
-	// Move along position to target axis
+	// TODO Move along position to target axis
 	if (inputs.actionState.at(scomp::InputAction::CAM_DOLLY)) {
 		if (inputs.wheelDelta > 0) {
 			camera.position.z -= 1;

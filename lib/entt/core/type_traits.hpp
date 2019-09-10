@@ -3,26 +3,52 @@
 
 
 #include <type_traits>
+#include "../config/config.h"
 #include "../core/hashed_string.hpp"
 
 
 namespace entt {
 
 
+/*! @brief A class to use to push around lists of types, nothing more. */
+template<typename...>
+struct type_list {};
+
+
+/*! @brief Primary template isn't defined on purpose. */
+template<typename>
+struct type_list_size;
+
+
 /**
- * @brief A class to use to push around lists of types, nothing more.
- * @tparam Type Types provided by the given type list.
+ * @brief Compile-time number of elements in a type list.
+ * @tparam Type Types provided by the type list.
  */
 template<typename... Type>
-struct type_list {
-    /*! @brief Unsigned integer type. */
-    static constexpr auto size = sizeof...(Type);
-};
+struct type_list_size<type_list<Type...>>
+        : std::integral_constant<std::size_t, sizeof...(Type)>
+{};
+
+
+/**
+ * @brief Helper variable template.
+ * @tparam List Type list.
+ */
+template<class List>
+constexpr auto type_list_size_v = type_list_size<List>::value;
 
 
 /*! @brief Primary template isn't defined on purpose. */
 template<typename...>
 struct type_list_cat;
+
+
+/*! @brief Concatenates multiple type lists. */
+template<>
+struct type_list_cat<> {
+    /*! @brief A type list composed by the types of all the type lists. */
+    using type = type_list<>;
+};
 
 
 /**
@@ -136,13 +162,23 @@ struct is_named_type<Type, std::void_t<named_type_traits_t<std::decay_t<Type>>>>
 
 /**
  * @brief Helper variable template.
- *
- * True if a given type has a name, false otherwise.
- *
  * @tparam Type Potentially named type.
  */
 template<class Type>
 constexpr auto is_named_type_v = is_named_type<Type>::value;
+
+
+/**
+ * @brief Defines an enum class to use for opaque identifiers and a dedicate
+ * `to_integer` function to convert the identifiers to their underlying type.
+ * @param clazz The name to use for the enum class.
+ * @param type The underlying type for the enum class.
+ */
+#define ENTT_OPAQUE_TYPE(clazz, type)\
+    enum class clazz: type {};\
+    constexpr auto to_integer(const clazz id) ENTT_NOEXCEPT {\
+        return std::underlying_type_t<clazz>(id);\
+    }
 
 
 }
@@ -160,12 +196,25 @@ constexpr auto is_named_type_v = is_named_type<Type>::value;
 
 /**
  * @brief Makes an already existing type a named type.
+ *
+ * The current definition contains a workaround for Clang 6 because it fails to
+ * deduce correctly the type to use to specialize the class template.<br/>
+ * With a compiler that fully supports C++17 and works fine with deduction
+ * guides, the following should be fine instead:
+ *
+ * @code{.cpp}
+ * std::integral_constant<ENTT_ID_TYPE, entt::basic_hashed_string{#type}>
+ * @endcode
+ *
+ * In order to support even sligthly older compilers, I prefer to stick to the
+ * implementation below.
+ *
  * @param type Type to assign a name to.
  */
 #define ENTT_NAMED_TYPE(type)\
     template<>\
     struct entt::named_type_traits<type>\
-        : std::integral_constant<typename entt::hashed_string::hash_type, entt::hashed_string::to_value(#type)>\
+        : std::integral_constant<ENTT_ID_TYPE, entt::basic_hashed_string<std::remove_cv_t<std::remove_pointer_t<std::decay_t<decltype(#type)>>>>{#type}>\
     {\
         static_assert(std::is_same_v<std::decay_t<type>, type>);\
     };

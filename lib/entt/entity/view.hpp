@@ -38,6 +38,7 @@ namespace entt {
  * * New instances of the given components are created and assigned to entities.
  * * The entity currently pointed is modified (as an example, if one of the
  *   given components is removed from the entity to which the iterator points).
+ * * The entity currently pointed is destroyed.
  *
  * In all the other cases, modifying the pools of the given components in any
  * way invalidates all the iterators and using them results in undefined
@@ -70,35 +71,24 @@ class basic_view {
 
     using underlying_iterator_type = typename sparse_set<Entity>::iterator_type;
     using unchecked_type = std::array<const sparse_set<Entity> *, (sizeof...(Component) - 1)>;
-    using traits_type = entt_traits<Entity>;
+    using traits_type = entt_traits<std::underlying_type_t<Entity>>;
 
     class iterator {
         friend class basic_view<Entity, Component...>;
 
-        using extent_type = typename sparse_set<Entity>::size_type;
-
         iterator(unchecked_type other, underlying_iterator_type first, underlying_iterator_type last) ENTT_NOEXCEPT
             : unchecked{other},
               begin{first},
-              end{last},
-              extent{min(std::make_index_sequence<other.size()>{})}
+              end{last}
         {
             if(begin != end && !valid()) {
                 ++(*this);
             }
         }
 
-        template<auto... Indexes>
-        extent_type min(std::index_sequence<Indexes...>) const ENTT_NOEXCEPT {
-            return std::min({ std::get<Indexes>(unchecked)->extent()... });
-        }
-
         bool valid() const ENTT_NOEXCEPT {
-            const auto entt = *begin;
-            const auto sz = size_type(entt& traits_type::entity_mask);
-
-            return sz < extent && std::all_of(unchecked.cbegin(), unchecked.cend(), [entt](const sparse_set<Entity> *view) {
-                return view->has(entt);
+            return std::all_of(unchecked.cbegin(), unchecked.cend(), [this](const sparse_set<Entity> *view) {
+                return view->has(*begin);
             });
         }
 
@@ -124,7 +114,7 @@ class basic_view {
             return other.begin == begin;
         }
 
-        inline bool operator!=(const iterator &other) const ENTT_NOEXCEPT {
+        bool operator!=(const iterator &other) const ENTT_NOEXCEPT {
             return !(*this == other);
         }
 
@@ -132,7 +122,7 @@ class basic_view {
             return begin.operator->();
         }
 
-        inline reference operator*() const ENTT_NOEXCEPT {
+        reference operator*() const ENTT_NOEXCEPT {
             return *operator->();
         }
 
@@ -140,7 +130,6 @@ class basic_view {
         unchecked_type unchecked;
         underlying_iterator_type begin;
         underlying_iterator_type end;
-        extent_type extent;
     };
 
     // we could use pool_type<Component> *..., but vs complains about it and refuses to compile for unknown reasons (likely a bug)
@@ -162,7 +151,7 @@ class basic_view {
     }
 
     template<typename Comp, typename Other>
-    inline decltype(auto) get([[maybe_unused]] component_iterator_type<Comp> it, [[maybe_unused]] pool_type<Other> *cpool, [[maybe_unused]] const Entity entt) const ENTT_NOEXCEPT {
+    decltype(auto) get([[maybe_unused]] component_iterator_type<Comp> it, [[maybe_unused]] pool_type<Other> *cpool, [[maybe_unused]] const Entity entt) const ENTT_NOEXCEPT {
         if constexpr(std::is_same_v<Comp, Other>) {
             return *it;
         } else {
@@ -170,29 +159,41 @@ class basic_view {
         }
     }
 
-    template<typename Comp, typename... Other, typename Func>
-    void each(type_list<Other...>, Func func) const {
+    template<typename Comp, typename Func, typename... Other, typename... Type>
+    void traverse(Func func, type_list<Other...>, type_list<Type...>) const {
         const auto end = std::get<pool_type<Comp> *>(pools)->sparse_set<Entity>::end();
         auto begin = std::get<pool_type<Comp> *>(pools)->sparse_set<Entity>::begin();
 
-        std::for_each(begin, end, [raw = std::get<pool_type<Comp> *>(pools)->begin(), &func, this](const auto entity) mutable {
-            auto curr = raw++;
+        if constexpr(std::disjunction_v<std::is_same<Comp, Type>...>) {
+            std::for_each(begin, end, [this, raw = std::get<pool_type<Comp> *>(pools)->begin(), &func](const auto entity) mutable {
+                auto curr = raw++;
 
-            if((std::get<pool_type<Other> *>(pools)->has(entity) && ...)) {
-                if constexpr(std::is_invocable_v<Func, decltype(get<Component>({}))...>) {
-                    func(get<Comp, Component>(curr, std::get<pool_type<Component> *>(pools), entity)...);
-                } else {
-                    func(entity, get<Comp, Component>(curr, std::get<pool_type<Component> *>(pools), entity)...);
+                if((std::get<pool_type<Other> *>(pools)->has(entity) && ...)) {
+                    if constexpr(std::is_invocable_v<Func, decltype(get<Type>({}))...>) {
+                        func(get<Comp, Type>(curr, std::get<pool_type<Type> *>(pools), entity)...);
+                    } else {
+                        func(entity, get<Comp, Type>(curr, std::get<pool_type<Type> *>(pools), entity)...);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            std::for_each(begin, end, [this, &func](const auto entity) mutable {
+                if((std::get<pool_type<Other> *>(pools)->has(entity) && ...)) {
+                    if constexpr(std::is_invocable_v<Func, decltype(get<Type>({}))...>) {
+                        func(std::get<pool_type<Type> *>(pools)->get(entity)...);
+                    } else {
+                        func(entity, std::get<pool_type<Type> *>(pools)->get(entity)...);
+                    }
+                }
+            });
+        }
     }
 
 public:
     /*! @brief Underlying entity identifier. */
-    using entity_type = typename sparse_set<Entity>::entity_type;
+    using entity_type = Entity;
     /*! @brief Unsigned integer type. */
-    using size_type = typename sparse_set<Entity>::size_type;
+    using size_type = std::size_t;
     /*! @brief Input iterator type. */
     using iterator_type = iterator;
 
@@ -383,7 +384,7 @@ public:
      * @param func A valid function object.
      */
     template<typename Func>
-    inline void each(Func func) const {
+    void each(Func func) const {
         const auto *view = candidate();
         ((std::get<pool_type<Component> *>(pools) == view ? each<Component>(std::move(func)) : void()), ...);
     }
@@ -419,9 +420,69 @@ public:
      * @param func A valid function object.
      */
     template<typename Comp, typename Func>
-    inline void each(Func func) const {
+    void each(Func func) const {
         using other_type = type_list_cat_t<std::conditional_t<std::is_same_v<Comp, Component>, type_list<>, type_list<Component>>...>;
-        each<Comp>(other_type{}, std::move(func));
+        traverse<Comp>(std::move(func), other_type{}, type_list<Component...>{});
+    }
+
+    /**
+     * @brief Iterates entities and components and applies the given function
+     * object to them.
+     *
+     * The function object is invoked for each entity. It is provided with the
+     * entity itself and a set of references to non-empty components. The
+     * _constness_ of the components is as requested.<br/>
+     * The signature of the function must be equivalent to one of the following
+     * forms:
+     *
+     * @code{.cpp}
+     * void(const entity_type, Type &...);
+     * void(Type &...);
+     * @endcode
+     *
+     * @sa each
+     *
+     * @tparam Func Type of the function object to invoke.
+     * @param func A valid function object.
+     */
+    template<typename Func>
+    void less(Func func) const {
+        const auto *view = candidate();
+        ((std::get<pool_type<Component> *>(pools) == view ? less<Component>(std::move(func)) : void()), ...);
+    }
+
+    /**
+     * @brief Iterates entities and components and applies the given function
+     * object to them.
+     *
+     * The function object is invoked for each entity. It is provided with the
+     * entity itself and a set of references to non-empty components. The
+     * _constness_ of the components is as requested.<br/>
+     * The signature of the function must be equivalent to one of the following
+     * forms:
+     *
+     * @code{.cpp}
+     * void(const entity_type, Type &...);
+     * void(Type &...);
+     * @endcode
+     *
+     * The pool of the suggested component is used to lead the iterations. The
+     * returned entities will therefore respect the order of the pool associated
+     * with that type.<br/>
+     * It is no longer guaranteed that the performance is the best possible, but
+     * there will be greater control over the order of iteration.
+     *
+     * @sa each
+     *
+     * @tparam Comp Type of component to use to enforce the iteration order.
+     * @tparam Func Type of the function object to invoke.
+     * @param func A valid function object.
+     */
+    template<typename Comp, typename Func>
+    void less(Func func) const {
+        using other_type = type_list_cat_t<std::conditional_t<std::is_same_v<Comp, Component>, type_list<>, type_list<Component>>...>;
+        using non_empty_type = type_list_cat_t<std::conditional_t<std::is_empty_v<Component>, type_list<>, type_list<Component>>...>;
+        traverse<Comp>(std::move(func), other_type{}, non_empty_type{});
     }
 
 private:
@@ -446,6 +507,7 @@ private:
  * * New instances of the given component are created and assigned to entities.
  * * The entity currently pointed is modified (as an example, the given
  *   component is removed from the entity to which the iterator points).
+ * * The entity currently pointed is destroyed.
  *
  * In all the other cases, modifying the pool of the given component in any way
  * invalidates all the iterators and using them results in undefined behavior.
@@ -477,9 +539,9 @@ public:
     /*! @brief Type of component iterated by the view. */
     using raw_type = Component;
     /*! @brief Underlying entity identifier. */
-    using entity_type = typename pool_type::entity_type;
+    using entity_type = Entity;
     /*! @brief Unsigned integer type. */
-    using size_type = typename pool_type::size_type;
+    using size_type = std::size_t;
     /*! @brief Input iterator type. */
     using iterator_type = typename sparse_set<Entity>::iterator_type;
 
@@ -648,6 +710,49 @@ public:
             std::for_each(pool->sparse_set<Entity>::begin(), pool->sparse_set<Entity>::end(), [&func, raw = pool->begin()](const auto entt) mutable {
                 func(entt, *(raw++));
             });
+        }
+    }
+
+    /**
+     * @brief Iterates entities and components and applies the given function
+     * object to them.
+     *
+     * The function object is invoked for each entity. It is provided with the
+     * entity itself and a reference to its component if it's a non-empty one.
+     * The _constness_ of the component is as requested.<br/>
+     * The signature of the function must be equivalent to one of the following
+     * forms in case the component isn't an empty one:
+     *
+     * @code{.cpp}
+     * void(const entity_type, Component &);
+     * void(Component &);
+     * @endcode
+     *
+     * In case the component is an empty one instead, the following forms are
+     * accepted:
+     *
+     * @code{.cpp}
+     * void(const entity_type);
+     * void();
+     * @endcode
+     *
+     * @sa each
+     *
+     * @tparam Func Type of the function object to invoke.
+     * @param func A valid function object.
+     */
+    template<typename Func>
+    void less(Func func) const {
+        if constexpr(std::is_empty_v<Component>) {
+            if constexpr(std::is_invocable_v<Func>) {
+                for(auto pos = pool->size(); pos; --pos) {
+                    func();
+                }
+            } else {
+                std::for_each(pool->sparse_set<Entity>::begin(), pool->sparse_set<Entity>::end(), std::move(func));
+            }
+        } else {
+            each(std::move(func));
         }
     }
 

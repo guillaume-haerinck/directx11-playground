@@ -2,6 +2,8 @@
 #define ENTT_ENTITY_ENTITY_HPP
 
 
+#include <cstdint>
+#include <type_traits>
 #include "../config/config.h"
 
 
@@ -105,11 +107,14 @@ struct entt_traits<std::uint64_t> {
 namespace internal {
 
 
-struct null {
+class null {
+    template<typename Entity>
+    using traits_type = entt_traits<std::underlying_type_t<Entity>>;
+
+public:
     template<typename Entity>
     constexpr operator Entity() const ENTT_NOEXCEPT {
-        using traits_type = entt_traits<Entity>;
-        return traits_type::entity_mask | (traits_type::version_mask << traits_type::entity_shift);
+        return Entity{traits_type<Entity>::entity_mask};
     }
 
     constexpr bool operator==(null) const ENTT_NOEXCEPT {
@@ -122,12 +127,12 @@ struct null {
 
     template<typename Entity>
     constexpr bool operator==(const Entity entity) const ENTT_NOEXCEPT {
-        return entity == static_cast<Entity>(*this);
+        return (to_integer(entity) & traits_type<Entity>::entity_mask) == to_integer(static_cast<Entity>(*this));
     }
 
     template<typename Entity>
     constexpr bool operator!=(const Entity entity) const ENTT_NOEXCEPT {
-        return entity != static_cast<Entity>(*this);
+        return !(entity == *this);
     }
 };
 
@@ -154,7 +159,7 @@ constexpr bool operator!=(const Entity entity, null other) ENTT_NOEXCEPT {
 
 
 /**
- * @brief Null entity.
+ * @brief Compile-time constant for null entities.
  *
  * There exist implicit conversions from this variable to entity identifiers of
  * any allowed type. Similarly, there exist comparision operators between the

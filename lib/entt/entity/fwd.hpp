@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include "../config/config.h"
+#include "../core/type_traits.hpp"
 
 
 namespace entt {
@@ -23,6 +24,10 @@ class basic_runtime_view;
 /*! @class basic_group */
 template<typename...>
 class basic_group;
+
+/*! @class basic_observer */
+template<typename>
+class basic_observer;
 
 /*! @class basic_actor */
 template <typename>
@@ -45,10 +50,16 @@ template<typename>
 class basic_continuous_loader;
 
 /*! @brief Alias declaration for the most common use case. */
-using entity = std::uint32_t;
+ENTT_OPAQUE_TYPE(entity, ENTT_ID_TYPE)
+
+/*! @brief Alias declaration for the most common use case. */
+ENTT_OPAQUE_TYPE(component, ENTT_ID_TYPE)
 
 /*! @brief Alias declaration for the most common use case. */
 using registry = basic_registry<entity>;
+
+/*! @brief Alias declaration for the most common use case. */
+using observer = basic_observer<entity>;
 
 /*! @brief Alias declaration for the most common use case. */
 using actor = basic_actor<entity>;

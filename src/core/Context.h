@@ -9,7 +9,11 @@ enum SingletonComponents {
 };
 
 struct Context {
+	Context() {
+		singletonComponents.fill(entt::null);
+	}
+
 	std::unique_ptr<RenderCommand> rcommand;
 	entt::registry registry;
-	std::array<unsigned int, _SINGLETON_COMP_MAX> singletonComponents;
+	std::array<entt::entity, _SINGLETON_COMP_MAX> singletonComponents;
 };
