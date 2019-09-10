@@ -86,11 +86,14 @@ void RenderSystem::Update() {
 	comp::ConstantBuffer& perMeshCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 		.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH);
 
-	m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
-		.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+	m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader, comp::Transform>()
+		.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader, comp::Transform& transform) {
 		// Update perMesh constant buffer
 		cb::perMesh cbData = {};
-		XMStoreFloat4x4(&cbData.matModel, XMMatrixIdentity()); 	// TODO use transform component
+		XMVECTOR transVector = XMLoadFloat3(&transform.position);
+		XMMATRIX translation = XMMatrixTranslationFromVector(transVector);
+		XMMATRIX model = translation; // TODO also use rotation and scale
+		XMStoreFloat4x4(&cbData.matModel, XMMatrixTranspose(model));
 		m_ctx.rcommand->UpdateConstantBuffer(perMeshCB, &cbData);
 		
 		// Bind
