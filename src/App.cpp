@@ -25,7 +25,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initDirectX11();
 	initImGui();
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
-	resetAppTo<basicExample::ModelLoading>();
+	resetAppTo<phongExample::PointLight>();
 }
 
 App::~App() {
@@ -108,7 +108,7 @@ void App::Update(float dt) {
 		// Update each window
 		m_activeExemple->ImGuiUpdate();
 		renderMenu();
-		ImGui::ShowDemoWindow();
+		//ImGui::ShowDemoWindow();
 
 		// End frame
 		ImGui::EndFrame();

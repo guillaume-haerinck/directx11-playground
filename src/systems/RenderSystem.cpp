@@ -25,7 +25,34 @@ void RenderSystem::Update() {
 	{
 		scomp::Lights& lights = m_ctx.registry.get<scomp::Lights>(graphEntity);
 		if (lights.hasToBeUpdated) {
-			// TODO
+			comp::ConstantBuffer& lightCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+				.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE);
+
+			std::vector<cb::perLightChange> cbData;
+			cbData.resize(
+				lights.directionalLights.size() +
+				lights.pointLights.size() +
+				lights.spotLights.size()
+			);
+
+			int i = 0;
+			for (auto& light : lights.spotLights) {
+				i++;
+			}
+
+			for (auto& light : lights.pointLights) {
+				cbData.at(i).position = light.position;
+				i++;
+			}
+
+			for (auto& light : lights.directionalLights) {
+				i++;
+			}
+
+			// TODO assert bytewidth of cb is same size of data
+
+			m_ctx.rcommand->UpdateConstantBuffer(lightCB, cbData.data());
+			lights.hasToBeUpdated = false;
 		}
 	}
 

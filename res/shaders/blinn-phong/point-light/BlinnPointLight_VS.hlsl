@@ -14,12 +14,12 @@ struct VSInput {
 
 struct VSOutput {
 	float4 Position : SV_POSITION;
-	float2 TexCoord : TEXCOORD;
+	float3 Normal : NORMAL;
 };
 
 VSOutput main(VSInput vin) {
 	VSOutput vout = (VSOutput)0;
 	vout.Position = mul(mul(float4(vin.Position, 1.0f), matModel), matViewProj);
-	vout.TexCoord = vin.TexCoord;
+	vout.Normal = vin.Normal;
 	return vout;
 }

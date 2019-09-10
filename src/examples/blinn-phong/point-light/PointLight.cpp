@@ -8,6 +8,7 @@
 #include "systems/CameraSystem.h"
 #include "components/physics/Transform.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
+#include "components/singletons/graphics/Lights.h"
 
 namespace phongExample {
 	PointLight::PointLight(Context& context) : m_ctx(context) {
@@ -22,6 +23,17 @@ namespace phongExample {
 		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
 		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 
+		// Light
+		scomp::Lights& lights = m_ctx.registry.get<scomp::Lights>(graphEntity);
+		lights.hasToBeUpdated = true;
+		scomp::PointLight light0 = {};
+		light0.position = XMFLOAT3(1, 0, 0);
+		lights.pointLights.push_back(light0);
+
+		// Init non-optionnal constant buffer
+		comp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
+		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
+
 		// Vertex shader
 		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/BlinnPointLight_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
@@ -29,11 +41,12 @@ namespace phongExample {
 
 		// Pixel Shader
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnPointLight_PS.cso");
+		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
 		// Mesh
 		comp::Mesh mesh = primFactory.CreateBox();
 
-		// Transformm
+		// Transform
 		comp::Transform transform = {};
 
 		// Assign data to an entity

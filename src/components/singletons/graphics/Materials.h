@@ -26,7 +26,8 @@ namespace scomp {
 	 * @brief Texture slot used in shaders for phong materials
 	 */
 	enum PhongTexSlot {
-		DIFFUSE = 0
+		DIFFUSE = 0,
+		SPECULAR = 1
 	};
 
 	/**

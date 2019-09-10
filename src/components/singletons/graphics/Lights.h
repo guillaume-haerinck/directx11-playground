@@ -28,6 +28,8 @@ namespace scomp {
 	 * @brief Unique array of Lights for the scene
 	 */
 	struct Lights {
+		Lights() : hasToBeUpdated(false) {};
+
 		std::vector<PointLight> pointLights;
 		std::vector<DirectionalLight> directionalLights;
 		std::vector<SpotLight> spotLights;
