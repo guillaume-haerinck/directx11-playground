@@ -25,10 +25,10 @@ void CameraSystem::Update() {
 		camera.position.y -= inputs.delta.y * 0.01;
 
 		XMVECTOR eye = XMLoadFloat3(&camera.position);
-		XMVECTOR target = XMVectorZero();
+		XMVECTOR target = XMLoadFloat3(&camera.target);
 		XMVECTOR up = XMVectorSet(0, 1, 0, 1);
 
-		XMMATRIX view = XMMatrixLookAtLH(eye, target, up);
+		XMMATRIX view = XMMatrixLookAtLH(-eye, target, up);
 		XMStoreFloat4x4(&camera.view, view);
 	}
 
@@ -36,6 +36,9 @@ void CameraSystem::Update() {
 	if (inputs.actionState.at(scomp::InputAction::CAM_PAN)) {
 		camera.position.x -= inputs.delta.x * 0.01;
 		camera.position.y += inputs.delta.y * 0.01;
+
+		// TODO move target ?
+
 		XMVECTOR translation = XMLoadFloat3(&camera.position);
 		XMMATRIX view = XMMatrixTranslationFromVector(translation);
 		XMStoreFloat4x4(&camera.view, view);
@@ -43,7 +46,7 @@ void CameraSystem::Update() {
 
 	// Move along position to target axis
 	if (inputs.actionState.at(scomp::InputAction::CAM_DOLLY)) {
-		if (inputs.mouseWheel > 0) {
+		if (inputs.wheelDelta > 0) {
 			camera.position.z -= 0.1f;
 		} else {
 			camera.position.z += 0.1f;
@@ -54,6 +57,7 @@ void CameraSystem::Update() {
 		XMStoreFloat4x4(&camera.view, view);
 	}
 
+	// Reset zoom and position
 	if (inputs.actionState.at(scomp::InputAction::CAM_RESET)) {
 		camera.position = XMFLOAT3(0.0f, 0.0f, 6.0f);
 		XMVECTOR translation = XMLoadFloat3(&camera.position);

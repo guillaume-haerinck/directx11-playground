@@ -15,6 +15,7 @@ namespace scomp {
 		XMFLOAT4X4 view;
 		XMFLOAT4X4 proj;
 		XMFLOAT3 position;
+		XMFLOAT3 target;
 	};
 }
  

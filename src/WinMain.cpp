@@ -31,7 +31,6 @@ int CALLBACK WinMain(
 		delete app;
 
 		if (debug.get() != nullptr) {
-			// All refCount must be 0, IntRef is not important
 			debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 		}
 

@@ -61,13 +61,10 @@ LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
 	scomp::Inputs& inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
 
-	// Unset actions that does not have stop messages
 	inputs.actionState.at(scomp::InputAction::CAM_DOLLY) = false;
 	inputs.actionState.at(scomp::InputAction::CAM_RESET) = false;
 	inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = false;
 	inputs.actionState.at(scomp::InputAction::CAM_PAN) = false;
-	inputs.delta.x = 0;
-	inputs.delta.y = 0;
 
 	switch (msg) {
 	case WM_LBUTTONDBLCLK:
@@ -75,7 +72,7 @@ LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_MOUSEWHEEL:
-		inputs.mouseWheel = GET_WHEEL_DELTA_WPARAM(wParam);
+		inputs.wheelDelta = GET_WHEEL_DELTA_WPARAM(wParam);
 		inputs.actionState.at(scomp::InputAction::CAM_DOLLY) = true;
 		break;
 
@@ -87,9 +84,9 @@ LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		inputs.mousePos.x = newPosX;
 		inputs.mousePos.y = newPosY;
 
-		if (LOWORD(wParam)& MK_LBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true; }
-		if (LOWORD(wParam)& MK_MBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true; }
-		if (LOWORD(wParam)& MK_RBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_PAN) = true; }
+		if (wParam == MK_LBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true; }
+		if (wParam == MK_MBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true; }
+		if (wParam == MK_RBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_PAN) = true; }
 
 		break;
 	}
@@ -145,6 +142,17 @@ void App::renderMenu() {
 
 	if (ImGui::CollapsingHeader("Help")) {
 		ImGui::Text("TODO");
+	}
+
+	if (ImGui::CollapsingHeader("Camera Debug")) {
+		auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
+		scomp::Inputs inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
+
+		// Unset actions that does not have stop messages
+		if (inputs.actionState.at(scomp::InputAction::CAM_DOLLY)) { ImGui::Text("Dolly on"); }
+		if (inputs.actionState.at(scomp::InputAction::CAM_ORBIT)) { ImGui::Text("Orbit on"); }
+		if (inputs.actionState.at(scomp::InputAction::CAM_RESET)) { ImGui::Text("Reset on"); }
+		if (inputs.actionState.at(scomp::InputAction::CAM_PAN)) { ImGui::Text("Pan on"); }
 	}
 
 	ImGui::Spacing();
@@ -353,6 +361,7 @@ void App::initGraphicSingletonEntity() {
 	// Init camera
 	scomp::Camera camera = {};
 	camera.position = XMFLOAT3(0.0f, 0.0f, 6.0f);
+	camera.target = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMMATRIX proj = XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 100.0f);
 	XMMATRIX view = XMMatrixTranslation(camera.position.x, camera.position.y, camera.position.z);
 	XMStoreFloat4x4(&camera.proj, proj);

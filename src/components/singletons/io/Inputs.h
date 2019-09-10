@@ -12,7 +12,7 @@ namespace scomp {
 	struct Inputs {
 		std::array<bool, InputAction::_ACTION_MAX> actionState;
 		XMFLOAT2 mousePos;
-		XMFLOAT2 delta;			// Difference in mousePos between this frame and the last
-		short mouseWheel;
+		XMFLOAT2 delta;
+		short wheelDelta;
 	};
 }
