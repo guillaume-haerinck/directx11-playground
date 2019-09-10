@@ -15,6 +15,6 @@ namespace basicExample {
 
 	private:
 		Context& m_ctx;
-		std::vector<std::unique_ptr<ISystem>> m_systems;
+		std::vector<std::shared_ptr<ISystem>> m_systems;
 	};
 }

@@ -4,6 +4,7 @@
 #include "components/singletons/graphics/ConstantBuffers.h"
 #include "components/singletons/graphics/Lights.h"
 #include "components/singletons/graphics/Materials.h"
+#include "components/singletons/graphics/Camera.h"
 #include "components/physics/Transform.h"
 #include "graphics/ConstantBuffer.h"
 
@@ -14,7 +15,6 @@ RenderSystem::~RenderSystem() {
 }
 
 void RenderSystem::Update() {
-	m_timer.Tick([](){});
 	auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
 
 	///////////////////////////////////////////////////////////////////////////
@@ -69,16 +69,16 @@ void RenderSystem::Update() {
 		comp::ConstantBuffer& perFrameCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 			.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME);
 
-		// TODO use camera component
+		// Get usable data
+		scomp::Camera camera = m_ctx.registry.get<scomp::Camera>(graphEntity);
+		XMMATRIX view = XMLoadFloat4x4(&camera.view);
+		XMMATRIX proj = XMLoadFloat4x4(&camera.proj);
 
-		XMMATRIX view = XMMatrixTranspose(
-			XMMatrixRotationZ(m_timer.GetFrameCount() * 0.01) *
-			XMMatrixRotationX(m_timer.GetFrameCount() * 0.01) *
-			XMMatrixTranslation(0.0f, 0.0f, 6.0f) *
-			XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
-		);
-		XMStoreFloat4x4(&cbData.matViewProj, view);
+		// Update data. Use column-major matrix for HLSL
+		XMMATRIX viewProj = XMMatrixTranspose(view * proj);
+		XMStoreFloat4x4(&cbData.matViewProj, viewProj);
 
+		// Send data
 		m_ctx.rcommand->UpdateConstantBuffer(perFrameCB, &cbData);
 	}
 

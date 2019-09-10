@@ -4,6 +4,7 @@
 #include "graphics/DXException.h"
 #include "factories/components/MeshPrimitiveFactory.h"
 #include "systems/RenderSystem.h"
+#include "systems/CameraSystem.h"
 #include "graphics/ConstantBuffer.h"
 #include "components/physics/Transform.h"
 #include "components/singletons/graphics/ConstantBuffers.h"
@@ -12,7 +13,10 @@ namespace basicExample {
 	TexturedPrimitives::TexturedPrimitives(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);
-		m_systems.push_back(std::make_unique<RenderSystem>(context));
+		m_systems = {
+			std::make_shared<CameraSystem>(context),
+			std::make_shared<RenderSystem>(context)
+		};
 
 		// Get constant buffers
 		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);

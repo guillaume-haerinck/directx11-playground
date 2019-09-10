@@ -64,16 +64,12 @@ LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	// Unset actions that does not have stop messages
 	inputs.actionState.at(scomp::InputAction::CAM_DOLLY) = false;
 	inputs.actionState.at(scomp::InputAction::CAM_RESET) = false;
+	inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = false;
+	inputs.actionState.at(scomp::InputAction::CAM_PAN) = false;
+	inputs.delta.x = 0;
+	inputs.delta.y = 0;
 
 	switch (msg) {
-	case WM_LBUTTONDOWN:
-		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true;
-		break;
-
-	case WM_LBUTTONUP:
-		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = false;
-		break;
-
 	case WM_LBUTTONDBLCLK:
 		inputs.actionState.at(scomp::InputAction::CAM_RESET) = true;
 		break;
@@ -83,26 +79,20 @@ LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		inputs.actionState.at(scomp::InputAction::CAM_DOLLY) = true;
 		break;
 
-	case WM_MBUTTONDOWN:
-		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true;
-		break;
+	case WM_MOUSEMOVE: {
+		int newPosX = GET_X_LPARAM(lParam);
+		int newPosY = GET_Y_LPARAM(lParam);
+		inputs.delta.x = inputs.mousePos.x - newPosX;
+		inputs.delta.y = inputs.mousePos.y - newPosY;
+		inputs.mousePos.x = newPosX;
+		inputs.mousePos.y = newPosY;
 
-	case WM_MBUTTONUP:
-		inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = false;
-		break;
+		if (LOWORD(wParam)& MK_LBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true; }
+		if (LOWORD(wParam)& MK_MBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_ORBIT) = true; }
+		if (LOWORD(wParam)& MK_RBUTTON) { inputs.actionState.at(scomp::InputAction::CAM_PAN) = true; }
 
-	case WM_RBUTTONDOWN:
-		inputs.actionState.at(scomp::InputAction::CAM_PAN) = true;
 		break;
-
-	case WM_RBUTTONUP:
-		inputs.actionState.at(scomp::InputAction::CAM_PAN) = false;
-		break;
-
-	case WM_MOUSEMOVE:
-		inputs.mousePos.x = GET_X_LPARAM(lParam);
-		inputs.mousePos.y = GET_Y_LPARAM(lParam);
-		break;
+	}
 
 	default:
 		break;
@@ -152,6 +142,11 @@ void App::renderMenu() {
 	ImGui::Begin("Main debug window");
 
 	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+	if (ImGui::CollapsingHeader("Help")) {
+		ImGui::Text("TODO");
+	}
+
 	ImGui::Spacing();
 
 	ImGui::Text("Exemples:");
@@ -357,6 +352,11 @@ void App::initGraphicSingletonEntity() {
 
 	// Init camera
 	scomp::Camera camera = {};
+	camera.position = XMFLOAT3(0.0f, 0.0f, 6.0f);
+	XMMATRIX proj = XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f);
+	XMMATRIX view = XMMatrixTranslation(camera.position.x, camera.position.y, camera.position.z);
+	XMStoreFloat4x4(&camera.proj, proj);
+	XMStoreFloat4x4(&camera.view, view);
 	m_ctx.registry.assign<scomp::Camera>(entity, camera);
 
 	// Init lights
