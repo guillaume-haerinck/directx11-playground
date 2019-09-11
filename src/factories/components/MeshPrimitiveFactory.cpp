@@ -192,6 +192,7 @@ comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 		XMFLOAT3(t, 0, -X), XMFLOAT3(t, 0,  X), XMFLOAT3(-t, 0, -X), XMFLOAT3(-t, 0,  X),
 	};
 
+	// TODO
 	XMFLOAT3 normals[] = {
 		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3(),
 		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3(),

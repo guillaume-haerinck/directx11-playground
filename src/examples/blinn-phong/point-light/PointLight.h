@@ -16,5 +16,7 @@ namespace phongExample {
 	private:
 		Context& m_ctx;
 		std::vector<std::shared_ptr<ISystem>> m_systems;
+		entt::entity m_litEntity;
+		entt::entity m_lightEntity;
 	};
 }

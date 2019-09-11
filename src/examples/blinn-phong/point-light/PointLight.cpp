@@ -58,6 +58,7 @@ namespace phongExample {
 		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
+		m_litEntity = entity;
 
 		// Light representation
 		transform.position = XMFLOAT3(2, 2, -2);
@@ -68,6 +69,7 @@ namespace phongExample {
 		m_ctx.registry.assign<comp::PixelShader>(entity2, PShader);
 		m_ctx.registry.assign<comp::Mesh>(entity2, mesh);
 		m_ctx.registry.assign<comp::Transform>(entity2, transform);
+		m_lightEntity = entity2;
 	}
 
 	PointLight::~PointLight()
@@ -82,7 +84,14 @@ namespace phongExample {
 
 	void PointLight::ImGuiUpdate() {
 		ImGui::Begin("Exemple properties");
-		ImGui::Text("Point light !");
+
+		comp::Transform& transform = m_ctx.registry.get<comp::Transform>(m_litEntity);
+		ImGui::Text("Lit object :");
+		ImGui::SliderFloat3("Position", (float *) &transform.position, -4, 4);
+		ImGui::SliderFloat3("Scale", (float *) &transform.scale, -4, 4);
+		ImGui::SliderFloat3("Rotation", (float*)& transform.rotationEuler, 0, XM_PI * 2);
+		XMStoreFloat4(&transform.rotation, XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&transform.rotationEuler)));
+
 		ImGui::End();
 	}
 }

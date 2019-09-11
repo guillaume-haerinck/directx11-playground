@@ -52,7 +52,7 @@ LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	}
 
 	App* me = (App*) (GetWindowLongPtr(hWnd, GWLP_USERDATA));
-	if (me && App::isContexInit && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
+	if (me && App::isContexInit && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
 		return me->memberWndProc(hWnd, msg, wParam, lParam);
 	}
 
