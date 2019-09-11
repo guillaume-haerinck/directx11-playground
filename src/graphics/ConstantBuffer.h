@@ -23,6 +23,8 @@ namespace cb {
 	 */
 	struct perFrame {
 		XMFLOAT4X4 matViewProj;
+		XMFLOAT3 cameraPos;
+		char padding[4];
 	};
 
 	/**
