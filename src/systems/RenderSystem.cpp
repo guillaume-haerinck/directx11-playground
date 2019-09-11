@@ -130,8 +130,10 @@ void RenderSystem::Update() {
 		// Update perMesh constant buffer
 		cb::perMesh cbData = {};
 		XMVECTOR transVector = XMLoadFloat3(&transform.position);
-		XMMATRIX translation = XMMatrixTranslationFromVector(transVector);
-		XMMATRIX model = translation; // TODO also use rotation and scale
+		XMVECTOR scaleVector = XMLoadFloat3(&transform.scale);
+		XMVECTOR rotationQuat = XMLoadFloat4(&transform.rotation);
+
+		XMMATRIX model = XMMatrixAffineTransformation(scaleVector, XMVectorZero(), rotationQuat, transVector);
 		XMStoreFloat4x4(&cbData.matModel, XMMatrixTranspose(model));
 		m_ctx.rcommand->UpdateConstantBuffer(perMeshCB, &cbData);
 		

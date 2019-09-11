@@ -10,9 +10,16 @@ struct PSInput {
 };
 
 float4 main(PSInput pin) : SV_TARGET {
+    // Ambient
 	float ambientStrength = 0.1f;
-	float3 lightColor = float3(1.0f, 1.0f, 1.0f);
-	float3 ambient = ambientStrength * lightColor;
+	float3 ambient = ambientStrength * pointLight.Color;
 
-    return float4(pointLight.Position, 1.0f);
+    // Diffuse
+    float3 fragPos = float3(pin.Position.x, pin.Position.y, pin.Position.z);
+    float3 lightDir = normalize(pointLight.Position - fragPos);
+    float diff = max(dot(pin.Normal, lightDir), 0.0);
+    float3 diffuse = diff * pointLight.Color;
+
+    float3 result = ambient + diffuse;
+    return float4(result, 1.0f);
 }
