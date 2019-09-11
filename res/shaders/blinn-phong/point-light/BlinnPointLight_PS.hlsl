@@ -1,10 +1,10 @@
 cbuffer perLightChange : register(b0) {
 	float3 Strength;
-	float FalloffStart; // point/spot light only
-	float3 Direction;   // directional/spot light only
-	float FalloffEnd;   // point/spot light only
-	float3 Position;    // point light only
-	float SpotPower;    // spot light only
+	float FalloffStart;
+	float3 Direction;
+	float FalloffEnd;
+	float3 Position; 
+	float SpotPower; 
 };
 
 struct PSInput {

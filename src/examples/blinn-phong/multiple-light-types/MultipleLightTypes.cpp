@@ -25,21 +25,26 @@ namespace phongExample {
 		// Light
 		scomp::Lights& lights = m_ctx.registry.get<scomp::Lights>(graphEntity);
 		lights.hasToBeUpdated = true;
-		scomp::PointLight light0 = {};
-		light0.position = XMFLOAT3(1, 0, 0);
-		lights.pointLights.push_back(light0);
 
+		scomp::SpotLight slight0 = {};
+		slight0.position = XMFLOAT3(0, 1, 0);
+		lights.spotLights.push_back(slight0);
+
+		scomp::PointLight plight0 = {};
+		plight0.position = XMFLOAT3(1, 0, 0);
+		lights.pointLights.push_back(plight0);
+		
 		// Init non-optionnal constant buffer
-		comp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
+		comp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 2);
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/BlinnPointLight_VS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/BlinnMultipleLightTypes_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnPointLight_PS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnMultipleLightTypes_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
 		// Mesh

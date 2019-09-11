@@ -37,6 +37,7 @@ void RenderSystem::Update() {
 
 			int i = 0;
 			for (auto& light : lights.spotLights) {
+				cbData.at(i).position = light.position;
 				i++;
 			}
 
