@@ -1,8 +1,8 @@
 struct Light {
     float3 Color;
-    float SpotAngle;
+	float Intensity;
     float3 Position;
-    float Intensity;
+	float SpotAngle;
     float3 Direction;
     float AttenuationRadius;
 };

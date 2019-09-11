@@ -114,7 +114,6 @@ void RenderSystem::Update() {
 		XMMATRIX proj = XMLoadFloat4x4(&camera.proj);
 
 		// Update data. Use column-major matrix for HLSL
-		XMStoreFloat4x4(&cbData.matView, XMMatrixTranspose(view));
 		XMMATRIX viewProj = XMMatrixTranspose(view * proj);
 		XMStoreFloat4x4(&cbData.matViewProj, viewProj);
 

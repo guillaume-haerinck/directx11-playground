@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "PointLight.h"
+#include "DirectionalLight.h"
 
 #include "graphics/ConstantBuffer.h"
 #include "factories/components/MeshPrimitiveFactory.h"
@@ -10,7 +10,7 @@
 #include "components/singletons/graphics/Lights.h"
 
 namespace phongExample {
-	PointLight::PointLight(Context& context) : m_ctx(context) {
+	DirectionalLight::DirectionalLight(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);
 		m_systems = {
@@ -26,24 +26,23 @@ namespace phongExample {
 		scomp::Lights& lights = m_ctx.registry.get<scomp::Lights>(graphEntity);
 		lights.hasToBeUpdated = true;
 
-		scomp::PointLight light0 = {};
-		light0.position = XMFLOAT3(2, 2, -2);
+		scomp::DirectionalLight light0 = {};
 		light0.color = XMFLOAT3(1, 1, 1);
 		light0.intensity = 1.0f;
-		light0.attenuationRadius = 10.0f;
-		lights.pointLights.push_back(light0);
+		light0.direction = XMFLOAT3(1, -1, 1);
+		lights.directionalLights.push_back(light0);
 
 		// Init non-optionnal constant buffer
 		comp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/BlinnPointLight_VS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/BlinnDirectionalLight_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnPointLight_PS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnDirectionalLight_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
 		// Mesh
@@ -59,30 +58,19 @@ namespace phongExample {
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
 		m_litEntity = entity;
-
-		// Light representation
-		transform.position = XMFLOAT3(2, 2, -2);
-		transform.scale = XMFLOAT3(0.2f, 0.2f, 0.2f);
-
-		auto entity2 = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::VertexShader>(entity2, VShader);
-		m_ctx.registry.assign<comp::PixelShader>(entity2, PShader);
-		m_ctx.registry.assign<comp::Mesh>(entity2, mesh);
-		m_ctx.registry.assign<comp::Transform>(entity2, transform);
-		m_lightEntity = entity2;
 	}
 
-	PointLight::~PointLight()
+	DirectionalLight::~DirectionalLight()
 	{
 	}
 
-	void PointLight::Update() {
+	void DirectionalLight::Update() {
 		for (auto& system : m_systems) {
 			system->Update();
 		}
 	}
 
-	void PointLight::ImGuiUpdate() {
+	void DirectionalLight::ImGuiUpdate() {
 		ImGui::Begin("Exemple properties");
 
 		comp::Transform& transform = m_ctx.registry.get<comp::Transform>(m_litEntity);

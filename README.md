@@ -44,10 +44,10 @@ Loads a GLTF model with its texture.
 
 ### Blinn-Phong shading
 
-#### [Point light](src/examples/blinn-phong/point-light/)
+#### [Directional light](src/examples/blinn-phong/point-light/)
 
-Setup a simple scene with a point light and no material.
-Uses ambiant, diffuse and specular shading.
+Setup a simple scene with a directional light and no material.
+Uses ambient, diffuse and specular shading.
 
 #### [Multiple light types](src/examples/blinn-phong/multiple-light-types/)
 
