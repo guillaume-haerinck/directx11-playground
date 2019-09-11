@@ -87,9 +87,9 @@ namespace phongExample {
 
 		comp::Transform& transform = m_ctx.registry.get<comp::Transform>(m_litEntity);
 		ImGui::Text("Lit object :");
-		ImGui::SliderFloat3("Position", (float *) &transform.position, -4, 4);
-		ImGui::SliderFloat3("Scale", (float *) &transform.scale, -4, 4);
-		ImGui::SliderFloat3("Rotation", (float*)& transform.rotationEuler, 0, XM_PI * 2);
+		ImGui::SliderFloat3("Position", (float*) &transform.position, -4, 4);
+		ImGui::SliderFloat3("Scale", (float*) &transform.scale, -4, 4);
+		ImGui::SliderFloat3("Rotation", (float*) &transform.rotationEuler, 0, XM_PI * 2);
 		XMStoreFloat4(&transform.rotation, XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&transform.rotationEuler)));
 
 		ImGui::End();

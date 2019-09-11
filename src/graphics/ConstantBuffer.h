@@ -23,6 +23,7 @@ namespace cb {
 	 */
 	struct perFrame {
 		XMFLOAT4X4 matViewProj;
+		XMFLOAT4X4 matView;
 	};
 
 	/**

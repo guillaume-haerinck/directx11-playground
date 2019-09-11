@@ -15,9 +15,10 @@ float4 main(PSInput pin) : SV_TARGET {
 	float3 ambient = ambientStrength * pointLight.Color;
 
     // Diffuse
+    float3 norm = normalize(pin.Normal);
     float3 fragPos = float3(pin.Position.x, pin.Position.y, pin.Position.z);
     float3 lightDir = normalize(pointLight.Position - fragPos);
-    float diff = max(dot(pin.Normal, lightDir), 0.0);
+    float diff = max(dot(norm, lightDir), 0.0);
     float3 diffuse = diff * pointLight.Color;
 
     float3 result = ambient + diffuse;

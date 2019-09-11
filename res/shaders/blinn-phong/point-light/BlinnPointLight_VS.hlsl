@@ -4,6 +4,7 @@ cbuffer perMesh : register(b0) {
 
 cbuffer perFrame : register(b1) {
 	float4x4 matViewProj;
+	float4x4 matView;
 };
 
 struct VSInput {
@@ -20,6 +21,6 @@ struct VSOutput {
 VSOutput main(VSInput vin) {
 	VSOutput vout = (VSOutput)0;
 	vout.Position = mul(mul(float4(vin.Position, 1.0f), matModel), matViewProj);
-	vout.Normal = vin.Normal;
+	vout.Normal = mul(mul(float4(vin.Normal, 1.0f), matModel), matView);
 	return vout;
 }
