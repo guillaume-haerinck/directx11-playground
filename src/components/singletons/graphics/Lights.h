@@ -6,6 +6,18 @@ namespace scomp {
 	/**
 	 * @brief
 	 */
+	struct SpotLight {
+		XMFLOAT3 color;
+		float spotAngle;
+		XMFLOAT3 position;
+		float intensity;
+		XMFLOAT3 direction;
+		float attenuationRadius;
+	};
+
+	/**
+	 * @brief
+	 */
 	struct PointLight {
 		XMFLOAT3 color;
 		float intensity;
@@ -20,18 +32,6 @@ namespace scomp {
 		XMFLOAT3 color;
 		float intensity;
 		XMFLOAT3 direction;
-	};
-
-	/**
-	 * @brief
-	 */
-	struct SpotLight {
-		XMFLOAT3 color;
-		float spotAngle;
-		XMFLOAT3 position;
-		float intensity;
-		XMFLOAT3 direction;
-		float attenuationRadius;
 	};
 
 	/**

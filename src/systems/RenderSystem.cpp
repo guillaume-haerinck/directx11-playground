@@ -30,27 +30,38 @@ void RenderSystem::Update() {
 
 			std::vector<cb::perLightChange> cbData;
 			cbData.resize(
-				lights.directionalLights.size() +
+				lights.spotLights.size() +
 				lights.pointLights.size() +
-				lights.spotLights.size()
+				lights.directionalLights.size() 
 			);
 
 			int i = 0;
 			for (auto& light : lights.spotLights) {
+				cbData.at(i).color = light.color;
+				cbData.at(i).spotAngle = light.spotAngle;
 				cbData.at(i).position = light.position;
+				cbData.at(i).intensity = light.intensity;
+				cbData.at(i).direction = light.direction;
+				cbData.at(i).attenuationRadius = light.attenuationRadius;
 				i++;
 			}
 
 			for (auto& light : lights.pointLights) {
+				cbData.at(i).color = light.color;
+				cbData.at(i).intensity = light.intensity;
 				cbData.at(i).position = light.position;
+				cbData.at(i).attenuationRadius = light.attenuationRadius;
 				i++;
 			}
 
 			for (auto& light : lights.directionalLights) {
+				cbData.at(i).color = light.color;
+				cbData.at(i).intensity = light.intensity;
+				cbData.at(i).direction = light.direction;
 				i++;
 			}
 
-			// TODO assert bytewidth of cb is same size of data
+			assert(sizeof(cb::perLightChange) * cbData.size() == lightCB.byteWidth && "The allocated space for the light constant buffer does not match the lights declared ! Check CreateConstantBuffer()");
 
 			m_ctx.rcommand->UpdateConstantBuffer(lightCB, cbData.data());
 			lights.hasToBeUpdated = false;

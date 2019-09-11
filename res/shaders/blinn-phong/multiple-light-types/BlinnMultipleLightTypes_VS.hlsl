@@ -1,5 +1,3 @@
-#include "Common.hlsli"
-
 cbuffer perMesh : register(b0) {
 	float4x4 matModel;
 }

@@ -27,7 +27,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initDirectX11();
 	initImGui();
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
-	resetAppTo<phongExample::MultipleLightTypes>();
+	resetAppTo<phongExample::PointLight>();
 }
 
 App::~App() {
