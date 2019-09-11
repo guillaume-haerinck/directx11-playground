@@ -1,10 +1,7 @@
+#include "Common.hlsli"
+
 cbuffer perLightChange : register(b0) {
-	float3 Strength;
-	float FalloffStart;
-	float3 Direction;
-	float FalloffEnd;
-	float3 Position; 
-	float SpotPower; 
+    Light pointLight;
 };
 
 struct PSInput {
@@ -17,5 +14,5 @@ float4 main(PSInput pin) : SV_TARGET {
 	float3 lightColor = float3(1.0f, 1.0f, 1.0f);
 	float3 ambient = ambientStrength * lightColor;
 
-	return float4(Position, 1.0f);
+    return float4(pointLight.Position, 1.0f);
 }

@@ -3,25 +3,35 @@
 #include "components/graphics/Shader.h"
 
 namespace scomp {
-
 	/**
 	 * @brief
 	 */
 	struct PointLight {
+		XMFLOAT3 color;
+		float intensity;
 		XMFLOAT3 position;
+		float attenuationRadius;
 	};
 
 	/**
 	 * @brief
 	 */
 	struct DirectionalLight {
+		XMFLOAT3 color;
+		float intensity;
+		XMFLOAT3 direction;
 	};
 
 	/**
 	 * @brief
 	 */
 	struct SpotLight {
+		XMFLOAT3 color;
+		float spotAngle;
 		XMFLOAT3 position;
+		float intensity;
+		XMFLOAT3 direction;
+		float attenuationRadius;
 	};
 
 	/**

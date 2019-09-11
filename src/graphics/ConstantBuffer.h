@@ -68,15 +68,13 @@ namespace cb {
 	/**
 	 * @brief Constant buffer updated when a light is changed
 	 * @note Is sent as an array.
-	 *
-	 * @link https://github.com/vilbeyli/VQEngine/blob/master/Source/Shaders/LightingCommon.hlsl
 	 */
 	struct perLightChange {
-		XMFLOAT3 strength;
-		float falloffStart;		// point and spot light only
-		XMFLOAT3 direction;		// directional and spot light only
-		float falloffEnd;		// point and spot light only
-		XMFLOAT3 position;		// point light only
-		float spotPower;		// spot light only
+		XMFLOAT3 color;
+		float intensity;
+		XMFLOAT3 position;
+		float spotAngle;
+		XMFLOAT3 direction;
+		float attenuationRadius;
 	};
 }

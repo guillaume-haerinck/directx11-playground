@@ -18,6 +18,7 @@
     <None Include="README.md" />
     <None Include="LICENSE" />
     <None Include=".gitignore" />
+    <None Include="res\shaders\Common.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
