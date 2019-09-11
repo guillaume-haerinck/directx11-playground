@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "PointLight.h"
+#include "MultipleLightTypes.h"
 
 #include "graphics/ConstantBuffer.h"
 #include "factories/components/MeshPrimitiveFactory.h"
@@ -10,7 +10,7 @@
 #include "components/singletons/graphics/Lights.h"
 
 namespace phongExample {
-	PointLight::PointLight(Context& context) : m_ctx(context) {
+	MultipleLightTypes::MultipleLightTypes(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);
 		m_systems = {
@@ -56,19 +56,15 @@ namespace phongExample {
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}
 
-	PointLight::~PointLight()
-	{
+	MultipleLightTypes::~MultipleLightTypes() {
 	}
 
-	void PointLight::Update() {
+	void MultipleLightTypes::Update() {
 		for (auto& system : m_systems) {
 			system->Update();
 		}
 	}
 
-	void PointLight::ImGuiUpdate() {
-		ImGui::Begin("Exemple properties");
-		ImGui::Text("Point light !");
-		ImGui::End();
+	void MultipleLightTypes::ImGuiUpdate() {
 	}
 }

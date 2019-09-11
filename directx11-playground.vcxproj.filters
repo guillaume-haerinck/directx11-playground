@@ -116,6 +116,12 @@
     <ClCompile Include="src\examples\blinn-phong\point-light\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\examples\blinn-phong\multiple-light-types\MultipleLightTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\blinn-phong\materials\Materials.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h">
@@ -373,6 +379,12 @@
     <ClInclude Include="lib\entt\meta\policy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\examples\blinn-phong\multiple-light-types\MultipleLightTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\blinn-phong\materials\Materials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="lib\imgui\misc\natvis\imgui.natvis" />
@@ -388,5 +400,9 @@
     <FxCompile Include="res\shaders\basics\textured-primitives\TexturedPrimitives_VS.hlsl" />
     <FxCompile Include="res\shaders\blinn-phong\point-light\BlinnPointLight_PS.hlsl" />
     <FxCompile Include="res\shaders\blinn-phong\point-light\BlinnPointLight_VS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\multiple-light-types\BlinnMultipleLightTypes_VS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\multiple-light-types\BlinnMultipleLightTypes_PS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\materials\BlinnMaterials_PS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\materials\BlinnMaterials_VS.hlsl" />
   </ItemGroup>
 </Project>

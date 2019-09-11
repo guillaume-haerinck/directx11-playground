@@ -49,6 +49,14 @@ Loads a GLTF model with its texture.
 Setup a simple scene with a point light and no material.
 Uses ambiant, diffuse and specular shading.
 
+#### [Multiple light types](src/examples/blinn-phong/multiple-light-types/)
+
+Uses multiple point, directional and spotlights.
+
+#### [Materials](src/examples/blinn-phong/materials/)
+
+Uses different objects with different materials applied to them to compare how they react to lighting.
+
 ### Toon shading
 
 ### PBR shading

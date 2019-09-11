@@ -17,6 +17,8 @@
 #include "examples/basics/model-loading/ModelLoading.h"
 
 #include "examples/blinn-phong/point-light/PointLight.h"
+#include "examples/blinn-phong/multiple-light-types/MultipleLightTypes.h"
+#include "examples/blinn-phong/materials/Materials.h"
 
 bool App::isContexInit = false;
 
@@ -168,6 +170,8 @@ void App::renderMenu() {
 
 	if (ImGui::CollapsingHeader("Blinn Phong shading")) {
 		if (ImGui::Button("Point light")) { resetAppTo<phongExample::PointLight>(); }
+		if (ImGui::Button("Multiple light types")) { resetAppTo<phongExample::MultipleLightTypes>(); }
+		if (ImGui::Button("Materials")) { resetAppTo<phongExample::Materials>(); }
 	}
 
 	// if (ImGui::CollapsingHeader("Toon shading")) {}
