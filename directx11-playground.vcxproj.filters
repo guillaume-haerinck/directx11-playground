@@ -123,6 +123,12 @@
     <ClCompile Include="src\examples\blinn-phong\materials\Materials.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\examples\intermediate\gamma-correction\GammaCorrection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\intermediate\hdr\HDR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h">
@@ -384,6 +390,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\examples\blinn-phong\materials\Materials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\intermediate\gamma-correction\GammaCorrection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\intermediate\hdr\HDR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

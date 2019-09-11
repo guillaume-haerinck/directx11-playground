@@ -240,6 +240,8 @@
     <ClCompile Include="src\examples\blinn-phong\materials\Materials.cpp" />
     <ClCompile Include="src\examples\blinn-phong\multiple-light-types\MultipleLightTypes.cpp" />
     <ClCompile Include="src\examples\blinn-phong\point-light\PointLight.cpp" />
+    <ClCompile Include="src\examples\intermediate\gamma-correction\GammaCorrection.cpp" />
+    <ClCompile Include="src\examples\intermediate\hdr\HDR.cpp" />
     <ClCompile Include="src\factories\components\MeshPrimitiveFactory.cpp" />
     <ClCompile Include="src\factories\entities\ModelFactory.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
@@ -341,6 +343,8 @@
     <ClInclude Include="src\examples\blinn-phong\multiple-light-types\MultipleLightTypes.h" />
     <ClInclude Include="src\examples\blinn-phong\point-light\PointLight.h" />
     <ClInclude Include="src\examples\IExample.h" />
+    <ClInclude Include="src\examples\intermediate\gamma-correction\GammaCorrection.h" />
+    <ClInclude Include="src\examples\intermediate\hdr\HDR.h" />
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h" />
     <ClInclude Include="src\factories\entities\ModelFactory.h" />
     <ClInclude Include="src\graphics\ConstantBuffer.h" />
