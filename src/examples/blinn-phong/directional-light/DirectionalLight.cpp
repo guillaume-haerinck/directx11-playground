@@ -2,7 +2,7 @@
 #include "DirectionalLight.h"
 
 #include "graphics/ConstantBuffer.h"
-#include "factories/components/MeshPrimitiveFactory.h"
+#include "factories/entities/ModelFactory.h"
 #include "systems/RenderSystem.h"
 #include "systems/CameraSystem.h"
 #include "components/physics/Transform.h"
@@ -12,7 +12,7 @@
 namespace phongExample {
 	DirectionalLight::DirectionalLight(Context& context) : m_ctx(context) {
 		// Init
-		MeshPrimitiveFactory primFactory(context);
+		ModelFactory modelFactory(context);
 		m_systems = {
 			std::make_shared<CameraSystem>(context),
 			std::make_shared<RenderSystem>(context)
@@ -37,7 +37,7 @@ namespace phongExample {
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/BlinnDirectionalLight_VS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/BlinnDirectionalLight_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
@@ -45,19 +45,17 @@ namespace phongExample {
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnDirectionalLight_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
-		// Mesh
-		comp::Mesh mesh = primFactory.CreateBox();
-
 		// Transform
 		comp::Transform transform = {};
 
 		// Assign data to an entity
-		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
-		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
-		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
-		m_ctx.registry.assign<comp::Transform>(entity, transform);
-		m_litEntity = entity;
+		auto entities = modelFactory.CreateEntitiesFromGltf("res/models/damaged-helmet/DamagedHelmet.gltf");
+		m_litEntity = entities.at(0);
+		for (auto entity : entities) {
+			m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
+			m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+			m_ctx.registry.assign<comp::Transform>(entity, transform);
+		}
 	}
 
 	DirectionalLight::~DirectionalLight()
