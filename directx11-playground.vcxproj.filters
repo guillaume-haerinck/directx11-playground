@@ -114,19 +114,22 @@
     <ClCompile Include="src\systems\CameraSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\examples\blinn-phong\multiple-light-types\MultipleLightTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\examples\blinn-phong\materials\Materials.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\examples\intermediate\gamma-correction\GammaCorrection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\examples\intermediate\hdr\HDR.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\examples\blinn-phong\directional-light\DirectionalLight.cpp">
+    <ClCompile Include="src\examples\pbr\directional-light\PBRDirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\blinn-phong\directional-light\PhongDirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\blinn-phong\materials\PhongMaterials.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\blinn-phong\multiple-light-types\PhongMultipleLightTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -383,19 +386,22 @@
     <ClInclude Include="lib\entt\meta\policy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\examples\blinn-phong\multiple-light-types\MultipleLightTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\examples\blinn-phong\materials\Materials.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\examples\intermediate\gamma-correction\GammaCorrection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\examples\intermediate\hdr\HDR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\examples\blinn-phong\directional-light\DirectionalLight.h">
+    <ClInclude Include="src\examples\pbr\directional-light\PBRDirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\blinn-phong\directional-light\PhongDirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\blinn-phong\materials\PhongMaterials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\blinn-phong\multiple-light-types\PhongMultipleLightTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -411,11 +417,11 @@
     <FxCompile Include="res\shaders\basics\rotating-cube\RotatingCube_VS.hlsl" />
     <FxCompile Include="res\shaders\basics\textured-primitives\TexturedPrimitives_PS.hlsl" />
     <FxCompile Include="res\shaders\basics\textured-primitives\TexturedPrimitives_VS.hlsl" />
-    <FxCompile Include="res\shaders\blinn-phong\multiple-light-types\BlinnMultipleLightTypes_VS.hlsl" />
-    <FxCompile Include="res\shaders\blinn-phong\multiple-light-types\BlinnMultipleLightTypes_PS.hlsl" />
-    <FxCompile Include="res\shaders\blinn-phong\materials\BlinnMaterials_PS.hlsl" />
-    <FxCompile Include="res\shaders\blinn-phong\materials\BlinnMaterials_VS.hlsl" />
-    <FxCompile Include="res\shaders\blinn-phong\directional-light\BlinnDirectionalLight_VS.hlsl" />
-    <FxCompile Include="res\shaders\blinn-phong\directional-light\BlinnDirectionalLight_PS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\directional-light\PhongDirectionalLight_VS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\directional-light\PhongDirectionalLight_PS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\materials\PhongMaterials_PS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\materials\PhongMaterials_VS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\multiple-light-types\PhongMultipleLightTypes_PS.hlsl" />
+    <FxCompile Include="res\shaders\blinn-phong\multiple-light-types\PhongMultipleLightTypes_VS.hlsl" />
   </ItemGroup>
 </Project>

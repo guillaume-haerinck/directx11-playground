@@ -16,9 +16,11 @@
 #include "examples/basics/textured-primitives/TexturedPrimitives.h"
 #include "examples/basics/model-loading/ModelLoading.h"
 
-#include "examples/blinn-phong/directional-light/DirectionalLight.h"
-#include "examples/blinn-phong/multiple-light-types/MultipleLightTypes.h"
-#include "examples/blinn-phong/materials/Materials.h"
+#include "examples/blinn-phong/directional-light/PhongDirectionalLight.h"
+#include "examples/blinn-phong/multiple-light-types/PhongMultipleLightTypes.h"
+#include "examples/blinn-phong/materials/PhongMaterials.h"
+
+#include "examples/pbr/directional-light/PBRDirectionalLight.h"
 
 bool App::isContexInit = false;
 
@@ -27,7 +29,7 @@ App::App(HINSTANCE& hInstance) : m_className("hwd3dPlayground"), m_hwnd(nullptr)
 	initDirectX11();
 	initImGui();
 	m_ctx.rcommand = std::make_unique<RenderCommand>(m_dxo);
-	resetAppTo<phongExample::DirectionalLight>();
+	resetAppTo<phongExample::PhongDirectionalLight>();
 }
 
 App::~App() {
@@ -169,14 +171,16 @@ void App::renderMenu() {
 	// if (ImGui::CollapsingHeader("Advanced")) {}
 
 	if (ImGui::CollapsingHeader("Blinn Phong shading")) {
-		if (ImGui::Button("Directional light")) { resetAppTo<phongExample::DirectionalLight>(); }
-		if (ImGui::Button("Multiple light types")) { resetAppTo<phongExample::MultipleLightTypes>(); }
-		if (ImGui::Button("Materials")) { resetAppTo<phongExample::Materials>(); }
+		if (ImGui::Button("Directional light")) { resetAppTo<phongExample::PhongDirectionalLight>(); }
+		if (ImGui::Button("Multiple light types")) { resetAppTo<phongExample::PhongMultipleLightTypes>(); }
+		if (ImGui::Button("Materials")) { resetAppTo<phongExample::PhongMaterials>(); }
 	}
 
 	// if (ImGui::CollapsingHeader("Toon shading")) {}
 
-	// if (ImGui::CollapsingHeader("PBR shading")) {}
+	if (ImGui::CollapsingHeader("PBR shading")) {
+		if (ImGui::Button("Directional light")) { resetAppTo<pbrExample::PBRDirectionalLight>(); }
+	}
 
 	ImGui::End();
 }

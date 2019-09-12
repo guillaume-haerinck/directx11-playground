@@ -5,10 +5,10 @@
 #include "systems/ISystem.h"
 
 namespace phongExample {
-	class DirectionalLight : public IExample {
+	class PhongMultipleLightTypes : public IExample {
 	public:
-		DirectionalLight(Context& context);
-		virtual ~DirectionalLight();
+		PhongMultipleLightTypes(Context& context);
+		virtual ~PhongMultipleLightTypes();
 
 		void Update() override;
 		void ImGuiUpdate() override;
@@ -16,6 +16,5 @@ namespace phongExample {
 	private:
 		Context& m_ctx;
 		std::vector<std::shared_ptr<ISystem>> m_systems;
-		entt::entity m_litEntity;
 	};
 }

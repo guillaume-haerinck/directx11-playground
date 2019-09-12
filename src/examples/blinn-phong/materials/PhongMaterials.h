@@ -5,10 +5,10 @@
 #include "systems/ISystem.h"
 
 namespace phongExample {
-	class MultipleLightTypes : public IExample {
+	class PhongMaterials : public IExample {
 	public:
-		MultipleLightTypes(Context& context);
-		virtual ~MultipleLightTypes();
+		PhongMaterials(Context& context);
+		virtual ~PhongMaterials();
 
 		void Update() override;
 		void ImGuiUpdate() override;

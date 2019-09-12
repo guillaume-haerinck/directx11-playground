@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MultipleLightTypes.h"
+#include "PhongMultipleLightTypes.h"
 
 #include "graphics/ConstantBuffer.h"
 #include "factories/components/MeshPrimitiveFactory.h"
@@ -10,7 +10,7 @@
 #include "components/singletons/graphics/Lights.h"
 
 namespace phongExample {
-	MultipleLightTypes::MultipleLightTypes(Context& context) : m_ctx(context) {
+	PhongMultipleLightTypes::PhongMultipleLightTypes(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);
 		m_systems = {
@@ -39,12 +39,12 @@ namespace phongExample {
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/BlinnMultipleLightTypes_VS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/PhongMultipleLightTypes_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnMultipleLightTypes_PS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongMultipleLightTypes_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
 		// Mesh
@@ -61,15 +61,15 @@ namespace phongExample {
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}
 
-	MultipleLightTypes::~MultipleLightTypes() {
+	PhongMultipleLightTypes::~PhongMultipleLightTypes() {
 	}
 
-	void MultipleLightTypes::Update() {
+	void PhongMultipleLightTypes::Update() {
 		for (auto& system : m_systems) {
 			system->Update();
 		}
 	}
 
-	void MultipleLightTypes::ImGuiUpdate() {
+	void PhongMultipleLightTypes::ImGuiUpdate() {
 	}
 }

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "DirectionalLight.h"
+#include "PhongDirectionalLight.h"
 
 #include "graphics/ConstantBuffer.h"
 #include "factories/entities/ModelFactory.h"
@@ -10,7 +10,7 @@
 #include "components/singletons/graphics/Lights.h"
 
 namespace phongExample {
-	DirectionalLight::DirectionalLight(Context& context) : m_ctx(context) {
+	PhongDirectionalLight::PhongDirectionalLight(Context& context) : m_ctx(context) {
 		// Init
 		ModelFactory modelFactory(context);
 		m_systems = {
@@ -37,12 +37,12 @@ namespace phongExample {
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/BlinnDirectionalLight_VS.cso");
+		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/PhongDirectionalLight_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BlinnDirectionalLight_PS.cso");
+		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
 		// Transform
@@ -58,17 +58,17 @@ namespace phongExample {
 		}
 	}
 
-	DirectionalLight::~DirectionalLight()
+	PhongDirectionalLight::~PhongDirectionalLight()
 	{
 	}
 
-	void DirectionalLight::Update() {
+	void PhongDirectionalLight::Update() {
 		for (auto& system : m_systems) {
 			system->Update();
 		}
 	}
 
-	void DirectionalLight::ImGuiUpdate() {
+	void PhongDirectionalLight::ImGuiUpdate() {
 		ImGui::Begin("Exemple properties");
 
 		comp::Transform& transform = m_ctx.registry.get<comp::Transform>(m_litEntity);
