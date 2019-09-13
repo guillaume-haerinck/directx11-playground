@@ -13,7 +13,12 @@ namespace scomp {
 	 * @link https://github.com/RichieSams/thehalflingproject/blob/master/source/scene/camera.h
 	 */
 	struct Camera {
-		Camera() : hasToBeUpdated(false), radius(10), up(1), phi(0), theta(0), target(0, 0, 0), position(0, 0, 6) {}
+		Camera() : hasToBeUpdated(false), radius(10), up(1), phi(0), theta(0), target(0, 0, 0), position(0, 0, 6) {
+			XMMATRIX projMat = XMMatrixPerspectiveFovLH(XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);
+			XMMATRIX viewMat = XMMatrixTranslation(0, 0, 6);
+			XMStoreFloat4x4(&proj, projMat);
+			XMStoreFloat4x4(&view, viewMat);
+		}
 
 		XMFLOAT4X4 view;
 		XMFLOAT4X4 proj;

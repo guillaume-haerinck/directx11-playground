@@ -364,11 +364,7 @@ void App::initGraphicSingletonEntity() {
 	m_ctx.registry.assign<scomp::CookTorranceMaterials>(entity, cookMaterials);
 
 	// Init camera
-	scomp::Camera camera = {};
-	XMMATRIX proj = XMMatrixPerspectiveFovLH(XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);
-	XMMATRIX view = XMMatrixTranslation(camera.position.x, camera.position.y, camera.position.z);
-	XMStoreFloat4x4(&camera.proj, proj);
-	XMStoreFloat4x4(&camera.view, view);
+	scomp::Camera camera;
 	m_ctx.registry.assign<scomp::Camera>(entity, camera);
 
 	// Init lights

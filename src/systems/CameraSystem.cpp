@@ -21,15 +21,8 @@ void CameraSystem::Update() {
 
 	// ArcBall rotation
 	if (inputs.actionState.at(scomp::InputAction::CAM_ORBIT)) {
-		float dTheta = inputs.delta.x * 0.03;
-		float dPhi = inputs.delta.y * 0.03;
-
-		if (camera.up > 0.0f) {
-			camera.theta += dTheta;
-		} else {
-			camera.theta -= dTheta;
-		}
-		camera.phi += dPhi;
+		camera.theta += inputs.delta.x * 0.03;
+		camera.phi += inputs.delta.y * 0.03;
 
 		// Keep phi within -2PI to +2PI for easy 'up' comparison
 		if (camera.phi > XM_2PI) {
@@ -80,6 +73,7 @@ void CameraSystem::Update() {
 		camera.theta = 0;
 		camera.radius = 10;
 		camera.up = 1;
+		camera.target = XMFLOAT3(0, 0, 0);
 
 		camera.hasToBeUpdated = true;
 	}
