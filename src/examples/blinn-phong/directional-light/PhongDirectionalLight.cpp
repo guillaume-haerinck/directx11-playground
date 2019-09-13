@@ -51,7 +51,7 @@ namespace phongExample {
 		m_perPropertyCBdata.ambientIntensity = 1.0f;
 		m_perPropertyCBdata.diffuseIntensity = 1.0f;
 		m_perPropertyCBdata.specularIntensity = 1.0f;
-		m_perPropertyCBdata.specularAttenuation = 1.0f;
+		m_perPropertyCBdata.specularAttenuation = 20.0f;
 		m_ctx.rcommand->UpdateConstantBuffer(m_perPropertyCB, &m_perPropertyCBdata);
 
 		// Transform
@@ -92,7 +92,7 @@ namespace phongExample {
 		hasToBeUpdated |= ImGui::SliderFloat("Ambient intensity", &m_perPropertyCBdata.ambientIntensity, 0, 10);
 		hasToBeUpdated |= ImGui::SliderFloat("Diffuse intensity", &m_perPropertyCBdata.diffuseIntensity, 0, 10);
 		hasToBeUpdated |= ImGui::SliderFloat("Specular intensity", &m_perPropertyCBdata.specularIntensity, 0, 10);
-		hasToBeUpdated |= ImGui::SliderFloat("Specular attenuation", &m_perPropertyCBdata.specularAttenuation, 1, 10);
+		hasToBeUpdated |= ImGui::SliderFloat("Specular attenuation", &m_perPropertyCBdata.specularAttenuation, 1, 45);
 		if (hasToBeUpdated) {
 			m_ctx.rcommand->UpdateConstantBuffer(m_perPropertyCB, &m_perPropertyCBdata);
 		}

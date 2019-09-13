@@ -17,7 +17,7 @@ A simple triangle. It is the only exemple that does not use indexed drawing.
 #### [Rotating cube](src/examples/basics/rotating-cube/)
 
 <p align="left">
-<img src="doc/img/basic/cube.png?raw=true" alt="Triangle exemple" height="160px">
+<img src="doc/img/basic/cube.png?raw=true" alt="Rotating cube exemple" height="160px">
 </p>
 
 A rotating colored cube. Each face is independant so that the colors can be applied without smearing.
@@ -25,7 +25,7 @@ A rotating colored cube. Each face is independant so that the colors can be appl
 #### [Textured primitives](src/examples/basics/textured-primitives/)
 
 <p align="left">
-<img src="doc/img/basic/textured-primitives.png?raw=true" alt="Triangle exemple" height="160px">
+<img src="doc/img/basic/textured-primitives.png?raw=true" alt="Textured primitive exemple" height="160px">
 </p>
 
 Show some procedurally-generated primitives with their UV maps.
@@ -33,7 +33,7 @@ Show some procedurally-generated primitives with their UV maps.
 #### [Model loading](src/examples/basics/model-loading/)
 
 <p align="left">
-<img src="doc/img/basic/model.png?raw=true" alt="Triangle exemple" height="160px">
+<img src="doc/img/basic/model.png?raw=true" alt="Model loading exemple" height="160px">
 </p>
 
 Loads a GLTF model with its texture.
@@ -46,8 +46,12 @@ Loads a GLTF model with its texture.
 
 #### [Directional light](src/examples/blinn-phong/point-light/)
 
+<p align="left">
+<img src="doc/img/basic/model.png?raw=true" alt="Phong shading exemple" height="160px">
+</p>
+
 Setup a simple scene with a directional light and no material.
-Uses ambient, diffuse and specular shading.
+Uses ambient, diffuse and specular properties.
 
 #### [Multiple light types](src/examples/blinn-phong/multiple-light-types/)
 
