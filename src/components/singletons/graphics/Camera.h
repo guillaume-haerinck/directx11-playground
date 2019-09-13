@@ -4,7 +4,7 @@
 
 namespace scomp {
 	/**
-	 * @brief Arcball camera with DOF movement support
+	 * @brief Arcball camera with DOF movement support. Uses polar coordinates.
 	 *
 	 * @link https://www.talisman.org/~erlkonig/misc/shoemake92-arcball.pdf
 	 * @link https://pdfs.semanticscholar.org/5a62/af2ae372f03ff7d23708dfa111ad51221729.pdf - Six degree of freedom Control with a Two-Dimentional input device

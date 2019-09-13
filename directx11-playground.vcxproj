@@ -164,6 +164,7 @@
     <None Include="LICENSE" />
     <None Include="README.md" />
     <None Include="res\shaders\Common.hlsli" />
+    <None Include="res\shaders\shadertoolsconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imgui\imgui.cpp">

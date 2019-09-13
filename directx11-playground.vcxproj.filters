@@ -19,6 +19,7 @@
     <None Include="LICENSE" />
     <None Include=".gitignore" />
     <None Include="res\shaders\Common.hlsli" />
+    <None Include="res\shaders\shadertoolsconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp">
