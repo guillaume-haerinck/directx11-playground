@@ -21,8 +21,8 @@ void CameraSystem::Update() {
 
 	// ArcBall rotation
 	if (inputs.actionState.at(scomp::InputAction::CAM_ORBIT)) {
-		camera.theta += inputs.delta.x * 0.03;
-		camera.phi += inputs.delta.y * 0.03;
+		camera.theta += inputs.delta.x * 0.01;
+		camera.phi += inputs.delta.y * 0.01;
 
 		// Keep phi within -2PI to +2PI for easy 'up' comparison
 		if (camera.phi > XM_2PI) {
@@ -43,15 +43,6 @@ void CameraSystem::Update() {
 
 	// Move along vertical plane
 	if (inputs.actionState.at(scomp::InputAction::CAM_PAN)) {
-		XMVECTOR position = XMVectorAdd(XMLoadFloat3(&camera.target), XMLoadFloat3(&camera.position));
-		XMVECTOR look = XMVector3Normalize(DirectX::XMVectorSubtract(XMLoadFloat3(&camera.target), position));
-		XMVECTOR worldUp = XMVectorSet(0.0f, camera.up, 0.0f, 0.0f);
-
-		XMVECTOR right = XMVector3Cross(look, worldUp);
-		XMVECTOR up = XMVector3Cross(look, right);
-
-		XMVECTOR target = XMVectorAdd(XMLoadFloat3(&camera.target), DirectX::XMVectorAdd(XMVectorScale(right, inputs.delta.x * 0.03), DirectX::XMVectorScale(up, inputs.delta.y * 0.03)));
-		XMStoreFloat3(&camera.target, target);
 
 		camera.hasToBeUpdated = true;
 	}

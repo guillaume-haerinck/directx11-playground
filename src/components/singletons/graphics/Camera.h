@@ -11,6 +11,7 @@ namespace scomp {
 	 * @link https://github.com/microsoft/DXUT/blob/master/Optional/DXUTcamera.h
 	 * @link https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
 	 * @link https://github.com/RichieSams/thehalflingproject/blob/master/source/scene/camera.h
+	 * @link https://openclassrooms.com/fr/courses/167717-creez-des-programmes-en-3d-avec-opengl/166678-controle-avance-de-la-camera-partie-1-2
 	 */
 	struct Camera {
 		Camera() : hasToBeUpdated(false), radius(10), up(1), phi(0), theta(0), target(0, 0, 0), position(0, 0, 6) {

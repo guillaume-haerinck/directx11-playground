@@ -7,6 +7,13 @@ cbuffer perLightChange : register(b0) {
     Light dirLight;
 };
 
+cbuffer perPropertyChange : register(b1) {
+    float ambientIntensity;
+    float diffuseIntensity;
+    float specularIntensity;
+    float specularAttenuation;
+}
+
 struct PSInput {
 	float4 Position : SV_POSITION;
 	float3 Normal : NORMAL;
@@ -21,12 +28,12 @@ float4 main(PSInput pin) : SV_TARGET {
 
     // Ambient
 	float ambientStrength = 0.1f;
-	float3 ambient = dirLight.Color * ambientStrength;
+    float3 ambient = dirLight.Color * ambientStrength * ambientIntensity;
 
     // Diffuse
     float diffuseFactor = dot(normalize(pin.Normal), -dirLight.Direction);
 	if (diffuseFactor > 0) {
-		diffuse = dirLight.Color * diffuseFactor * dirLight.Intensity;
+        diffuse = dirLight.Color * diffuseFactor * diffuseIntensity;
 
 		// Specular
 		float3 vertexToCamera = normalize(pin.CameraWorldPos - pin.WorldPos);
@@ -34,11 +41,10 @@ float4 main(PSInput pin) : SV_TARGET {
 		float specularFactor = dot(vertexToCamera, lightReflect);
 
 		if (specularFactor > 0) {
-			float specularAttenuation = 3.0f;
 			specularFactor = pow(specularFactor, specularAttenuation);
-			specular = dirLight.Color * dirLight.Intensity * specularFactor;
-		}
+            specular = dirLight.Color * specularFactor * specularIntensity;
+        }
 	}
 
-	return tex.Sample(samplr, pin.TexCoord) * float4(ambient + diffuse + specular, 1.0f);
+    return tex.Sample(samplr, pin.TexCoord) * float4(ambient + diffuse + specular, 1.0f) * dirLight.Intensity;
 }

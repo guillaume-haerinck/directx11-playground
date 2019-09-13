@@ -45,6 +45,15 @@ namespace phongExample {
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
+		// Pixel shader custom constant buffer for this example
+		m_perPropertyCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(perPropertyChange));
+		PShader.constantBuffers.push_back(m_perPropertyCB.buffer);
+		m_perPropertyCBdata.ambientIntensity = 1.0f;
+		m_perPropertyCBdata.diffuseIntensity = 1.0f;
+		m_perPropertyCBdata.specularIntensity = 1.0f;
+		m_perPropertyCBdata.specularAttenuation = 1.0f;
+		m_ctx.rcommand->UpdateConstantBuffer(m_perPropertyCB, &m_perPropertyCBdata);
+
 		// Transform
 		comp::Transform transform = {};
 
@@ -77,6 +86,17 @@ namespace phongExample {
 		ImGui::SliderFloat3("Scale", (float*) &transform.scale, -4, 4);
 		ImGui::SliderFloat3("Rotation", (float*) &transform.rotationEuler, 0, XM_PI * 2);
 		XMStoreFloat4(&transform.rotation, XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&transform.rotationEuler)));
+
+		ImGui::Spacing();
+
+		ImGui::Text("Light properties :");
+		ImGui::SliderFloat("Ambient intensity", &m_perPropertyCBdata.ambientIntensity, 0, 10);
+		ImGui::SliderFloat("Diffuse intensity", &m_perPropertyCBdata.diffuseIntensity, 0, 10);
+		ImGui::SliderFloat("Specular intensity", &m_perPropertyCBdata.specularIntensity, 0, 10);
+		ImGui::SliderFloat("Specular attenuation", &m_perPropertyCBdata.specularAttenuation, 1, 10);
+		if (ImGui::Button("Update light")) {
+			m_ctx.rcommand->UpdateConstantBuffer(m_perPropertyCB, &m_perPropertyCBdata);
+		}
 
 		ImGui::End();
 	}
