@@ -47,7 +47,7 @@ Loads a GLTF model with its texture.
 #### [Directional light](src/examples/blinn-phong/point-light/)
 
 <p align="left">
-<img src="doc/img/basic/model.png?raw=true" alt="Phong shading exemple" height="160px">
+<img src="doc/img/blinn-phong/directional-light.png?raw=true" alt="Phong shading exemple" height="160px">
 </p>
 
 Setup a simple scene with a directional light and no material.
