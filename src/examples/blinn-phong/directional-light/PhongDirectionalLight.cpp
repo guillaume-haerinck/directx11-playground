@@ -81,20 +81,19 @@ namespace phongExample {
 		ImGui::Begin("Exemple properties");
 
 		comp::Transform& transform = m_ctx.registry.get<comp::Transform>(m_litEntity);
-		ImGui::Text("Lit object :");
-		ImGui::SliderFloat3("Position", (float*) &transform.position, -4, 4);
-		ImGui::SliderFloat3("Scale", (float*) &transform.scale, -4, 4);
+		ImGui::Text("Object :");
 		ImGui::SliderFloat3("Rotation", (float*) &transform.rotationEuler, 0, XM_PI * 2);
 		XMStoreFloat4(&transform.rotation, XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&transform.rotationEuler)));
 
 		ImGui::Spacing();
 
-		ImGui::Text("Light properties :");
-		ImGui::SliderFloat("Ambient intensity", &m_perPropertyCBdata.ambientIntensity, 0, 10);
-		ImGui::SliderFloat("Diffuse intensity", &m_perPropertyCBdata.diffuseIntensity, 0, 10);
-		ImGui::SliderFloat("Specular intensity", &m_perPropertyCBdata.specularIntensity, 0, 10);
-		ImGui::SliderFloat("Specular attenuation", &m_perPropertyCBdata.specularAttenuation, 1, 10);
-		if (ImGui::Button("Update light")) {
+		bool hasToBeUpdated = false;
+		ImGui::Text("Light :");
+		hasToBeUpdated |= ImGui::SliderFloat("Ambient intensity", &m_perPropertyCBdata.ambientIntensity, 0, 10);
+		hasToBeUpdated |= ImGui::SliderFloat("Diffuse intensity", &m_perPropertyCBdata.diffuseIntensity, 0, 10);
+		hasToBeUpdated |= ImGui::SliderFloat("Specular intensity", &m_perPropertyCBdata.specularIntensity, 0, 10);
+		hasToBeUpdated |= ImGui::SliderFloat("Specular attenuation", &m_perPropertyCBdata.specularAttenuation, 1, 10);
+		if (hasToBeUpdated) {
 			m_ctx.rcommand->UpdateConstantBuffer(m_perPropertyCB, &m_perPropertyCBdata);
 		}
 
