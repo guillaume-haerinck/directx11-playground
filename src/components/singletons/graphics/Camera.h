@@ -15,16 +15,16 @@ namespace scomp {
 	 */
 	struct Camera {
 		Camera() : hasToBeUpdated(false), radius(5), up(1), phi(0), theta(0), target(0, 0, 0), position(0, 0, 6) {
-			XMMATRIX projMat = XMMatrixPerspectiveFovLH(XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);
-			XMMATRIX viewMat = XMMatrixTranslation(0, 0, 6);
-			XMStoreFloat4x4(&proj, projMat);
-			XMStoreFloat4x4(&view, viewMat);
+			DX::XMMATRIX projMat = DX::XMMatrixPerspectiveFovLH(DX::XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);
+			DX::XMMATRIX viewMat = DX::XMMatrixTranslation(0, 0, 6);
+			DX::XMStoreFloat4x4(&proj, projMat);
+			DX::XMStoreFloat4x4(&view, viewMat);
 		}
 
-		XMFLOAT4X4 view;
-		XMFLOAT4X4 proj;
-		XMFLOAT3 position;
-		XMFLOAT3 target;
+		DX::XMFLOAT4X4 view;
+		DX::XMFLOAT4X4 proj;
+		DX::XMFLOAT3 position;
+		DX::XMFLOAT3 target;
 
 		float radius;
 		float up;

@@ -45,7 +45,7 @@
 #include <wrl.h>
 #include <d3dcompiler.h>
 
-using namespace DirectX;
+namespace DX = DirectX;
 
 // Libs
 #include "imgui/imgui.h"

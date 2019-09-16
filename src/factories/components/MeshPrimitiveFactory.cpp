@@ -18,17 +18,17 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
 	float s, t;                                     // vertex texCoord
 
-	float sectorStep = 2 * XM_PI / sectorCount;
-	float stackStep = XM_PI / stackCount;
+	float sectorStep = 2 * DX::XM_PI / sectorCount;
+	float stackStep = DX::XM_PI / stackCount;
 	float sectorAngle, stackAngle;
 
 	// Vertex attributes
-	std::vector<XMFLOAT3> positions;
-	std::vector<XMFLOAT3> normals;
-	std::vector<XMFLOAT2> texCoords;
+	std::vector<DX::XMFLOAT3> positions;
+	std::vector<DX::XMFLOAT3> normals;
+	std::vector<DX::XMFLOAT2> texCoords;
 
 	for (int i = 0; i <= stackCount; ++i) {
-		stackAngle = XM_PIDIV2 - i * stackStep;     // starting from pi/2 to -pi/2
+		stackAngle = DX::XM_PIDIV2 - i * stackStep;     // starting from pi/2 to -pi/2
 		xy = radius * cosf(stackAngle);             // r * cos(u)
 		z = radius * sinf(stackAngle);              // r * sin(u)
 
@@ -50,9 +50,9 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 			t = (float)i / stackCount;
 
 			// Add to buffers
-			positions.push_back(XMFLOAT3(x, y, z));
-			normals.push_back(XMFLOAT3(nx, ny, nz));
-			texCoords.push_back(XMFLOAT2(s, t));
+			positions.push_back(DX::XMFLOAT3(x, y, z));
+			normals.push_back(DX::XMFLOAT3(nx, ny, nz));
+			texCoords.push_back(DX::XMFLOAT2(s, t));
 		}
 	}
 
@@ -80,9 +80,9 @@ comp::Mesh MeshPrimitiveFactory::CreateUVSphere(float radius, float sectorCount,
 	}
 
 	// Create buffers
-	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions.data(), positions.size(), sizeof(XMFLOAT3));
-	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals.data(), normals.size(), sizeof(XMFLOAT3));
-	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords.data(), texCoords.size(), sizeof(XMFLOAT2));
+	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions.data(), positions.size(), sizeof(DX::XMFLOAT3));
+	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals.data(), normals.size(), sizeof(DX::XMFLOAT3));
+	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords.data(), texCoords.size(), sizeof(DX::XMFLOAT2));
 	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices.data(), indices.size());
 
 	// Store buffers
@@ -114,37 +114,37 @@ comp::Mesh MeshPrimitiveFactory::CreateBox(float width, float height) {
 	//  | |v7---|-|v4
 	//  |/      |/
 	//  v2------v3
-	XMFLOAT3 positions[] = {
+	DX::XMFLOAT3 positions[] = {
 		// Front v0,v1,v2,v3
-		XMFLOAT3(1, 1, 1), XMFLOAT3(-1, 1, 1), XMFLOAT3(-1, -1, 1), XMFLOAT3(1, -1, 1),
+		DX::XMFLOAT3(1, 1, 1), DX::XMFLOAT3(-1, 1, 1), DX::XMFLOAT3(-1, -1, 1), DX::XMFLOAT3(1, -1, 1),
 		// Right v0,v3,v4,v5
-		XMFLOAT3(1, 1, 1), XMFLOAT3(1, -1, 1), XMFLOAT3(1, -1, -1), XMFLOAT3(1, 1, -1),
+		DX::XMFLOAT3(1, 1, 1), DX::XMFLOAT3(1, -1, 1), DX::XMFLOAT3(1, -1, -1), DX::XMFLOAT3(1, 1, -1),
 		// Top v0,v5,v6,v1	
-		XMFLOAT3(1, 1, 1), XMFLOAT3(1, 1, -1), XMFLOAT3(-1, 1, -1), XMFLOAT3(-1, 1, 1), 
+		DX::XMFLOAT3(1, 1, 1), DX::XMFLOAT3(1, 1, -1), DX::XMFLOAT3(-1, 1, -1), DX::XMFLOAT3(-1, 1, 1), 
 		// Left v1,v6,v7,v2	
-		XMFLOAT3(-1, 1, 1), XMFLOAT3(-1, 1, -1), XMFLOAT3(-1, -1, -1), XMFLOAT3(-1, -1, 1),  
+		DX::XMFLOAT3(-1, 1, 1), DX::XMFLOAT3(-1, 1, -1), DX::XMFLOAT3(-1, -1, -1), DX::XMFLOAT3(-1, -1, 1),  
 		// Bottom v7,v4,v3,v2
-		XMFLOAT3(-1, -1, -1), XMFLOAT3(1, -1, -1), XMFLOAT3(1, -1, 1), XMFLOAT3(-1, -1, 1), 
+		DX::XMFLOAT3(-1, -1, -1), DX::XMFLOAT3(1, -1, -1), DX::XMFLOAT3(1, -1, 1), DX::XMFLOAT3(-1, -1, 1), 
 		// Back v4,v7,v6,v5	
-		XMFLOAT3(1, -1, -1), XMFLOAT3(-1, -1, -1), XMFLOAT3(-1, 1, -1), XMFLOAT3(1, 1, -1)
+		DX::XMFLOAT3(1, -1, -1), DX::XMFLOAT3(-1, -1, -1), DX::XMFLOAT3(-1, 1, -1), DX::XMFLOAT3(1, 1, -1)
 	};
 	
-	XMFLOAT3 normals[] = {
-		XMFLOAT3(0, 0, 1), XMFLOAT3(0, 0, 1), XMFLOAT3(0, 0, 1), XMFLOAT3(0, 0, 1),
-		XMFLOAT3(1, 0, 0), XMFLOAT3(1, 0, 0), XMFLOAT3(1, 0, 0), XMFLOAT3(1, 0, 0),
-		XMFLOAT3(0, 1, 0), XMFLOAT3(0, 1, 0), XMFLOAT3(0, 1, 0), XMFLOAT3(0, 1, 0),
-		XMFLOAT3(-1, 0, 0), XMFLOAT3(-1, 0, 0), XMFLOAT3(-1, 0, 0), XMFLOAT3(-1, 0, 0),
-		XMFLOAT3(0,-1, 0), XMFLOAT3(0,-1, 0), XMFLOAT3(0,-1, 0), XMFLOAT3(0,-1, 0),
-		XMFLOAT3(0, 0,-1), XMFLOAT3(0, 0,-1), XMFLOAT3(0, 0,-1), XMFLOAT3(0, 0,-1)
+	DX::XMFLOAT3 normals[] = {
+		DX::XMFLOAT3(0, 0, 1), DX::XMFLOAT3(0, 0, 1), DX::XMFLOAT3(0, 0, 1), DX::XMFLOAT3(0, 0, 1),
+		DX::XMFLOAT3(1, 0, 0), DX::XMFLOAT3(1, 0, 0), DX::XMFLOAT3(1, 0, 0), DX::XMFLOAT3(1, 0, 0),
+		DX::XMFLOAT3(0, 1, 0), DX::XMFLOAT3(0, 1, 0), DX::XMFLOAT3(0, 1, 0), DX::XMFLOAT3(0, 1, 0),
+		DX::XMFLOAT3(-1, 0, 0), DX::XMFLOAT3(-1, 0, 0), DX::XMFLOAT3(-1, 0, 0), DX::XMFLOAT3(-1, 0, 0),
+		DX::XMFLOAT3(0,-1, 0), DX::XMFLOAT3(0,-1, 0), DX::XMFLOAT3(0,-1, 0), DX::XMFLOAT3(0,-1, 0),
+		DX::XMFLOAT3(0, 0,-1), DX::XMFLOAT3(0, 0,-1), DX::XMFLOAT3(0, 0,-1), DX::XMFLOAT3(0, 0,-1)
 	};
 
-	XMFLOAT2 texCoords[] = {
-		XMFLOAT2(1, 0), XMFLOAT2(0, 0), XMFLOAT2(0, 1), XMFLOAT2(1, 1),
-		XMFLOAT2(0, 0), XMFLOAT2(0, 1), XMFLOAT2(1, 1), XMFLOAT2(1, 0),
-		XMFLOAT2(1, 1), XMFLOAT2(1, 0), XMFLOAT2(0, 0), XMFLOAT2(0, 1),
-		XMFLOAT2(1, 0), XMFLOAT2(0, 0), XMFLOAT2(0, 1), XMFLOAT2(1, 1),
-		XMFLOAT2(0, 1), XMFLOAT2(1, 1), XMFLOAT2(1, 0), XMFLOAT2(0, 0),
-		XMFLOAT2(0, 1), XMFLOAT2(1, 1), XMFLOAT2(1, 0), XMFLOAT2(0, 0)
+	DX::XMFLOAT2 texCoords[] = {
+		DX::XMFLOAT2(1, 0), DX::XMFLOAT2(0, 0), DX::XMFLOAT2(0, 1), DX::XMFLOAT2(1, 1),
+		DX::XMFLOAT2(0, 0), DX::XMFLOAT2(0, 1), DX::XMFLOAT2(1, 1), DX::XMFLOAT2(1, 0),
+		DX::XMFLOAT2(1, 1), DX::XMFLOAT2(1, 0), DX::XMFLOAT2(0, 0), DX::XMFLOAT2(0, 1),
+		DX::XMFLOAT2(1, 0), DX::XMFLOAT2(0, 0), DX::XMFLOAT2(0, 1), DX::XMFLOAT2(1, 1),
+		DX::XMFLOAT2(0, 1), DX::XMFLOAT2(1, 1), DX::XMFLOAT2(1, 0), DX::XMFLOAT2(0, 0),
+		DX::XMFLOAT2(0, 1), DX::XMFLOAT2(1, 1), DX::XMFLOAT2(1, 0), DX::XMFLOAT2(0, 0)
 	};
 
 	WORD indices[] = {
@@ -157,9 +157,9 @@ comp::Mesh MeshPrimitiveFactory::CreateBox(float width, float height) {
 	};
 
 	// Create buffers
-	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, ARRAYSIZE(positions), sizeof(XMFLOAT3));
-	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals, ARRAYSIZE(normals), sizeof(XMFLOAT3));
-	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords, ARRAYSIZE(texCoords), sizeof(XMFLOAT2));
+	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, ARRAYSIZE(positions), sizeof(DX::XMFLOAT3));
+	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals, ARRAYSIZE(normals), sizeof(DX::XMFLOAT3));
+	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords, ARRAYSIZE(texCoords), sizeof(DX::XMFLOAT2));
 	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
 	// Store buffers
@@ -183,20 +183,20 @@ comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 	float t = (1.0 + sqrt(5.0)) / 2.0; // Golden ratio
 	t *= radius;
 
-	XMFLOAT3 positions[] = {
+	DX::XMFLOAT3 positions[] = {
 		// Z Plane orthogonal rectangles (Vertical)
-		XMFLOAT3(-X, t, 0), XMFLOAT3(X, t, 0), XMFLOAT3(-X,-t, 0), XMFLOAT3(X,-t, 0),
+		DX::XMFLOAT3(-X, t, 0), DX::XMFLOAT3(X, t, 0), DX::XMFLOAT3(-X,-t, 0), DX::XMFLOAT3(X,-t, 0),
 		// X Plane orthogonal rectangles
-		XMFLOAT3(0,-X, t), XMFLOAT3(0, X, t), XMFLOAT3(0,-X,-t), XMFLOAT3(0, X,-t),
+		DX::XMFLOAT3(0,-X, t), DX::XMFLOAT3(0, X, t), DX::XMFLOAT3(0,-X,-t), DX::XMFLOAT3(0, X,-t),
 		// Y Plane orthogonal rectangles
-		XMFLOAT3(t, 0, -X), XMFLOAT3(t, 0,  X), XMFLOAT3(-t, 0, -X), XMFLOAT3(-t, 0,  X),
+		DX::XMFLOAT3(t, 0, -X), DX::XMFLOAT3(t, 0,  X), DX::XMFLOAT3(-t, 0, -X), DX::XMFLOAT3(-t, 0,  X),
 	};
 
 	// TODO
-	XMFLOAT3 normals[] = {
-		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3(),
-		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3(),
-		XMFLOAT3(), XMFLOAT3(), XMFLOAT3(), XMFLOAT3()
+	DX::XMFLOAT3 normals[] = {
+		DX::XMFLOAT3(), DX::XMFLOAT3(), DX::XMFLOAT3(), DX::XMFLOAT3(),
+		DX::XMFLOAT3(), DX::XMFLOAT3(), DX::XMFLOAT3(), DX::XMFLOAT3(),
+		DX::XMFLOAT3(), DX::XMFLOAT3(), DX::XMFLOAT3(), DX::XMFLOAT3()
 	};
 
 	WORD indices[] = {
@@ -211,21 +211,21 @@ comp::Mesh MeshPrimitiveFactory::CreateIcosahedron(float radius) {
 	};
 
 	// Compute TextCoord
-	const float invHalfPI = 1 / XM_PI * 0.5;
-	const float invPI = 1 / XM_PI;
-	std::vector<XMFLOAT2> texCoords;
+	const float invHalfPI = 1 / DX::XM_PI * 0.5;
+	const float invPI = 1 / DX::XM_PI;
+	std::vector<DX::XMFLOAT2> texCoords;
 	for (int i = 0; i < ARRAYSIZE(positions); i++) {
-		XMFLOAT3 pos = positions[i];
-		XMVECTOR posNorm = XMVector3Normalize((XMVectorSet(pos.x, pos.y, pos.z, 1.0f)));
-		float x = (atan2(XMVectorGetX(posNorm), XMVectorGetZ(posNorm)) + XM_PI) * invHalfPI;
-		float y = (acos(XMVectorGetY(posNorm)) + XM_PI) * invPI;
-		texCoords.push_back(XMFLOAT2(x, y));
+		DX::XMFLOAT3 pos = positions[i];
+		DX::XMVECTOR posNorm = DX::XMVector3Normalize((DX::XMVectorSet(pos.x, pos.y, pos.z, 1.0f)));
+		float x = (atan2(DX::XMVectorGetX(posNorm), DX::XMVectorGetZ(posNorm)) + DX::XM_PI) * invHalfPI;
+		float y = (acos(DX::XMVectorGetY(posNorm)) + DX::XM_PI) * invPI;
+		texCoords.push_back(DX::XMFLOAT2(x, y));
 	}
 
 	// Create buffers
-	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, ARRAYSIZE(positions), sizeof(XMFLOAT3));
-	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals, ARRAYSIZE(normals), sizeof(XMFLOAT3));
-	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords.data(), texCoords.size(), sizeof(XMFLOAT2));
+	comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, ARRAYSIZE(positions), sizeof(DX::XMFLOAT3));
+	comp::AttributeBuffer normalBuffer = m_ctx.rcommand->CreateAttributeBuffer(normals, ARRAYSIZE(normals), sizeof(DX::XMFLOAT3));
+	comp::AttributeBuffer texCoordBuffer = m_ctx.rcommand->CreateAttributeBuffer(texCoords.data(), texCoords.size(), sizeof(DX::XMFLOAT2));
 	comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
 
 	// Store buffers

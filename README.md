@@ -2,6 +2,22 @@
 
 Small DirectX renderer with an Entity Component System architecture.
 
+## Table of Contents
+
++ [Building](#Building)
++ [Examples](#Examples)
+    + [Basics](#Basics)
+    + [Blinn-Phong shading](#BlinnPhongShading)
+    + [Toon shading](#ToonShading)
+	+ [Physically Based Rendering](#PBRShading)
+	+ [Intermediate](#Intermediate)
+    + [Advanced](#Advanced)
++ [Based on](#BasedOn)
+
+## Building
+
+You must download [Visual Studio IDE](https://visualstudio.microsoft.com/) with C++ packaged and open `directx11-playground.sln` with it.
+
 ## Exemples
 
 ### Basics
@@ -38,10 +54,6 @@ Show some procedurally-generated primitives with their UV maps.
 
 Loads a GLTF model with its texture.
 
-### Intermediate
-
-### Advanced
-
 ### Blinn-Phong shading
 
 #### [Directional light](src/examples/blinn-phong/point-light/)
@@ -64,6 +76,12 @@ Uses different objects with different materials applied to them to compare how t
 ### Toon shading
 
 ### PBR shading
+
+### Intermediate
+
+### Shadows
+
+### Advanced
 
 ## Based on
 

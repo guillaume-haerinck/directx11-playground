@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "StepTimer.h"
 
-DX::StepTimer::StepTimer()
+DXC::StepTimer::StepTimer()
 	: m_elapsedTicks(0),
 	m_totalTicks(0),
 	m_leftOverTicks(0),
@@ -26,7 +26,7 @@ DX::StepTimer::StepTimer()
 
 // After an intentional timing discontinuity (for instance a blocking IO operation)
 // call this to avoid having the fixed timestep logic attempt a set of catch-up Update calls.
-void DX::StepTimer::ResetElapsedTime() {
+void DXC::StepTimer::ResetElapsedTime() {
 	if (!QueryPerformanceCounter(&m_qpcLastTime)) {
 		throw std::exception("QueryPerformanceCounter");
 	}

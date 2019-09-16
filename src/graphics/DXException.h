@@ -26,7 +26,7 @@ protected:
 	mutable std::string whatBuffer;
 };
 
-namespace DX {
+namespace DXC {
 	inline void ThrowIfFailed(int line, const char* file, HRESULT hr) {
 		if (FAILED(hr)) {
 			// Set a breakpoint on this line to catch DirectX API errors

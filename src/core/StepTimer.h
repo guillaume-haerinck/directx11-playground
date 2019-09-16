@@ -1,6 +1,6 @@
 #pragma once
 
-namespace DX {
+namespace DXC {
 	/**
 	 * @brief A simple timer that provides elapsed time information
 	 */

@@ -27,9 +27,9 @@ namespace phongExample {
 		lights.hasToBeUpdated = true;
 
 		scomp::DirectionalLight light0 = {};
-		light0.color = XMFLOAT3(1, 1, 1);
+		light0.color = DX::XMFLOAT3(1, 1, 1);
 		light0.intensity = 1.0f;
-		light0.direction = XMFLOAT3(1, -1, 1);
+		light0.direction = DX::XMFLOAT3(1, -1, 1);
 		lights.directionalLights.push_back(light0);
 
 		// Init non-optionnal constant buffer
@@ -82,8 +82,8 @@ namespace phongExample {
 
 		comp::Transform& transform = m_ctx.registry.get<comp::Transform>(m_litEntity);
 		ImGui::Text("Object :");
-		ImGui::SliderFloat3("Rotation", (float*) &transform.rotationEuler, 0, XM_PI * 2);
-		XMStoreFloat4(&transform.rotation, XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&transform.rotationEuler)));
+		ImGui::SliderFloat3("Rotation", (float*) &transform.rotationEuler, 0, DX::XM_PI * 2);
+		DX::XMStoreFloat4(&transform.rotation, DX::XMQuaternionRotationRollPitchYawFromVector(DX::XMLoadFloat3(&transform.rotationEuler)));
 
 		ImGui::Spacing();
 

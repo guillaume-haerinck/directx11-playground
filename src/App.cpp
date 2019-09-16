@@ -258,7 +258,7 @@ void App::initDirectX11() {
 	UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
 	// Create DirectX device
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		D3D11CreateDeviceAndSwapChain(
 			nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
 			createDeviceFlags, featureLevels, numFeatureLevels,
@@ -268,17 +268,17 @@ void App::initDirectX11() {
 	);
 
 #ifndef NDEBUG
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&m_debugDevice))
 	);
 #endif
 
 	// Get back buffer
 	Microsoft::WRL::ComPtr<ID3D11Resource> backBuffer;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer)
 	);
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_dxo.target)
 	);
 
@@ -288,7 +288,7 @@ void App::initDirectX11() {
 	dsDesc.DepthEnable = true;
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateDepthStencilState(&dsDesc, &depthStencilState)
 	);
 
@@ -309,7 +309,7 @@ void App::initDirectX11() {
 	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateTexture2D(&descDepth, nullptr, &depthStencil)
 	);
 
@@ -318,7 +318,7 @@ void App::initDirectX11() {
 	descDSV.Format = descDepth.Format;
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Texture2D.MipSlice = 0;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateDepthStencilView(depthStencil.Get(), &descDSV, &m_dxo.depthStencilView)
 	);
 

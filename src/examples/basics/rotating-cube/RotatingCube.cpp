@@ -29,17 +29,17 @@ namespace basicExample {
 
 		// Pixel shader
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
-		comp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(XMFLOAT4) * 6);
+		comp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(DX::XMFLOAT4) * 6);
 		PShader.constantBuffers.push_back(colorCB.buffer);
 
 		// Update PSconstant buffer once as it will not change
-		XMFLOAT4 colorCBdata[6] = {
-			XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
-			XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
+		DX::XMFLOAT4 colorCBdata[6] = {
+			DX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
+			DX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
+			DX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
+			DX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
+			DX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
+			DX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)
 		};
 		m_ctx.rcommand->UpdateConstantBuffer(colorCB, &colorCBdata);
 

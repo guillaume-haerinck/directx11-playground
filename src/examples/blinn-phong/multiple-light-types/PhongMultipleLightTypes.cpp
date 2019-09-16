@@ -27,11 +27,11 @@ namespace phongExample {
 		lights.hasToBeUpdated = true;
 
 		scomp::SpotLight slight0 = {};
-		slight0.position = XMFLOAT3(0, 1, 0);
+		slight0.position = DX::XMFLOAT3(0, 1, 0);
 		lights.spotLights.push_back(slight0);
 
 		scomp::PointLight plight0 = {};
-		plight0.position = XMFLOAT3(1, 0, 0);
+		plight0.position = DX::XMFLOAT3(1, 0, 0);
 		lights.pointLights.push_back(plight0);
 		
 		// Init non-optionnal constant buffer

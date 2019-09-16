@@ -25,14 +25,14 @@ void CameraSystem::Update() {
 		camera.phi += inputs.delta.y * 0.01;
 
 		// Keep phi within -2PI to +2PI for easy 'up' comparison
-		if (camera.phi > XM_2PI) {
-			camera.phi -= XM_2PI;
-		} else if (camera.phi < -XM_2PI) {
-			camera.phi += XM_2PI;
+		if (camera.phi > DX::XM_2PI) {
+			camera.phi -= DX::XM_2PI;
+		} else if (camera.phi < -DX::XM_2PI) {
+			camera.phi += DX::XM_2PI;
 		}
 
 		// If phi is between 0 to PI or -PI to -2PI, make 'up' be positive Y, other wise make it negative Y
-		if ((camera.phi > 0 && camera.phi < XM_PI) || (camera.phi < -XM_PI && camera.phi > -XM_2PI)) {
+		if ((camera.phi > 0 && camera.phi < DX::XM_PI) || (camera.phi < -DX::XM_PI && camera.phi > -DX::XM_2PI)) {
 			camera.up = 1.0f;
 		} else {
 			camera.up = -1.0f;
@@ -64,7 +64,7 @@ void CameraSystem::Update() {
 		camera.theta = 0;
 		camera.radius = 10;
 		camera.up = 1;
-		camera.target = XMFLOAT3(0, 0, 0);
+		camera.target = DX::XMFLOAT3(0, 0, 0);
 
 		camera.hasToBeUpdated = true;
 	}
@@ -75,12 +75,12 @@ void CameraSystem::Update() {
 		camera.position.y = camera.radius * cosf(camera.phi);
 		camera.position.z = camera.radius * sinf(camera.phi) * cosf(camera.theta);
 
-		XMVECTOR eye = XMLoadFloat3(&camera.position);
-		XMVECTOR target = XMLoadFloat3(&camera.target);
-		XMVECTOR up = XMVectorSet(0, camera.up, 0, 1);
+		DX::XMVECTOR eye = DX::XMLoadFloat3(&camera.position);
+		DX::XMVECTOR target = DX::XMLoadFloat3(&camera.target);
+		DX::XMVECTOR up = DX::XMVectorSet(0, camera.up, 0, 1);
 
-		XMMATRIX view = XMMatrixLookAtLH(eye, target, up);
-		XMStoreFloat4x4(&camera.view, view);
+		DX::XMMATRIX view = DX::XMMatrixLookAtLH(eye, target, up);
+		DX::XMStoreFloat4x4(&camera.view, view);
 
 		camera.hasToBeUpdated == false;
 	}

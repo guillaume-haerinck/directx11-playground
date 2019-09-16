@@ -15,12 +15,12 @@ namespace basicExample {
 		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BasicTriangle_PS.cso");
 
 		// Position attribute buffer
-		XMFLOAT2 positions[] = {
-			XMFLOAT2(0.0f,  0.5f),
-			XMFLOAT2(0.5f, -0.5f),
-			XMFLOAT2(-0.5f, -0.5f)
+		DX::XMFLOAT2 positions[] = {
+			DX::XMFLOAT2(0.0f,  0.5f),
+			DX::XMFLOAT2(0.5f, -0.5f),
+			DX::XMFLOAT2(-0.5f, -0.5f)
 		};
-		comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, sizeof(positions), sizeof(XMFLOAT2));
+		comp::AttributeBuffer positionBuffer = m_ctx.rcommand->CreateAttributeBuffer(positions, sizeof(positions), sizeof(DX::XMFLOAT2));
 
 		// Vertex buffer
 		comp::VertexBuffer vb = {};

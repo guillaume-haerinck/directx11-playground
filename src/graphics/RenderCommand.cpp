@@ -33,7 +33,7 @@ comp::AttributeBuffer RenderCommand::CreateAttributeBuffer(void* vertices, unsig
 	D3D11_SUBRESOURCE_DATA sd = {};
 	sd.pSysMem = vertices;
 
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateBuffer(&bd, &sd, &attributeBuffer)
 	);
 
@@ -58,7 +58,7 @@ comp::IndexBuffer RenderCommand::CreateIndexBuffer(void* indices, unsigned int c
 	D3D11_SUBRESOURCE_DATA sd = {};
 	sd.pSysMem = indices;
 
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateBuffer(&bd, &sd, &indexBuffer)
 	);
 
@@ -76,7 +76,7 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int byteWidth)
 	bd.ByteWidth = byteWidth;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateBuffer(&bd, nullptr, &constantBuffer)
 	);
 
@@ -93,7 +93,7 @@ scomp::Sampler RenderCommand::CreateSampler(scomp::SamplerSlot slot) const {
 	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sdesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateSamplerState(&sdesc, &splr)
 	);
 
@@ -106,8 +106,8 @@ scomp::Sampler RenderCommand::CreateSampler(scomp::SamplerSlot slot) const {
 scomp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath, scomp::SamplerSlot samplerSlot) const {
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
 	Microsoft::WRL::ComPtr<ID3D11Resource> res;
-	DX::ThrowIfFailed(CALL_INFO,
-		CreateWICTextureFromFile(m_dxo.device.Get(), m_dxo.context.Get(), filepath, res.GetAddressOf(), srv.GetAddressOf())
+	DXC::ThrowIfFailed(CALL_INFO,
+		DX::CreateWICTextureFromFile(m_dxo.device.Get(), m_dxo.context.Get(), filepath, res.GetAddressOf(), srv.GetAddressOf())
 	);
 
 	scomp::Texture texture = {};
@@ -120,10 +120,10 @@ scomp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath,
 comp::VertexShader RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const {
 	ID3D11VertexShader* vertexShader;
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		D3DReadFileToBlob(filePath, &blob)
 	);
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateVertexShader(
 			blob->GetBufferPointer(), blob->GetBufferSize(),
 			nullptr, &vertexShader
@@ -131,7 +131,7 @@ comp::VertexShader RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* i
 	);
 
 	ID3D11InputLayout* inputLayout;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreateInputLayout(
 			iedArray, iedElementCount,
 			blob->GetBufferPointer(),
@@ -150,10 +150,10 @@ comp::PixelShader RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 	ID3D11PixelShader* pixelShader;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		D3DReadFileToBlob(filePath, &blob)
 	);
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.device->CreatePixelShader(
 			blob->GetBufferPointer(), blob->GetBufferSize(),
 			nullptr, &pixelShader
@@ -201,7 +201,7 @@ void RenderCommand::BindPixelShader(comp::PixelShader ps) {
 
 void RenderCommand::UpdateConstantBuffer(comp::ConstantBuffer cb, void* data) const {
 	D3D11_MAPPED_SUBRESOURCE msr;
-	DX::ThrowIfFailed(CALL_INFO,
+	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.context->Map(
 			cb.buffer.Get(), 0u,
 			D3D11_MAP_WRITE_DISCARD, 0u, &msr

@@ -11,8 +11,8 @@ namespace scomp {
 
 	struct Inputs {
 		std::array<bool, InputAction::_ACTION_MAX> actionState;
-		XMFLOAT2 mousePos;
-		XMFLOAT2 delta;
+		DX::XMFLOAT2 mousePos;
+		DX::XMFLOAT2 delta;
 		short wheelDelta;
 	};
 }

@@ -110,13 +110,13 @@ void RenderSystem::Update() {
 
 		// Get usable data
 		scomp::Camera camera = m_ctx.registry.get<scomp::Camera>(graphEntity);
-		XMMATRIX view = XMLoadFloat4x4(&camera.view);
-		XMMATRIX proj = XMLoadFloat4x4(&camera.proj);
+		DX::XMMATRIX view = DX::XMLoadFloat4x4(&camera.view);
+		DX::XMMATRIX proj = DX::XMLoadFloat4x4(&camera.proj);
 
 		// Update data. Use column-major matrix for HLSL
 		cbData.cameraPos = camera.position;
-		XMMATRIX viewProj = XMMatrixTranspose(view * proj);
-		XMStoreFloat4x4(&cbData.matViewProj, viewProj);
+		DX::XMMATRIX viewProj = DX::XMMatrixTranspose(view * proj);
+		DX::XMStoreFloat4x4(&cbData.matViewProj, viewProj);
 
 		// Send data
 		m_ctx.rcommand->UpdateConstantBuffer(perFrameCB, &cbData);
@@ -130,12 +130,12 @@ void RenderSystem::Update() {
 		.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader, comp::Transform& transform) {
 		// Update perMesh constant buffer
 		cb::perMesh cbData = {};
-		XMVECTOR transVector = XMLoadFloat3(&transform.position);
-		XMVECTOR scaleVector = XMLoadFloat3(&transform.scale);
-		XMVECTOR rotationQuat = XMLoadFloat4(&transform.rotation);
+		DX::XMVECTOR transVector = DX::XMLoadFloat3(&transform.position);
+		DX::XMVECTOR scaleVector = DX::XMLoadFloat3(&transform.scale);
+		DX::XMVECTOR rotationQuat = DX::XMLoadFloat4(&transform.rotation);
 
-		XMMATRIX model = XMMatrixAffineTransformation(scaleVector, XMVectorZero(), rotationQuat, transVector);
-		XMStoreFloat4x4(&cbData.matModel, XMMatrixTranspose(model));
+		DX::XMMATRIX model = DX::XMMatrixAffineTransformation(scaleVector, DX::XMVectorZero(), rotationQuat, transVector);
+		DX::XMStoreFloat4x4(&cbData.matModel, DX::XMMatrixTranspose(model));
 		m_ctx.rcommand->UpdateConstantBuffer(perMeshCB, &cbData);
 		
 		// Bind
