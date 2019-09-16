@@ -7,9 +7,9 @@ Small DirectX renderer with an Entity Component System architecture.
 + [Building](#Building)
 + [Examples](#Examples)
     + [Basics](#Basics)
-    + [Blinn-Phong shading](#BlinnPhongShading)
-    + [Toon shading](#ToonShading)
-	+ [Physically Based Rendering](#PBRShading)
+    + [Blinn-Phong shading](#Blinn-Phong-Shading)
+    + [Toon shading](#Toon-Shading)
+	+ [Physically Based Rendering](#PBR-Shading)
 	+ [Intermediate](#Intermediate)
     + [Advanced](#Advanced)
 + [Based on](#BasedOn)
@@ -18,7 +18,7 @@ Small DirectX renderer with an Entity Component System architecture.
 
 You must download [Visual Studio IDE](https://visualstudio.microsoft.com/) with C++ packaged and open `directx11-playground.sln` with it.
 
-## Exemples
+## Examples
 
 ### Basics
 
