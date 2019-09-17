@@ -8,13 +8,14 @@ Small DirectX renderer with an Entity Component System architecture.
 + [Examples](#Examples)
     + [Basics](#Basics)
     + [Blinn-Phong shading](#Blinn-Phong-Shading)
-    + [Non-Photorealistic rendering](#Non-Photorealistic-Rendering-(NPR))
+    + [Non-Photorealistic rendering](#Non-Photorealistic-Rendering-NPR)
     + [Intermediate](#Intermediate)
-    + [Physically based rendering](#Physically-based-rendering-(PBR))
+    + [Physically based rendering](#Physically-based-rendering-PBR)
     + [Shadows](#Shadows)
 	+ [Animations](#Animations)
+	+ [Post-Processing](#Post-Processing)
     + [Advanced](#Advanced)
-+ [Based on](#BasedOn)
++ [Based on](#Based-On)
 
 ## Building
 
@@ -103,6 +104,10 @@ Select objects on the scene with the mouse and raytracing.
 
 Do not render objects outside of the camera view.
 
+#### [WIC] [Occlusion culling](#)
+
+Do not render objects hidden by other ones.
+
 #### [WIC] [High Dynamic Range](#)
 
 Allows a rendered image to show more details when the scene contains both shadows and highlights.
@@ -141,6 +146,10 @@ Local illumination technique based on the scene.
 
 Shows hows lights can traverse some materials.
 
+#### [WIC] [Hair](#)
+
+Render hair and fur.
+
 ### Shadows
 
 #### [WIC] [Directional shadow mapping](#)
@@ -161,9 +170,27 @@ Baked global illumination based on raytracing.
 
 ### Animations
 
+#### [WIC] [Linear transform](#)
+
+Basic translation and rotation loaded from gltf.
+
 #### [WIC] [Squeletal animation](#)
 
 A basic character movement loaded from gltf.
+
+### Post-Processing
+
+#### [WIC] [Bloom](#)
+
+Show a light with bloom effect.
+
+#### [WIC] [Depth of field](#)
+
+Blur the out of focus area of the image.
+
+#### [WIC] [Motion blur](#)
+
+Blur based on movement of the camera.
 
 ### Advanced
 
