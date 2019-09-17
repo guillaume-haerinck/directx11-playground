@@ -9,14 +9,15 @@ Small DirectX renderer with an Entity Component System architecture.
     + [Basics](#Basics)
     + [Blinn-Phong shading](#Blinn-Phong-Shading)
     + [Toon shading](#Toon-Shading)
-	+ [Physically Based Rendering](#PBR-Shading)
-	+ [Intermediate](#Intermediate)
+    + [Intermediate](#Intermediate)
+    + [Physically Based Rendering](#PBR)
+    + [Shadows](#Shadows)
     + [Advanced](#Advanced)
 + [Based on](#BasedOn)
 
 ## Building
 
-You must download [Visual Studio IDE](https://visualstudio.microsoft.com/) with C++ packaged and open `directx11-playground.sln` with it.
+You must download [Visual Studio IDE](https://visualstudio.microsoft.com/) and install the C++ package. Now you can open `directx11-playground.sln` and build the app with `f5`.
 
 ## Examples
 
@@ -65,23 +66,47 @@ Loads a GLTF model with its texture.
 Setup a simple scene with a directional light and no material.
 Uses ambient, diffuse and specular properties.
 
-#### [Multiple light types](src/examples/blinn-phong/multiple-light-types/)
+#### [WIC] [Multiple light types](src/examples/blinn-phong/multiple-light-types/)
 
 Uses multiple point, directional and spotlights.
 
-#### [Materials](src/examples/blinn-phong/materials/)
+#### [WIC] [Materials](src/examples/blinn-phong/materials/)
 
 Uses different objects with different materials applied to them to compare how they react to lighting.
 
 ### Toon shading
 
-### PBR shading
-
 ### Intermediate
+
+#### [WIC] [High Dynamic Range](#)
+
+#### [WIC] [Gamma correction](#)
+
+#### [WIC] [Normal mapping](#)
+
+#### [WIC] [Parallax mapping](#)
+
+#### [WIC] [Light map](#)
+
+### PBR
+
+#### [WIC] [Directional light](#)
+
+#### [WIC] [Multiple light types](#)
+
+#### [WIC] [Materials](#)
+
+#### [WIC] [Image Based Lighting](#)
 
 ### Shadows
 
 ### Advanced
+
+#### [WIC] [Tesselation](#)
+
+#### [WIC] [Deferred shading](#)
+
+#### [WIC] [Deferred plus shading](#)
 
 ## Based on
 
