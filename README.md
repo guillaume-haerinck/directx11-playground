@@ -8,10 +8,11 @@ Small DirectX renderer with an Entity Component System architecture.
 + [Examples](#Examples)
     + [Basics](#Basics)
     + [Blinn-Phong shading](#Blinn-Phong-Shading)
-    + [Toon shading](#Toon-Shading)
+    + [Non-Photorealistic rendering](#Non-Photorealistic-Rendering-(NPR))
     + [Intermediate](#Intermediate)
-    + [Physically Based Rendering](#PBR)
+    + [Physically based rendering](#Physically-based-rendering-(PBR))
     + [Shadows](#Shadows)
+	+ [Animations](#Animations)
     + [Advanced](#Advanced)
 + [Based on](#BasedOn)
 
@@ -29,7 +30,7 @@ You must download [Visual Studio IDE](https://visualstudio.microsoft.com/) and i
 <img src="doc/img/basic/triangle.png?raw=true" alt="Triangle exemple" height="160px">
 </p>
 
-A simple triangle. It is the only exemple that does not use indexed drawing.
+A simple triangle. The only example that does not use indexed drawing.
 
 #### [Rotating cube](src/examples/basics/rotating-cube/)
 
@@ -55,6 +56,14 @@ Show some procedurally-generated primitives with their UV maps.
 
 Loads a GLTF model with its texture.
 
+#### [WIC] [Skybox](#)
+
+Show an environment in the background using a cubemap.
+
+#### [WIC] [Global GUI](#)
+
+Display a grid, some icons for the lights and a dynamic gizmo to always know the orientation of the camera.
+
 ### Blinn-Phong shading
 
 #### [Directional light](src/examples/blinn-phong/point-light/)
@@ -64,7 +73,7 @@ Loads a GLTF model with its texture.
 </p>
 
 Setup a simple scene with a directional light and no material.
-Uses ambient, diffuse and specular properties.
+A menu is available to edit ambient, diffuse and specular properties.
 
 #### [WIC] [Multiple light types](src/examples/blinn-phong/multiple-light-types/)
 
@@ -74,39 +83,109 @@ Uses multiple point, directional and spotlights.
 
 Uses different objects with different materials applied to them to compare how they react to lighting.
 
-### Toon shading
+### Non-Photorealistic Rendering (NPR)
+
+#### [WIC] [Gooch shading](#)
+
+Change pixel color value from "cool to warm" based on normal direction angle from the camera.
+
+#### [WIC] [Toon shading](#)
+
+A rendering technique closer to traditional 2D animation.
 
 ### Intermediate
 
+#### [WIC] [Object picking](#)
+
+Select objects on the scene with the mouse and raytracing.
+
+#### [WIC] [View frustrum culling](#)
+
+Do not render objects outside of the camera view.
+
 #### [WIC] [High Dynamic Range](#)
+
+Allows a rendered image to show more details when the scene contains both shadows and highlights.
 
 #### [WIC] [Gamma correction](#)
 
+Fix the gamma of the screen.
+
 #### [WIC] [Normal mapping](#)
+
+Show micro-geometry with lighting based on a texture.
 
 #### [WIC] [Parallax mapping](#)
 
-#### [WIC] [Light map](#)
+Adds micro-geometry to a model based on a texture.
 
-### PBR
+### Physically based rendering (PBR)
 
 #### [WIC] [Directional light](#)
 
+Base exemple of PBR.
+
 #### [WIC] [Multiple light types](#)
+
+Test multiple light types with PBR.
 
 #### [WIC] [Materials](#)
 
-#### [WIC] [Image Based Lighting](#)
+Uses PBR materials.
+
+#### [WIC] [Image based lighting (IBL)](#)
+
+Local illumination technique based on the scene.
+
+#### [WIC] [Screen-space subsurface scattering (SSS)](#)
+
+Shows hows lights can traverse some materials.
 
 ### Shadows
 
+#### [WIC] [Directional shadow mapping](#)
+
+Shadows created by a directional light.
+
+#### [WIC] [Point shadow mapping](#)
+
+Shadows created by point lights.
+
+#### [WIC] [Screen space ambient occlusion (SSAO)](#)
+
+Adds more shadows to micro-geometry based on vertex density.
+
+#### [WIC] [Light map](#)
+
+Baked global illumination based on raytracing.
+
+### Animations
+
+#### [WIC] [Squeletal animation](#)
+
+A basic character movement loaded from gltf.
+
 ### Advanced
+
+#### [WIC] [Particle system](#)
+
+Shows emissive particles.
+
+#### [WIC] [Instanced rendering](#)
+
+Render a forest.
 
 #### [WIC] [Tesselation](#)
 
+Shows how an object contains more or less geometry based on camera distance.
+
 #### [WIC] [Deferred shading](#)
 
+Improve lighting performance with geometry buffer.
+
 #### [WIC] [Deferred plus shading](#)
+
+Improve lighting performance in a forward shading pipeline by dividing the screen on multiple areas.
 
 ## Based on
 
