@@ -229,8 +229,6 @@
     </ClCompile>
     <ClCompile Include="src\components\graphics\GraphicsComponents.cpp" />
     <ClCompile Include="src\components\physics\PhysicsComponents.cpp" />
-    <ClCompile Include="src\components\singletons\graphics\SingletonGraphicsComponents.cpp" />
-    <ClCompile Include="src\components\singletons\io\SingletonIOComponents.cpp" />
     <ClCompile Include="src\core\Context.cpp" />
     <ClCompile Include="src\examples\basics\basic-triangle\BasicTriangle.cpp" />
     <ClCompile Include="src\examples\basics\model-loading\ModelLoading.cpp" />
@@ -263,6 +261,8 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\scomponents\graphics\SingletonGraphicsComponents.cpp" />
+    <ClCompile Include="src\scomponents\io\SingletonIOComponents.cpp" />
     <ClCompile Include="src\systems\CameraSystem.cpp" />
     <ClCompile Include="src\systems\RenderSystem.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
@@ -326,14 +326,8 @@
     <ClInclude Include="src\components\graphics\Mesh.h" />
     <ClInclude Include="src\components\graphics\Model.h" />
     <ClInclude Include="src\components\graphics\Shader.h" />
-    <ClInclude Include="src\components\physics\Child.h" />
+    <ClInclude Include="src\components\physics\Relationship.h" />
     <ClInclude Include="src\components\physics\Transform.h" />
-    <ClInclude Include="src\components\singletons\graphics\Camera.h" />
-    <ClInclude Include="src\components\singletons\graphics\ConstantBuffers.h" />
-    <ClInclude Include="src\components\singletons\graphics\Lights.h" />
-    <ClInclude Include="src\components\singletons\graphics\Materials.h" />
-    <ClInclude Include="src\components\singletons\graphics\Samplers.h" />
-    <ClInclude Include="src\components\singletons\io\Inputs.h" />
     <ClInclude Include="src\core\Context.h" />
     <ClInclude Include="src\examples\basics\basic-triangle\BasicTriangle.h" />
     <ClInclude Include="src\examples\basics\model-loading\ModelLoading.h" />
@@ -356,6 +350,12 @@
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\core\StepTimer.h" />
+    <ClInclude Include="src\scomponents\graphics\Camera.h" />
+    <ClInclude Include="src\scomponents\graphics\ConstantBuffers.h" />
+    <ClInclude Include="src\scomponents\graphics\Lights.h" />
+    <ClInclude Include="src\scomponents\graphics\Materials.h" />
+    <ClInclude Include="src\scomponents\graphics\Samplers.h" />
+    <ClInclude Include="src\scomponents\io\Inputs.h" />
     <ClInclude Include="src\systems\CameraSystem.h" />
     <ClInclude Include="src\systems\ISystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />

@@ -100,16 +100,10 @@
     <ClCompile Include="src\factories\entities\ModelFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\singletons\graphics\SingletonGraphicsComponents.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\components\physics\PhysicsComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\components\singletons\io\SingletonIOComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\systems\CameraSystem.cpp">
@@ -131,6 +125,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\examples\blinn-phong\multiple-light-types\PhongMultipleLightTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scomponents\graphics\SingletonGraphicsComponents.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scomponents\io\SingletonIOComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -351,28 +351,7 @@
     <ClInclude Include="src\components\physics\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\physics\Child.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\ConstantBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\ConstantBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\Lights.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\Materials.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\singletons\graphics\Samplers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\singletons\io\Inputs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\systems\CameraSystem.h">
@@ -403,6 +382,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\examples\blinn-phong\multiple-light-types\PhongMultipleLightTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scomponents\graphics\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scomponents\graphics\ConstantBuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scomponents\graphics\Lights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scomponents\graphics\Materials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scomponents\graphics\Samplers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scomponents\io\Inputs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\physics\Relationship.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

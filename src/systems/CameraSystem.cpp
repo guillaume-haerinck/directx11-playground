@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "CameraSystem.h"
 
-#include "components/singletons/io/Inputs.h"
-#include "components/singletons/graphics/Camera.h"
+#include "scomponents/io/Inputs.h"
+#include "scomponents/graphics/Camera.h"
 
 CameraSystem::CameraSystem(Context& context) : m_ctx(context)
 {

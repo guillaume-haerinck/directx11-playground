@@ -6,7 +6,7 @@
 #include "systems/CameraSystem.h"
 #include "graphics/ConstantBuffer.h"
 #include "components/physics/Transform.h"
-#include "components/singletons/graphics/ConstantBuffers.h"
+#include "scomponents/graphics/ConstantBuffers.h"
 
 namespace basicExample {
 	ModelLoading::ModelLoading(Context& context) : m_ctx(context) {

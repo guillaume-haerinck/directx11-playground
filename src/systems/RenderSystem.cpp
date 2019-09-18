@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "RenderSystem.h"
 
-#include "components/singletons/graphics/ConstantBuffers.h"
-#include "components/singletons/graphics/Lights.h"
-#include "components/singletons/graphics/Materials.h"
-#include "components/singletons/graphics/Camera.h"
+#include "scomponents/graphics/ConstantBuffers.h"
+#include "scomponents/graphics/Lights.h"
+#include "scomponents/graphics/Materials.h"
+#include "scomponents/graphics/Camera.h"
 #include "components/physics/Transform.h"
 #include "graphics/ConstantBuffer.h"
 

@@ -3,8 +3,8 @@
 #include "DXObjects.h"
 #include "components/graphics/Mesh.h"
 #include "components/graphics/Shader.h"
-#include "components/singletons/graphics/Materials.h"
-#include "components/singletons/graphics/Samplers.h"
+#include "scomponents/graphics/Materials.h"
+#include "scomponents/graphics/Samplers.h"
 
 // TODO keep track of already created shaders
 

@@ -15,7 +15,7 @@ namespace scomp {
 	 */
 	struct Sampler {
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
-		unsigned int slot;
+		unsigned int slot = 0;
 	};
 
 	/**

@@ -6,8 +6,8 @@
 #include "systems/RenderSystem.h"
 #include "systems/CameraSystem.h"
 #include "components/physics/Transform.h"
-#include "components/singletons/graphics/ConstantBuffers.h"
-#include "components/singletons/graphics/Lights.h"
+#include "scomponents/graphics/ConstantBuffers.h"
+#include "scomponents/graphics/Lights.h"
 
 namespace pbrExample {
 	PBRDirectionalLight::PBRDirectionalLight(Context& context) : m_ctx(context) {

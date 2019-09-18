@@ -14,8 +14,8 @@ namespace scomp {
 	 */
 	struct Texture {
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
-		unsigned int samplerSlot;
-		unsigned int slot;
+		unsigned int samplerSlot = 0;
+		unsigned int slot = 0;
 	};
 
 	///////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ namespace scomp {
 	 */
 	struct PhongMaterials {
 		std::vector<PhongMaterial> materials;
-		bool hasToBeUpdated;
+		bool hasToBeUpdated = false;
 	};
 
 	///////////////////////////////////////////////////////////////////////////
@@ -65,6 +65,6 @@ namespace scomp {
 	 */
 	struct CookTorranceMaterials {
 		std::vector<CookTorranceMaterial> materials;
-		bool hasToBeUpdated;
+		bool hasToBeUpdated = false;
 	};
 }
