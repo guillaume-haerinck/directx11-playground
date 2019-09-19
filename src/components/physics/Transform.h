@@ -7,7 +7,7 @@ namespace comp {
 	struct Transform {
 		DX::XMFLOAT4 rotation = { 0, 0, 0, 1 };
 		DX::XMFLOAT3 position = { 0, 0, 0 };
-		DX::XMFLOAT3 scale = { 1, 1, 1 };
-		DX::XMFLOAT3 rotationEuler = { 0, 0, 0 };
+		float scale = 1;
+		DX::XMFLOAT3 rotationEuler = { 0, 0, 0 };	// TODO remove me
 	};
 }

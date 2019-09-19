@@ -134,7 +134,7 @@ void RenderSystem::Update() {
 		// Update perMesh constant buffer
 		cb::perMesh cbData = {};
 		DX::XMVECTOR transVector = DX::XMLoadFloat3(&transform.position);
-		DX::XMVECTOR scaleVector = DX::XMLoadFloat3(&transform.scale);
+		DX::XMVECTOR scaleVector = DX::XMVectorSet(transform.scale, transform.scale, transform.scale, 1);
 		DX::XMVECTOR rotationQuat = DX::XMLoadFloat4(&transform.rotation);
 
 		DX::XMMATRIX model = DX::XMMatrixAffineTransformation(scaleVector, DX::XMVectorZero(), rotationQuat, transVector);

@@ -12,8 +12,8 @@ namespace comp {
 	 */
 	struct Pipeline {
 		std::array<bool, PipelineShaderIndex::_MAX_SHADER> hasShader;
-		unsigned int vsIndex;
-		unsigned int psIndex;
-		unsigned int gsIndex;
+		unsigned int vsIndex = 0;
+		unsigned int psIndex = 0;
+		unsigned int gsIndex = 0;
 	};
 };
