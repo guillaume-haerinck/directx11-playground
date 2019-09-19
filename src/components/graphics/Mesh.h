@@ -1,14 +1,16 @@
 #pragma once
 
+#include "scomponents/graphics/Materials.h"
+
 namespace comp {
 	/**
 	 * @brief Vertex attribute buffer (points, uv mapping, normals, etc...)
 	 */
 	struct AttributeBuffer {
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-		unsigned int stride;
-		unsigned int count;
-		unsigned int byteWidth;
+		unsigned int stride = 0;
+		unsigned int count = 0;
+		unsigned int byteWidth = 0;
 	};
 
 	/**
@@ -31,22 +33,17 @@ namespace comp {
 	 */
 	struct IndexBuffer {
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-		unsigned int count;
+		unsigned int count = 0;
 	};
 
 	/**
 	 * @param materialIndex - The index in the std::vector of Materials component (0 if default material).
-	 *						  The material can be of any type (pbr, phong, toon, etc...).
 	 *						  The same material can be shared by multiple mesh.
-	 *
-	 * @param textures - An array of textures that will be bound with the mesh.
-	 *                   The texture slot will correspond to the index in the vector.
-	 *                   The meaning of the texture slot depends on the material.
 	 */
 	struct Mesh {
 		VertexBuffer vb;
 		IndexBuffer ib;
-		unsigned int materialIndex;
-		std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> textures; // TODO remove texture here to use only material index and enum for material type
+		unsigned int materialIndex = 0;
+		scomp::MaterialType materialType = scomp::MaterialType::PHONG;
 	};
 }

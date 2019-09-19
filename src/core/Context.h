@@ -2,11 +2,13 @@
 
 #include "graphics/RenderCommand.h"
 
-enum SingletonComponents {
-	GRAPHIC = 0,
-	IO,
-	_SINGLETON_COMP_MAX
-};
+namespace scomp {
+	enum SingletonEntities {
+		SING_ENTITY_GRAPHIC = 0,
+		SING_ENTITY_IO,
+		_SINGLETON_ENTITY_MAX
+	};
+}
 
 struct Context {
 	Context() {
@@ -15,5 +17,5 @@ struct Context {
 
 	std::unique_ptr<RenderCommand> rcommand;
 	entt::registry registry;
-	std::array<entt::entity, _SINGLETON_COMP_MAX> singletonComponents;
+	std::array<entt::entity, scomp::SingletonEntities::_SINGLETON_ENTITY_MAX> singletonComponents;
 };

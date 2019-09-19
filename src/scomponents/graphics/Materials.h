@@ -9,6 +9,12 @@
  */
 namespace scomp {
 
+	enum MaterialType {
+		NO_MATERIAL,
+		PHONG,
+		COOK_TORRANCE
+	};
+
 	/**
 	 * @brief An image accessible by shaders
 	 */
@@ -27,7 +33,8 @@ namespace scomp {
 	 */
 	enum PhongTexSlot {
 		DIFFUSE = 0,
-		SPECULAR = 1
+		SPECULAR = 1,
+		NORMAL = 2
 	};
 
 	/**

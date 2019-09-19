@@ -63,9 +63,9 @@ LRESULT App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 LRESULT App::memberWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
+	auto ioEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_IO);
 	scomp::Inputs& inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
-	auto graphicEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+	auto graphicEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
 	scomp::Camera& camera = m_ctx.registry.get<scomp::Camera>(graphicEntity);
 
 	switch (msg) {
@@ -132,7 +132,7 @@ void App::Update(float dt) {
 
 	// Reset input states (nescessary as WndProc is not called every frame)
 	{
-		auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
+		auto ioEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_IO);
 		scomp::Inputs& inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
 		inputs.actionState.fill(false);
 	}
@@ -348,7 +348,7 @@ void App::initImGui() {
 
 void App::initGraphicSingletonEntity() {
 	auto entity = m_ctx.registry.create();
-	m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC) = entity;
+	m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC) = entity;
 
 	// Init non-optional constant buffers
 	scomp::ConstantBuffers cbs = {};
@@ -390,7 +390,7 @@ void App::initGraphicSingletonEntity() {
 
 void App::initIOSingletonEntity() {
 	auto entity = m_ctx.registry.create();
-	m_ctx.singletonComponents.at(SingletonComponents::IO) = entity;
+	m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_IO) = entity;
 
 	// Init inputs
 	scomp::Inputs inputs = {};

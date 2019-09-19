@@ -19,7 +19,7 @@ namespace basicExample {
 		};
 
 		// Get constant buffers
-		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+		auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
 		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 
 		// Vertex shader
@@ -34,7 +34,9 @@ namespace basicExample {
 		comp::Mesh mesh = primFactory.CreateIcosahedron();
 		mesh.materialIndex = 0;
 		scomp::Texture texture = m_ctx.rcommand->CreateTexture(0, L"res/textures/test.jpg");
-		mesh.textures.push_back(texture.srv);
+
+		// TODO FIXME
+		// mesh.textures.push_back(texture.srv);
 
 		// Transformm
 		comp::Transform transform = {};

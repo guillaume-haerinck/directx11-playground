@@ -177,9 +177,9 @@ void RenderCommand::BindSampler(scomp::Sampler sampler) const {
 	m_dxo.context->PSSetSamplers(sampler.slot, 1, sampler.sampler.GetAddressOf());
 }
 
-void RenderCommand::BindTextures(std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textures) const {
+void RenderCommand::BindTextures(ID3D11ShaderResourceView* textures, unsigned int count) const {
 	// TODO use hash to check if already bound. Skip if it is the case
-	m_dxo.context->PSSetShaderResources(0, textures.size(), textures.data()->GetAddressOf());
+	m_dxo.context->PSSetShaderResources(0, count, &textures);
 }
 
 void RenderCommand::BindVertexShader(scomp::VertexShader vs) {

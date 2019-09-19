@@ -14,9 +14,9 @@ CameraSystem::~CameraSystem()
 
 void CameraSystem::Update() {
 	// Get singleton components
-	auto ioEntity = m_ctx.singletonComponents.at(SingletonComponents::IO);
+	auto ioEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_IO);
 	scomp::Inputs inputs = m_ctx.registry.get<scomp::Inputs>(ioEntity);
-	auto graphicEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+	auto graphicEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
 	scomp::Camera& camera = m_ctx.registry.get<scomp::Camera>(graphicEntity);
 
 	// ArcBall rotation

@@ -18,7 +18,7 @@ namespace basicExample {
 		};
 
 		// Get constant buffers
-		auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+		auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
 		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 
 		// Vertex shader

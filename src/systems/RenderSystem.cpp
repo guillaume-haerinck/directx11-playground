@@ -16,7 +16,7 @@ RenderSystem::~RenderSystem() {
 }
 
 void RenderSystem::Update() {
-	auto graphEntity = m_ctx.singletonComponents.at(SingletonComponents::GRAPHIC);
+	auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////// OPTIONAL ////////////////////////////////
@@ -148,8 +148,21 @@ void RenderSystem::Update() {
 		m_ctx.rcommand->BindPixelShader(shaders.pss.at(pipeline.psIndex));
 		m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 		m_ctx.rcommand->BindIndexBuffer(mesh.ib);
-		if (mesh.textures.size() > 0) {
-			m_ctx.rcommand->BindTextures(mesh.textures);
+
+		// Bind textures
+		switch (mesh.materialType) {
+		case scomp::MaterialType::PHONG: {
+			scomp::PhongMaterials& materials = m_ctx.registry.get<scomp::PhongMaterials>(graphEntity);
+			scomp::PhongMaterial material = materials.materials.at(mesh.materialIndex);
+			// TODO how to bind them all at once when one might be missing ? Use dumb data ?
+			for (auto texture : material.textures) {
+				m_ctx.rcommand->BindTextures(texture.srv.Get(), 1);
+			}
+			break;
+		}
+
+		default:
+			break;
 		}
 		
 		// Draw call

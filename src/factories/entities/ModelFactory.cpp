@@ -22,6 +22,8 @@ ModelFactory::~ModelFactory() {
 std::vector<entt::entity> ModelFactory::CreateEntitiesFromGltf(std::filesystem::path gltfFilePath) {
 	fx::gltf::Document doc = fx::gltf::LoadFromText(gltfFilePath.string());
 	std::vector<entt::entity> entities;
+	auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
+	scomp::PhongMaterials& materials = m_ctx.registry.get<scomp::PhongMaterials>(graphEntity);
 	// TODO handle scene transform and nodes
 	// TODO create default material
 
@@ -77,14 +79,20 @@ std::vector<entt::entity> ModelFactory::CreateEntitiesFromGltf(std::filesystem::
 			// Get material
 			// TODO use a hashmap to check if material already created, if it is use the index
 			if (primitive.material >= 0) {
-				fx::gltf::Material material = doc.materials[primitive.material];
+				fx::gltf::Material gltfMaterial = doc.materials[primitive.material];
 
 				// Base color texture
-				int32_t baseColorTexIndex = material.pbrMetallicRoughness.baseColorTexture.index;
+				int32_t baseColorTexIndex = gltfMaterial.pbrMetallicRoughness.baseColorTexture.index;
 				std::string textureName = doc.images.at(baseColorTexIndex).uri;
 				std::filesystem::path texturePath = gltfFilePath.parent_path().append(textureName);
 				scomp::Texture texture = m_ctx.rcommand->CreateTexture(0, texturePath.wstring().c_str());
-				mesh.textures.push_back(texture.srv);
+				
+				scomp::PhongMaterial material = {};
+				material.textures.push_back(texture);
+				materials.materials.push_back(material);
+
+				mesh.materialIndex = materials.materials.size() - 1;
+				mesh.materialType = scomp::MaterialType::PHONG;
 
 			} else {
 				mesh.materialIndex = 0;
