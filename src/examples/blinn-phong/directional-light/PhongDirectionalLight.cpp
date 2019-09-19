@@ -6,6 +6,7 @@
 #include "systems/RenderSystem.h"
 #include "systems/CameraSystem.h"
 #include "components/physics/Transform.h"
+#include "components/graphics/Pipeline.h"
 #include "scomponents/graphics/ConstantBuffers.h"
 #include "scomponents/graphics/Lights.h"
 
@@ -33,16 +34,16 @@ namespace phongExample {
 		lights.directionalLights.push_back(light0);
 
 		// Init non-optionnal constant buffer
-		comp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
+		scomp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/PhongDirectionalLight_VS.cso");
+		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/PhongDirectionalLight_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso");
+		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
 		// Pixel shader custom constant buffer for this example
@@ -54,6 +55,17 @@ namespace phongExample {
 		m_perPropertyCBdata.specularAttenuation = 20.0f;
 		m_ctx.rcommand->UpdateConstantBuffer(m_perPropertyCB, &m_perPropertyCBdata);
 
+		// Setup pipeline
+		scomp::Shaders& shaders = m_ctx.registry.get<scomp::Shaders>(graphEntity);
+		shaders.pss.push_back(PShader);
+		shaders.vss.push_back(VShader);
+
+		comp::Pipeline pipeline = {};
+		pipeline.hasShader.at(comp::PipelineShaderIndex::PS) = true;
+		pipeline.hasShader.at(comp::PipelineShaderIndex::VS) = true;
+		pipeline.psIndex = shaders.pss.size() - 1;
+		pipeline.vsIndex = shaders.vss.size() - 1;
+
 		// Transform
 		comp::Transform transform = {};
 
@@ -61,9 +73,8 @@ namespace phongExample {
 		auto entities = modelFactory.CreateEntitiesFromGltf("res/models/damaged-helmet/DamagedHelmet.gltf");
 		m_litEntity = entities.at(0);
 		for (auto entity : entities) {
-			m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
-			m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
 			m_ctx.registry.assign<comp::Transform>(entity, transform);
+			m_ctx.registry.assign<comp::Pipeline>(entity, pipeline);
 		}
 	}
 

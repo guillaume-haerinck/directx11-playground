@@ -68,7 +68,7 @@ comp::IndexBuffer RenderCommand::CreateIndexBuffer(void* indices, unsigned int c
 	return ib;
 }
 
-comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int byteWidth) const {
+scomp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int byteWidth) const {
 	ID3D11Buffer* constantBuffer = nullptr;
 
 	D3D11_BUFFER_DESC bd = {};
@@ -80,7 +80,7 @@ comp::ConstantBuffer RenderCommand::CreateConstantBuffer(unsigned int byteWidth)
 		m_dxo.device->CreateBuffer(&bd, nullptr, &constantBuffer)
 	);
 
-	comp::ConstantBuffer cb = {};
+	scomp::ConstantBuffer cb = {};
 	cb.buffer = constantBuffer;
 	cb.byteWidth = byteWidth;
 	return cb;
@@ -117,7 +117,7 @@ scomp::Texture RenderCommand::CreateTexture(unsigned int slot, LPCWSTR filepath,
 	return texture;
 }
 
-comp::VertexShader RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const {
+scomp::VertexShader RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const {
 	ID3D11VertexShader* vertexShader;
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
 	DXC::ThrowIfFailed(CALL_INFO,
@@ -140,13 +140,13 @@ comp::VertexShader RenderCommand::CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* i
 		)
 	);
 
-	comp::VertexShader shader = {};
+	scomp::VertexShader shader = {};
 	shader.layout = inputLayout;
 	shader.shader = vertexShader;
 	return shader;
 }
 
-comp::PixelShader RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
+scomp::PixelShader RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 	ID3D11PixelShader* pixelShader;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> blob;
@@ -160,7 +160,7 @@ comp::PixelShader RenderCommand::CreatePixelShader(LPCWSTR filePath) const {
 		)
 	);
 
-	comp::PixelShader shader = {};
+	scomp::PixelShader shader = {};
 	shader.shader = pixelShader;
 	return shader;
 }
@@ -182,7 +182,7 @@ void RenderCommand::BindTextures(std::vector<Microsoft::WRL::ComPtr<ID3D11Shader
 	m_dxo.context->PSSetShaderResources(0, textures.size(), textures.data()->GetAddressOf());
 }
 
-void RenderCommand::BindVertexShader(comp::VertexShader vs) {
+void RenderCommand::BindVertexShader(scomp::VertexShader vs) {
 	if (m_lastVShaderBound != vs.shader.Get()) {
 		m_lastVShaderBound = vs.shader.Get();
 		m_dxo.context->IASetInputLayout(vs.layout.Get());
@@ -191,7 +191,7 @@ void RenderCommand::BindVertexShader(comp::VertexShader vs) {
 	}
 }
 
-void RenderCommand::BindPixelShader(comp::PixelShader ps) {
+void RenderCommand::BindPixelShader(scomp::PixelShader ps) {
 	if (m_lastPShaderBound != ps.shader.Get()) {
 		m_lastPShaderBound = ps.shader.Get();
 		m_dxo.context->PSSetShader(ps.shader.Get(), nullptr, 0u);
@@ -199,7 +199,7 @@ void RenderCommand::BindPixelShader(comp::PixelShader ps) {
 	}
 }
 
-void RenderCommand::UpdateConstantBuffer(comp::ConstantBuffer cb, void* data) const {
+void RenderCommand::UpdateConstantBuffer(scomp::ConstantBuffer cb, void* data) const {
 	D3D11_MAPPED_SUBRESOURCE msr;
 	DXC::ThrowIfFailed(CALL_INFO,
 		m_dxo.context->Map(

@@ -1,15 +1,6 @@
 #pragma once
 
-namespace comp {
-	/**
-	 * @brief Constant buffers used by shader. This structure is used to update constant buffers.
-	 */
-	struct ConstantBuffer {
-		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-		unsigned int byteWidth;
-		// TODO keep track of the layout
-	};
-
+namespace scomp {
 	/**
 	 * @brief A vertex shader. The first stage in the graphic pipeline.
 	 *
@@ -31,5 +22,13 @@ namespace comp {
 	struct PixelShader {
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> shader;
 		std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> constantBuffers;
+	};
+
+	/**
+	 * @brief 
+	 */
+	struct Shaders {
+		std::vector<VertexShader> vss;
+		std::vector<PixelShader> pss;
 	};
 }

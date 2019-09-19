@@ -1,6 +1,6 @@
 #pragma once
 
-#include "components/graphics/Shader.h"
+#include "scomponents/graphics/Shaders.h"
 
 namespace scomp {
 	/**

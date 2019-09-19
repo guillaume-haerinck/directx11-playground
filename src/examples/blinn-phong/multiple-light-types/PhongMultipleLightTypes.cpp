@@ -35,16 +35,16 @@ namespace phongExample {
 		lights.pointLights.push_back(plight0);
 		
 		// Init non-optionnal constant buffer
-		comp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 2);
+		scomp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 2);
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/PhongMultipleLightTypes_VS.cso");
+		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/PhongMultipleLightTypes_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongMultipleLightTypes_PS.cso");
+		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongMultipleLightTypes_PS.cso");
 		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
 
 		// Mesh
@@ -55,8 +55,8 @@ namespace phongExample {
 
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
-		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+		m_ctx.registry.assign<scomp::VertexShader>(entity, VShader);
+		m_ctx.registry.assign<scomp::PixelShader>(entity, PShader);
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}

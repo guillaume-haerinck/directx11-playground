@@ -1,6 +1,15 @@
 #pragma once
 
 namespace scomp {
+	/**
+	 * @brief Constant buffers used by shader. This structure is used to update constant buffers.
+	 */
+	struct ConstantBuffer {
+		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
+		unsigned int byteWidth;
+		// TODO keep track of the layout
+	};
+
 	enum ConstantBufferIndex {
 		PER_MESH = 0,
 		PER_FRAME,
@@ -12,6 +21,6 @@ namespace scomp {
 
 	// Stored here only for updates. The shaders store them only for bindings.
 	struct ConstantBuffers {
-		std::array<comp::ConstantBuffer, ConstantBufferIndex::_CONST_BUFFER_MAX> constantBuffers;
+		std::array<ConstantBuffer, ConstantBufferIndex::_CONST_BUFFER_MAX> constantBuffers;
 	};
 }

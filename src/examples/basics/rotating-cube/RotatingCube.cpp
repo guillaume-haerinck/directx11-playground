@@ -23,13 +23,13 @@ namespace basicExample {
 		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 
 		// Vertex Shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/RotatingCube_VS.cso");
+		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/RotatingCube_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
-		comp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(DX::XMFLOAT4) * 6);
+		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
+		scomp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(DX::XMFLOAT4) * 6);
 		PShader.constantBuffers.push_back(colorCB.buffer);
 
 		// Update PSconstant buffer once as it will not change
@@ -49,8 +49,8 @@ namespace basicExample {
 		// Save data to entity
 		auto entity = m_ctx.registry.create();
 		comp::Mesh mesh = primFactory.CreateBox();
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
-		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+		m_ctx.registry.assign<scomp::VertexShader>(entity, VShader);
+		m_ctx.registry.assign<scomp::PixelShader>(entity, PShader);
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}

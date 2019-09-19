@@ -22,12 +22,12 @@ namespace basicExample {
 		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/ModelLoading_VS.cso");
+		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/ModelLoading_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/ModelLoading_PS.cso");
+		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/ModelLoading_PS.cso");
 
 		// Transformm
 		comp::Transform transform = {};
@@ -35,8 +35,8 @@ namespace basicExample {
 		// Assign data to entities
 		auto entities = modelFactory.CreateEntitiesFromGltf("res/models/damaged-helmet/DamagedHelmet.gltf");
 		for (auto entity : entities) {
-			m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
-			m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+			m_ctx.registry.assign<scomp::VertexShader>(entity, VShader);
+			m_ctx.registry.assign<scomp::PixelShader>(entity, PShader);
 			m_ctx.registry.assign<comp::Transform>(entity, transform);
 		}
 	}

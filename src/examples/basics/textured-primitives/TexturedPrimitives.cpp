@@ -23,12 +23,12 @@ namespace basicExample {
 		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 
 		// Vertex shader
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/TexturedPrimitives_VS.cso");
+		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/TexturedPrimitives_VS.cso");
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
 		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
 
 		// Pixel Shader
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/TexturedPrimitives_PS.cso");
+		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/TexturedPrimitives_PS.cso");
 		
 		// Mesh
 		comp::Mesh mesh = primFactory.CreateIcosahedron();
@@ -41,8 +41,8 @@ namespace basicExample {
 
 		// Assign data to an entity
 		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
-		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+		m_ctx.registry.assign<scomp::VertexShader>(entity, VShader);
+		m_ctx.registry.assign<scomp::PixelShader>(entity, PShader);
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}

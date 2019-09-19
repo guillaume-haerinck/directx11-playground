@@ -2,7 +2,8 @@
 
 #include "DXObjects.h"
 #include "components/graphics/Mesh.h"
-#include "components/graphics/Shader.h"
+#include "scomponents/graphics/Shaders.h"
+#include "scomponents/graphics/ConstantBuffers.h"
 #include "scomponents/graphics/Materials.h"
 #include "scomponents/graphics/Samplers.h"
 
@@ -52,7 +53,7 @@ public:
 	 * @note - You have to store it within a shader component, and it will be bound with it.
 	 *		   The slot will correspond to the index of the vector in the shader.
 	 */
-	comp::ConstantBuffer CreateConstantBuffer(unsigned int byteWidth) const;
+	scomp::ConstantBuffer CreateConstantBuffer(unsigned int byteWidth) const;
 
 	/**
 	 * @param slot - The texture slot the ressource will be bound to
@@ -70,12 +71,12 @@ public:
 	 * @param iedElementCount - Number of elements inside of the iedArray
 	 * @param filepath - The relative path from the .exe to the .cso containing the shader
 	 */
-	comp::VertexShader CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const;
+	scomp::VertexShader CreateVertexShader(D3D11_INPUT_ELEMENT_DESC* iedArray, unsigned int iedElementCount, LPCWSTR filePath) const;
 
 	/**
 	 * @param filePath - The relative path from the .exe to the .cso containing the shader
 	 */
-	comp::PixelShader CreatePixelShader(LPCWSTR filePath) const;
+	scomp::PixelShader CreatePixelShader(LPCWSTR filePath) const;
 
 	///////////////////////////////////////////////////////////////////////////
 	////////////////////////////////// BINDING ////////////////////////////////
@@ -87,14 +88,14 @@ public:
 	void BindSampler(scomp::Sampler sampler) const; // TODO BindSamplers
 	void BindTextures(std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>>& textures) const;
 
-	void BindVertexShader(comp::VertexShader vs);
-	void BindPixelShader(comp::PixelShader ps);
+	void BindVertexShader(scomp::VertexShader vs);
+	void BindPixelShader(scomp::PixelShader ps);
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////// UPDATING ////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	
-	void UpdateConstantBuffer(comp::ConstantBuffer cb, void* data) const;
+	void UpdateConstantBuffer(scomp::ConstantBuffer cb, void* data) const;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////// DRAWING /////////////////////////////////

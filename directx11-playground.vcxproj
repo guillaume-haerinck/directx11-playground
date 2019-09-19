@@ -325,7 +325,7 @@
     <ClInclude Include="src\components\graphics\Layer.h" />
     <ClInclude Include="src\components\graphics\Mesh.h" />
     <ClInclude Include="src\components\graphics\Model.h" />
-    <ClInclude Include="src\components\graphics\Shader.h" />
+    <ClInclude Include="src\components\graphics\Pipeline.h" />
     <ClInclude Include="src\components\physics\Relationship.h" />
     <ClInclude Include="src\components\physics\Transform.h" />
     <ClInclude Include="src\core\Context.h" />
@@ -355,6 +355,7 @@
     <ClInclude Include="src\scomponents\graphics\Lights.h" />
     <ClInclude Include="src\scomponents\graphics\Materials.h" />
     <ClInclude Include="src\scomponents\graphics\Samplers.h" />
+    <ClInclude Include="src\scomponents\graphics\Shaders.h" />
     <ClInclude Include="src\scomponents\io\Inputs.h" />
     <ClInclude Include="src\systems\CameraSystem.h" />
     <ClInclude Include="src\systems\ISystem.h" />

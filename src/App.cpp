@@ -9,6 +9,7 @@
 #include "scomponents/graphics/Materials.h"
 #include "scomponents/graphics/Camera.h"
 #include "scomponents/graphics/Lights.h"
+#include "scomponents/graphics/Shaders.h"
 #include "scomponents/io/Inputs.h"
 
 #include "examples/basics/basic-triangle/BasicTriangle.h"
@@ -351,8 +352,8 @@ void App::initGraphicSingletonEntity() {
 
 	// Init non-optional constant buffers
 	scomp::ConstantBuffers cbs = {};
-	comp::ConstantBuffer perFrameCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perFrame));
-	comp::ConstantBuffer perMeshCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perMesh));
+	scomp::ConstantBuffer perFrameCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perFrame));
+	scomp::ConstantBuffer perMeshCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perMesh));
 	cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME) = perFrameCB;
 	cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH) = perMeshCB;
 	m_ctx.registry.assign<scomp::ConstantBuffers>(entity, cbs);
@@ -370,6 +371,10 @@ void App::initGraphicSingletonEntity() {
 	// Init lights
 	scomp::Lights lights = {};
 	m_ctx.registry.assign<scomp::Lights>(entity, lights);
+
+	// Init lights
+	scomp::Shaders shaders = {};
+	m_ctx.registry.assign<scomp::Shaders>(entity, shaders);
 
 	// Init texture samplers
 	scomp::Sampler sampler0 = m_ctx.rcommand->CreateSampler(scomp::SamplerSlot::ANISOTROPIC_WRAP);

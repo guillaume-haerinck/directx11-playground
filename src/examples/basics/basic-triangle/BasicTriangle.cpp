@@ -3,7 +3,7 @@
 
 #include "graphics/DXException.h"
 #include "components/graphics/Mesh.h"
-#include "components/graphics/Shader.h"
+#include "scomponents/graphics/Shaders.h"
 
 namespace basicExample {
 	BasicTriangle::BasicTriangle(Context& context) : m_ctx(context) {
@@ -11,8 +11,8 @@ namespace basicExample {
 		D3D11_INPUT_ELEMENT_DESC ied[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
-		comp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"res/built-shaders/BasicTriangle_VS.cso");
-		comp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BasicTriangle_PS.cso");
+		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"res/built-shaders/BasicTriangle_VS.cso");
+		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BasicTriangle_PS.cso");
 
 		// Position attribute buffer
 		DX::XMFLOAT2 positions[] = {
@@ -34,8 +34,8 @@ namespace basicExample {
 		// Create entity
 		auto entity = m_ctx.registry.create();
 		m_ctx.registry.assign<comp::Mesh>(entity, vb);
-		m_ctx.registry.assign<comp::VertexShader>(entity, VShader);
-		m_ctx.registry.assign<comp::PixelShader>(entity, PShader);
+		m_ctx.registry.assign<scomp::VertexShader>(entity, VShader);
+		m_ctx.registry.assign<scomp::PixelShader>(entity, PShader);
 	}
 
 	BasicTriangle::~BasicTriangle() {
@@ -43,8 +43,8 @@ namespace basicExample {
 
 	void BasicTriangle::Update() {
 		// Non-indexed draw
-		m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader>()
-			.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader) {
+		m_ctx.registry.view<comp::Mesh, scomp::VertexShader, scomp::PixelShader>()
+			.each([&](comp::Mesh& mesh, scomp::VertexShader& VShader, scomp::PixelShader& PShader) {
 			 m_ctx.rcommand->BindVertexShader(VShader);
 			 m_ctx.rcommand->BindPixelShader(PShader);
 			 m_ctx.rcommand->BindVertexBuffer(mesh.vb);

@@ -47,6 +47,6 @@ namespace comp {
 		VertexBuffer vb;
 		IndexBuffer ib;
 		unsigned int materialIndex;
-		std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> textures;
+		std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> textures; // TODO remove texture here to use only material index and enum for material type
 	};
 }

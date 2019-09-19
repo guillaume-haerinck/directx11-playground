@@ -26,7 +26,7 @@ namespace phongExample {
 		};
 
 		entt::entity m_litEntity;
-		comp::ConstantBuffer m_perPropertyCB;
+		scomp::ConstantBuffer m_perPropertyCB;
 		perPropertyChange m_perPropertyCBdata;
 	};
 }

@@ -5,6 +5,7 @@
 #include "scomponents/graphics/Lights.h"
 #include "scomponents/graphics/Materials.h"
 #include "scomponents/graphics/Camera.h"
+#include "components/graphics/Pipeline.h"
 #include "components/physics/Transform.h"
 #include "graphics/ConstantBuffer.h"
 
@@ -25,7 +26,7 @@ void RenderSystem::Update() {
 	{
 		scomp::Lights& lights = m_ctx.registry.get<scomp::Lights>(graphEntity);
 		if (lights.hasToBeUpdated) {
-			comp::ConstantBuffer& lightCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+			scomp::ConstantBuffer& lightCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 				.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE);
 
 			std::vector<cb::perLightChange> cbData;
@@ -72,7 +73,7 @@ void RenderSystem::Update() {
 	{
 		scomp::PhongMaterials& materials = m_ctx.registry.get<scomp::PhongMaterials>(graphEntity);
 		if (materials.materials.size() > 0 && materials.hasToBeUpdated) {
-			comp::ConstantBuffer& materialCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+			scomp::ConstantBuffer& materialCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 				.constantBuffers.at(scomp::ConstantBufferIndex::PER_PHONG_MAT_CHANGE);
 
 			cb::perPhongMaterialChange cbData = {}; // TODO is an array
@@ -87,7 +88,7 @@ void RenderSystem::Update() {
 	{
 		scomp::CookTorranceMaterials& materials = m_ctx.registry.get<scomp::CookTorranceMaterials>(graphEntity);
 		if (materials.materials.size() > 0 && materials.hasToBeUpdated) {
-			comp::ConstantBuffer& materialCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+			scomp::ConstantBuffer& materialCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 				.constantBuffers.at(scomp::ConstantBufferIndex::PER_COOK_MAT_CHANGE);
 
 			cb::perCookTorranceMaterialChange cbData = {}; // TODO is an array
@@ -105,7 +106,7 @@ void RenderSystem::Update() {
 	// Update per frame constant buffer
 	{
 		cb::perFrame cbData = {};
-		comp::ConstantBuffer& perFrameCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+		scomp::ConstantBuffer& perFrameCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 			.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME);
 
 		// Get usable data
@@ -122,12 +123,14 @@ void RenderSystem::Update() {
 		m_ctx.rcommand->UpdateConstantBuffer(perFrameCB, &cbData);
 	}
 
-	// Render
-	comp::ConstantBuffer& perMeshCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
+	// Get singleton components used for rendering
+	scomp::Shaders& shaders = m_ctx.registry.get<scomp::Shaders>(graphEntity);
+	scomp::ConstantBuffer& perMeshCB = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity)
 		.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH);
 
-	m_ctx.registry.view<comp::Mesh, comp::VertexShader, comp::PixelShader, comp::Transform>()
-		.each([&](comp::Mesh& mesh, comp::VertexShader& VShader, comp::PixelShader& PShader, comp::Transform& transform) {
+	// Render
+	m_ctx.registry.view<comp::Mesh, comp::Pipeline, comp::Transform>()
+		.each([&](comp::Mesh& mesh, comp::Pipeline& pipeline, comp::Transform& transform) {
 		// Update perMesh constant buffer
 		cb::perMesh cbData = {};
 		DX::XMVECTOR transVector = DX::XMLoadFloat3(&transform.position);
@@ -138,9 +141,11 @@ void RenderSystem::Update() {
 		DX::XMStoreFloat4x4(&cbData.matModel, DX::XMMatrixTranspose(model));
 		m_ctx.rcommand->UpdateConstantBuffer(perMeshCB, &cbData);
 		
+		// TODO handle pipeline to check if has said shader
+
 		// Bind
-		m_ctx.rcommand->BindVertexShader(VShader);
-		m_ctx.rcommand->BindPixelShader(PShader);
+		m_ctx.rcommand->BindVertexShader(shaders.vss.at(pipeline.vsIndex));
+		m_ctx.rcommand->BindPixelShader(shaders.pss.at(pipeline.psIndex));
 		m_ctx.rcommand->BindVertexBuffer(mesh.vb);
 		m_ctx.rcommand->BindIndexBuffer(mesh.ib);
 		if (mesh.textures.size() > 0) {
