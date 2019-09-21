@@ -242,6 +242,8 @@
     <ClCompile Include="src\examples\pbr\directional-light\PBRDirectionalLight.cpp" />
     <ClCompile Include="src\factories\components\MeshPrimitiveFactory.cpp" />
     <ClCompile Include="src\factories\entities\ModelFactory.cpp" />
+    <ClCompile Include="src\factories\scomponents\MaterialFactory.cpp" />
+    <ClCompile Include="src\factories\scomponents\ShaderFactory.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
     <ClCompile Include="src\graphics\RenderCommand.cpp" />
     <ClCompile Include="src\App.cpp" />
@@ -342,6 +344,8 @@
     <ClInclude Include="src\examples\pbr\directional-light\PBRDirectionalLight.h" />
     <ClInclude Include="src\factories\components\MeshPrimitiveFactory.h" />
     <ClInclude Include="src\factories\entities\ModelFactory.h" />
+    <ClInclude Include="src\factories\scomponents\MaterialFactory.h" />
+    <ClInclude Include="src\factories\scomponents\ShaderFactory.h" />
     <ClInclude Include="src\graphics\ConstantBuffer.h" />
     <ClInclude Include="src\graphics\DXObjects.h" />
     <ClInclude Include="src\graphics\RenderCommand.h" />

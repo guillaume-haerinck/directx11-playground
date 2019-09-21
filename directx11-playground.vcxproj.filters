@@ -133,6 +133,12 @@
     <ClCompile Include="src\scomponents\io\SingletonIOComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\factories\scomponents\ShaderFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\factories\scomponents\MaterialFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h">
@@ -406,6 +412,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\components\graphics\Pipeline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\factories\scomponents\ShaderFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\factories\scomponents\MaterialFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

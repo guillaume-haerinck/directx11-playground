@@ -3,6 +3,7 @@
 
 #include "graphics/ConstantBuffer.h"
 #include "factories/entities/ModelFactory.h"
+#include "factories/scomponents/ShaderFactory.h"
 #include "systems/RenderSystem.h"
 #include "systems/CameraSystem.h"
 #include "components/physics/Transform.h"
@@ -14,6 +15,7 @@ namespace phongExample {
 	PhongDirectionalLight::PhongDirectionalLight(Context& context) : m_ctx(context) {
 		// Init
 		ModelFactory modelFactory(context);
+		ShaderFactory shaderFactory(context);
 		m_systems = {
 			std::make_shared<CameraSystem>(context),
 			std::make_shared<RenderSystem>(context)
@@ -33,38 +35,39 @@ namespace phongExample {
 		light0.direction = DX::XMFLOAT3(1, -1, 1);
 		lights.directionalLights.push_back(light0);
 
-		// Init non-optionnal constant buffer
+		// Init exemple specific constant buffers
 		scomp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
-
-		// Vertex shader
-		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(modelFactory.GetIed(), modelFactory.GetIedElementCount(), L"res/built-shaders/PhongDirectionalLight_VS.cso");
-		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
-		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
-
-		// Pixel Shader
-		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso");
-		PShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE).buffer);
-
-		// Pixel shader custom constant buffer for this example
 		m_perPropertyCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(perPropertyChange));
-		PShader.constantBuffers.push_back(m_perPropertyCB.buffer);
+		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE) = m_perPropertyCB;
+
+		// Update custom constant buffer
 		m_perPropertyCBdata.ambientIntensity = 1.0f;
 		m_perPropertyCBdata.diffuseIntensity = 1.0f;
 		m_perPropertyCBdata.specularIntensity = 1.0f;
 		m_perPropertyCBdata.specularAttenuation = 20.0f;
 		m_ctx.rcommand->UpdateConstantBuffer(m_perPropertyCB, &m_perPropertyCBdata);
 
-		// Setup pipeline
-		scomp::Shaders& shaders = m_ctx.registry.get<scomp::Shaders>(graphEntity);
-		shaders.pss.push_back(PShader);
-		shaders.vss.push_back(VShader);
+		// Vertex shader
+		shaderFactory.SetIed(modelFactory.GetIed(), modelFactory.GetIedElementCount());
+		scomp::ConstantBufferIndex vsCbArray[] = {
+			scomp::ConstantBufferIndex::PER_MESH,
+			scomp::ConstantBufferIndex::PER_FRAME
+		};
+		unsigned int vsID = shaderFactory.CreateVertexShader(L"res/built-shaders/PhongDirectionalLight_VS.cso", vsCbArray, ARRAYSIZE(vsCbArray));
+
+		// Pixel Shader
+		scomp::ConstantBufferIndex psCbArray[] = {
+			scomp::ConstantBufferIndex::PER_LIGHT_CHANGE,
+			scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE,
+		};
+		unsigned int psID = shaderFactory.CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso", psCbArray, ARRAYSIZE(psCbArray));
 
 		comp::Pipeline pipeline = {};
 		pipeline.hasShader.at(comp::PipelineShaderIndex::PS) = true;
 		pipeline.hasShader.at(comp::PipelineShaderIndex::VS) = true;
-		pipeline.psIndex = shaders.pss.size() - 1;
-		pipeline.vsIndex = shaders.vss.size() - 1;
+		pipeline.psIndex = psID;
+		pipeline.vsIndex = vsID;
 
 		// Transform
 		comp::Transform transform = {};
