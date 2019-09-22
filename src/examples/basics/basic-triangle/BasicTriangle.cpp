@@ -2,17 +2,20 @@
 #include "BasicTriangle.h"
 
 #include "graphics/DXException.h"
+#include "factories/scomponents/ShaderFactory.h"
 #include "components/graphics/Mesh.h"
+#include "components/graphics/Pipeline.h"
+#include "components/physics/Transform.h"
 #include "scomponents/graphics/Shaders.h"
+#include "systems/RenderSystem.h"
 
 namespace basicExample {
 	BasicTriangle::BasicTriangle(Context& context) : m_ctx(context) {
-		// Shader
-		D3D11_INPUT_ELEMENT_DESC ied[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		// Init
+		ShaderFactory shaderFactory(context);
+		m_systems = {
+			std::make_shared<RenderSystem>(context)
 		};
-		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(ied, ARRAYSIZE(ied), L"res/built-shaders/BasicTriangle_VS.cso");
-		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/BasicTriangle_PS.cso");
 
 		// Position attribute buffer
 		DX::XMFLOAT2 positions[] = {
@@ -31,25 +34,47 @@ namespace basicExample {
 		vb.offsets = { 0 };
 		vb.names = { "position" };
 
+		// Index buffer
+		WORD indices[] = { 0, 1, 2 };
+		comp::IndexBuffer ib = m_ctx.rcommand->CreateIndexBuffer(indices, ARRAYSIZE(indices));
+		
+		// Mesh
+		comp::Mesh mesh = {};
+		mesh.vb = vb;
+		mesh.ib = ib;
+
+		// Vertex shader
+		D3D11_INPUT_ELEMENT_DESC ied[] = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		};
+		shaderFactory.SetIed(ied, ARRAYSIZE(ied));
+		unsigned int vsID = shaderFactory.CreateVertexShader(L"res/built-shaders/BasicTriangle_VS.cso");
+
+		// Pixel Shader
+		unsigned int psID = shaderFactory.CreatePixelShader(L"res/built-shaders/BasicTriangle_PS.cso");
+
+		// Pipeline
+		comp::Pipeline pipeline = {};
+		pipeline.psIndex = psID;
+		pipeline.vsIndex = vsID;
+
+		// Transform
+		comp::Transform transform = {};
+
 		// Create entity
 		auto entity = m_ctx.registry.create();
-		m_ctx.registry.assign<comp::Mesh>(entity, vb);
-		m_ctx.registry.assign<scomp::VertexShader>(entity, VShader);
-		m_ctx.registry.assign<scomp::PixelShader>(entity, PShader);
+		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
+		m_ctx.registry.assign<comp::Transform>(entity, transform);
+		m_ctx.registry.assign<comp::Pipeline>(entity, pipeline);
 	}
 
 	BasicTriangle::~BasicTriangle() {
 	}
 
 	void BasicTriangle::Update() {
-		// Non-indexed draw
-		m_ctx.registry.view<comp::Mesh, scomp::VertexShader, scomp::PixelShader>()
-			.each([&](comp::Mesh& mesh, scomp::VertexShader& VShader, scomp::PixelShader& PShader) {
-			 m_ctx.rcommand->BindVertexShader(VShader);
-			 m_ctx.rcommand->BindPixelShader(PShader);
-			 m_ctx.rcommand->BindVertexBuffer(mesh.vb);
-			 m_ctx.rcommand->Draw(mesh.vb.counts.at(0));
-		});
+		for (auto& system : m_systems) {
+			system->Update();
+		}
 	}
 
 	void BasicTriangle::ImGuiUpdate() {

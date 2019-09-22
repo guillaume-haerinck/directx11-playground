@@ -44,6 +44,6 @@ namespace comp {
 		VertexBuffer vb;
 		IndexBuffer ib;
 		unsigned int materialIndex = 0;
-		scomp::MaterialType materialType = scomp::MaterialType::PHONG;
+		scomp::MaterialType materialType = scomp::MaterialType::NO_MATERIAL;
 	};
 }

@@ -6,17 +6,20 @@ namespace scomp {
 	 */
 	struct ConstantBuffer {
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-		unsigned int byteWidth;
+		unsigned int byteWidth = 0;
 		// TODO keep track of the layout
 	};
 
+	/**
+	 * @note The layouts are accessible on the graphics/ConstantBuffer.h file
+	 */
 	enum ConstantBufferIndex {
 		PER_MESH = 0,
 		PER_FRAME,
 		PER_LIGHT_CHANGE,
 		PER_COOK_MAT_CHANGE,
 		PER_PHONG_MAT_CHANGE,
-		PER_CUSTOM_PROP_CHANGE,
+		PER_CUSTOM_PROP_CHANGE, // Updated by example
 		_CONST_BUFFER_MAX
 	};
 

@@ -14,16 +14,13 @@
 namespace phongExample {
 	PhongDirectionalLight::PhongDirectionalLight(Context& context) : m_ctx(context) {
 		// Init
+		auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
 		ModelFactory modelFactory(context);
 		ShaderFactory shaderFactory(context);
 		m_systems = {
 			std::make_shared<CameraSystem>(context),
 			std::make_shared<RenderSystem>(context)
 		};
-
-		// Get constant buffers
-		auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
-		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 
 		// Light
 		scomp::Lights& lights = m_ctx.registry.get<scomp::Lights>(graphEntity);
@@ -36,6 +33,7 @@ namespace phongExample {
 		lights.directionalLights.push_back(light0);
 
 		// Init exemple specific constant buffers
+		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
 		scomp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 		m_perPropertyCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(perPropertyChange));
@@ -63,9 +61,8 @@ namespace phongExample {
 		};
 		unsigned int psID = shaderFactory.CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso", psCbArray, ARRAYSIZE(psCbArray));
 
+		// Setup pipeline
 		comp::Pipeline pipeline = {};
-		pipeline.hasShader.at(comp::PipelineShaderIndex::PS) = true;
-		pipeline.hasShader.at(comp::PipelineShaderIndex::VS) = true;
 		pipeline.psIndex = psID;
 		pipeline.vsIndex = vsID;
 

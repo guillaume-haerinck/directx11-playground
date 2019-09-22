@@ -4,6 +4,7 @@ namespace comp {
 	enum PipelineShaderIndex {
 		VS = 0,
 		PS,
+		GS,
 		_MAX_SHADER
 	};
 
@@ -11,7 +12,7 @@ namespace comp {
 	 * @brief 
 	 */
 	struct Pipeline {
-		std::array<bool, PipelineShaderIndex::_MAX_SHADER> hasShader;
+		std::array<bool, PipelineShaderIndex::_MAX_SHADER> hasShader = { true, true, false };
 		unsigned int vsIndex = 0;
 		unsigned int psIndex = 0;
 		unsigned int gsIndex = 0;
