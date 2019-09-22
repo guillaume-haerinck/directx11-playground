@@ -3,6 +3,7 @@
 
 #include "graphics/DXException.h"
 #include "factories/components/MeshPrimitiveFactory.h"
+#include "factories/scomponents/ShaderFactory.h"
 #include "systems/RenderSystem.h"
 #include "systems/CameraSystem.h"
 #include "graphics/ConstantBuffer.h"
@@ -15,31 +16,26 @@ namespace basicExample {
 	TexturedPrimitives::TexturedPrimitives(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);
+		ShaderFactory shaderFactory(context);
 		m_systems = {
 			std::make_shared<CameraSystem>(context),
 			std::make_shared<RenderSystem>(context)
 		};
 
-		// Get singleton components
-		auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
-		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
-		scomp::Shaders& shaders = m_ctx.registry.get<scomp::Shaders>(graphEntity);
-		scomp::PhongMaterials& materials = m_ctx.registry.get<scomp::PhongMaterials>(graphEntity);
-
 		// Vertex shader
-		// TODO use shader factory to handle this
-		// TODO declare ied in shaderfactory ? everyone uses the same ?
-		// Set IED with a function
-		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/TexturedPrimitives_VS.cso");
-		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
-		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
-		shaders.vss.push_back(VShader);
+		shaderFactory.SetIed(primFactory.GetIed(), primFactory.GetIedElementCount());
+		scomp::ConstantBufferIndex vsCbArray[] = {
+			scomp::ConstantBufferIndex::PER_MESH,
+			scomp::ConstantBufferIndex::PER_FRAME
+		};
+		unsigned int vsID = shaderFactory.CreateVertexShader(L"res/built-shaders/TexturedPrimitives_VS.cso", vsCbArray, ARRAYSIZE(vsCbArray));
 
 		// Pixel Shader
-		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/TexturedPrimitives_PS.cso");
-		shaders.pss.push_back(PShader);
+		unsigned int psID = shaderFactory.CreatePixelShader(L"res/built-shaders/TexturedPrimitives_PS.cso");
 		
 		// Material
+		auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
+		scomp::PhongMaterials& materials = m_ctx.registry.get<scomp::PhongMaterials>(graphEntity);
 		scomp::PhongMaterial material = {};
 		scomp::Texture texture = m_ctx.rcommand->CreateTexture(0, L"res/textures/test.jpg");
 		material.textures.push_back(texture);
@@ -52,12 +48,10 @@ namespace basicExample {
 
 		// Pipeline
 		comp::Pipeline pipeline = {};
-		pipeline.hasShader.at(comp::PipelineShaderIndex::PS) = true;
-		pipeline.hasShader.at(comp::PipelineShaderIndex::VS) = true;
-		pipeline.vsIndex = shaders.vss.size() - 1;
-		pipeline.psIndex = shaders.pss.size() - 1;
+		pipeline.vsIndex = vsID;
+		pipeline.psIndex = psID;
 
-		// Transformm
+		// Transform
 		comp::Transform transform = {};
 
 		// Assign data to an entity
