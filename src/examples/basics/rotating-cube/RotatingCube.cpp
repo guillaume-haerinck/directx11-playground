@@ -2,37 +2,46 @@
 #include "RotatingCube.h"
 
 #include "factories/components/MeshPrimitiveFactory.h"
-#include "components/graphics/Mesh.h"
+#include "factories/scomponents/ShaderFactory.h"
 #include "systems/RenderSystem.h"
 #include "systems/CameraSystem.h"
-#include "graphics/ConstantBuffer.h"
 #include "components/physics/Transform.h"
+#include "components/graphics/Mesh.h"
+#include "components/graphics/Pipeline.h"
+#include "components/graphics/Layer.h"
 #include "scomponents/graphics/ConstantBuffers.h"
 
 namespace basicExample {
 	RotatingCube::RotatingCube(Context& context) : m_ctx(context) {
 		// Init
 		MeshPrimitiveFactory primFactory(context);
+		ShaderFactory shaderFactory(context);
 		m_systems = {
 			std::make_shared<CameraSystem>(context),
 			std::make_shared<RenderSystem>(context)
 		};
 
-		// Get constant buffers
+		// Vertex shader
+		shaderFactory.SetIed(primFactory.GetIed(), primFactory.GetIedElementCount());
+		scomp::ConstantBufferIndex vsCbArray[] = {
+			scomp::ConstantBufferIndex::PER_MESH,
+			scomp::ConstantBufferIndex::PER_FRAME
+		};
+		unsigned int vsID = shaderFactory.CreateVertexShader(L"res/built-shaders/RotatingCube_VS.cso", vsCbArray, ARRAYSIZE(vsCbArray));
+
+		// Custom constant buffer
 		auto graphEntity = m_ctx.singletonComponents.at(scomp::SingletonEntities::SING_ENTITY_GRAPHIC);
 		scomp::ConstantBuffers& cbs = m_ctx.registry.get<scomp::ConstantBuffers>(graphEntity);
-
-		// Vertex Shader
-		scomp::VertexShader VShader = m_ctx.rcommand->CreateVertexShader(primFactory.GetIed(), primFactory.GetIedElementCount(), L"res/built-shaders/RotatingCube_VS.cso");
-		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_MESH).buffer);
-		VShader.constantBuffers.push_back(cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_FRAME).buffer);
-
-		// Pixel shader
-		scomp::PixelShader PShader = m_ctx.rcommand->CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso");
 		scomp::ConstantBuffer colorCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(DX::XMFLOAT4) * 6);
-		PShader.constantBuffers.push_back(colorCB.buffer);
+		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE_0) = colorCB;
 
-		// Update PSconstant buffer once as it will not change
+		// Pixel Shader
+		scomp::ConstantBufferIndex psCbArray[] = {
+			scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE_0,
+		};
+		unsigned int psID = shaderFactory.CreatePixelShader(L"res/built-shaders/RotatingCube_PS.cso", psCbArray, ARRAYSIZE(psCbArray));
+
+		// Update custom constant buffer
 		DX::XMFLOAT4 colorCBdata[6] = {
 			DX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f),
 			DX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
@@ -43,14 +52,18 @@ namespace basicExample {
 		};
 		m_ctx.rcommand->UpdateConstantBuffer(colorCB, &colorCBdata);
 
-		// Transformm
+		// Setup pipeline
+		comp::Pipeline pipeline = {};
+		pipeline.psIndex = psID;
+		pipeline.vsIndex = vsID;
+
+		// Transform
 		comp::Transform transform = {};
 
-		// Save data to entity
+		// Assign data to entity
 		auto entity = m_ctx.registry.create();
 		comp::Mesh mesh = primFactory.CreateBox();
-		m_ctx.registry.assign<scomp::VertexShader>(entity, VShader);
-		m_ctx.registry.assign<scomp::PixelShader>(entity, PShader);
+		m_ctx.registry.assign<comp::Pipeline>(entity, pipeline);
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
 		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}

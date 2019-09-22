@@ -37,7 +37,7 @@ namespace comp {
 	};
 
 	/**
-	 * @param materialIndex - The index in the std::vector of Materials component (0 if default material).
+	 * @param materialIndex - The index in the std::vector of Materials singleton component (0 if default material).
 	 *						  The same material can be shared by multiple mesh.
 	 */
 	struct Mesh {

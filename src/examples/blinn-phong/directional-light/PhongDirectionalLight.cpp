@@ -37,7 +37,7 @@ namespace phongExample {
 		scomp::ConstantBuffer perLightCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(cb::perLightChange) * 1);
 		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_LIGHT_CHANGE) = perLightCB;
 		m_perPropertyCB = m_ctx.rcommand->CreateConstantBuffer(sizeof(perPropertyChange));
-		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE) = m_perPropertyCB;
+		cbs.constantBuffers.at(scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE_0) = m_perPropertyCB;
 
 		// Update custom constant buffer
 		m_perPropertyCBdata.ambientIntensity = 1.0f;
@@ -57,7 +57,7 @@ namespace phongExample {
 		// Pixel Shader
 		scomp::ConstantBufferIndex psCbArray[] = {
 			scomp::ConstantBufferIndex::PER_LIGHT_CHANGE,
-			scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE,
+			scomp::ConstantBufferIndex::PER_CUSTOM_PROP_CHANGE_0,
 		};
 		unsigned int psID = shaderFactory.CreatePixelShader(L"res/built-shaders/PhongDirectionalLight_PS.cso", psCbArray, ARRAYSIZE(psCbArray));
 

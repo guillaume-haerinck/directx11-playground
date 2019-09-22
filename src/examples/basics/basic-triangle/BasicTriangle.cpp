@@ -64,8 +64,8 @@ namespace basicExample {
 		// Create entity
 		auto entity = m_ctx.registry.create();
 		m_ctx.registry.assign<comp::Mesh>(entity, mesh);
-		m_ctx.registry.assign<comp::Transform>(entity, transform);
 		m_ctx.registry.assign<comp::Pipeline>(entity, pipeline);
+		m_ctx.registry.assign<comp::Transform>(entity, transform);
 	}
 
 	BasicTriangle::~BasicTriangle() {

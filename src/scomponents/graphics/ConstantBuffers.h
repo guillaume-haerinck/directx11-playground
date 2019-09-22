@@ -19,7 +19,9 @@ namespace scomp {
 		PER_LIGHT_CHANGE,
 		PER_COOK_MAT_CHANGE,
 		PER_PHONG_MAT_CHANGE,
-		PER_CUSTOM_PROP_CHANGE, // Updated by example
+		PER_CUSTOM_PROP_CHANGE_0, // Updated by example
+		PER_CUSTOM_PROP_CHANGE_1, // Updated by example
+		PER_CUSTOM_PROP_CHANGE_2, // Updated by example
 		_CONST_BUFFER_MAX
 	};
 

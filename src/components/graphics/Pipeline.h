@@ -9,7 +9,7 @@ namespace comp {
 	};
 
 	/**
-	 * @brief 
+	 * @brief Store IDs to the shaders used by an entity. The IDs relate to the singleton component Shaders owned by the graphic entity
 	 */
 	struct Pipeline {
 		std::array<bool, PipelineShaderIndex::_MAX_SHADER> hasShader = { true, true, false };

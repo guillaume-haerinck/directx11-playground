@@ -142,6 +142,7 @@ void RenderSystem::Update() {
 		m_ctx.rcommand->UpdateConstantBuffer(perMeshCB, &cbData);
 		
 		// TODO handle pipeline to check if has said shader
+		// TODO trycatch to check if .at exist
 
 		// Bind
 		m_ctx.rcommand->BindVertexShader(shaders.vss.at(pipeline.vsIndex));
